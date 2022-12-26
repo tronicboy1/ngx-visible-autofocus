@@ -1,24 +1,34 @@
-# NgxVisibleAutofocus
+# About this Package
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.0.
+This is a module for Angular to autofocus an element when it is visible in the DOM.
 
-## Code scaffolding
+# How to use this package
 
-Run `ng generate component component-name --project ngx-visible-autofocus` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-visible-autofocus`.
-> Note: Don't forget to add `--project ngx-visible-autofocus` or else it will be added to the default project in your `angular.json` file. 
+### Install the package with ng add.
 
-## Build
+```
+ng add ngx-visible-autofocus
+```
 
-Run `ng build ngx-visible-autofocus` to build the project. The build artifacts will be stored in the `dist/` directory.
+OR
 
-## Publishing
+```
+npm i ngx-visible-autofocus
+ng add ngx-visible-autofocus
+```
 
-After building your library with `ng build ngx-visible-autofocus`, go to the dist folder `cd dist/ngx-visible-autofocus` and run `npm publish`.
+### Add the package to desired module imports
 
-## Running unit tests
+Commonly add to `app.module.ts`
 
-Run `ng test ngx-visible-autofocus` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```typescript
+import { NgxVisibleAutofocusModule } from 'ngx-visible-autofocus';
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+@NgModule({
+  declarations: [AppComponent],
+  imports: [..., NgxVisibleAutofocusModule],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
