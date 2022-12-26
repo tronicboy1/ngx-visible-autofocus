@@ -1,6 +1,6 @@
 {
   "name": "ngx-visible-autofocus",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "schematics": "./schematics/collection.json",
   "ng-add": {
     "save": "devDependencies"
