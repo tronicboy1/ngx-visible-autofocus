@@ -1,9 +1,13 @@
 {
   "name": "ngx-visible-autofocus",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "schematics": "./schematics/collection.json",
   "ng-add": {
     "save": "devDependencies"
+  },
+  "scripts": {
+    "build": "ng build ngx-visible-autofocus && tsc -p tsconfig.schematics.json",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/ngx-visible-autofocus/"
   },
   "peerDependencies": {
     "@angular/common": "^14.2.0",
@@ -11,5 +15,8 @@
   },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
   }
 }
