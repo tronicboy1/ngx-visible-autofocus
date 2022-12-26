@@ -3,5 +3,39 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
+    "ngx-visible-autofocus": {
+      "projectType": "library",
+      "root": "projects/ngx-visible-autofocus",
+      "sourceRoot": "projects/ngx-visible-autofocus/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-visible-autofocus/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-visible-autofocus/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-visible-autofocus/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-visible-autofocus/src/test.ts",
+            "tsConfig": "projects/ngx-visible-autofocus/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-visible-autofocus/karma.conf.js"
+          }
+        }
+      }
+    }
+  },
+  "cli": {
+    "analytics": "9c9807ef-0ba4-4b76-b4dd-6f65d412f3fc"
   }
 }
