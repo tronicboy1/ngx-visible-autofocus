@@ -14,6 +14,7 @@ export class AutoFocusDirective implements AfterViewInit, OnDestroy {
     'AutoFocusDirectiveAttributeKey'
   );
   static readonly callbackCache = new Map<symbol, () => void>();
+  static readonly firedCache = new Set<symbol>();
   static readonly observer = new IntersectionObserver((entries) =>
     entries
       .filter((entry) => entry.isIntersecting)
@@ -24,12 +25,16 @@ export class AutoFocusDirective implements AfterViewInit, OnDestroy {
         return target;
       })
       .forEach((el) => {
-        const key = el[AutoFocusDirective.attributeKey];
-        if (!key)
+        const uniqueKey = el[AutoFocusDirective.attributeKey];
+        if (!uniqueKey)
           throw TypeError('HTML element has no auto focus attribute key.');
-        const callback = AutoFocusDirective.callbackCache.get(key);
+        /** Only auto focus once! */
+        const wasFired = AutoFocusDirective.firedCache.has(uniqueKey);
+        if (wasFired) return;
+        const callback = AutoFocusDirective.callbackCache.get(uniqueKey);
         if (!callback) throw TypeError('Auto focus callback not cached.');
         callback();
+        AutoFocusDirective.firedCache.add(uniqueKey);
       })
   );
 
@@ -52,6 +57,7 @@ export class AutoFocusDirective implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     AutoFocusDirective.observer.unobserve(this.nativeElement);
     AutoFocusDirective.callbackCache.delete(this.uniqueKey);
+    AutoFocusDirective.firedCache.delete(this.uniqueKey);
   }
 
   static ngTemplateContextGuard(
