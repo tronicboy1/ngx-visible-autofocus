@@ -46,3 +46,19 @@ export class AppModule {}
 ```html
 <input type="text" ngxAutofocus />
 ```
+
+#### Providing a custom callback
+
+You can optionally customize the callback.
+
+```html
+<input type="text" ngxAutofocus [customCallback]="() => this.focus()" />
+```
+
+#### Callback firing setting
+
+You can optionally change the callback setting from only firing once when the element comes into view.
+
+```html
+<input type="text" ngxAutofocus [once]="false" />
+```

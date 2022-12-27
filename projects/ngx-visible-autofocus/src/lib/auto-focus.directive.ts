@@ -3,6 +3,7 @@ import {
   Directive,
   ElementRef,
   inject,
+  Input,
   OnDestroy,
 } from '@angular/core';
 
@@ -14,7 +15,7 @@ export class AutoFocusDirective implements AfterViewInit, OnDestroy {
     'AutoFocusDirectiveAttributeKey'
   );
   static readonly callbackCache = new Map<symbol, () => void>();
-  static readonly firedCache = new Set<symbol>();
+  static readonly fireOnceSettings = new Map<symbol, boolean>();
   static readonly observer = new IntersectionObserver((entries) =>
     entries
       .filter((entry) => entry.isIntersecting)
@@ -28,16 +29,21 @@ export class AutoFocusDirective implements AfterViewInit, OnDestroy {
         const uniqueKey = el[AutoFocusDirective.attributeKey];
         if (!uniqueKey)
           throw TypeError('HTML element has no auto focus attribute key.');
-        /** Only auto focus once! */
-        const wasFired = AutoFocusDirective.firedCache.has(uniqueKey);
-        if (wasFired) return;
         const callback = AutoFocusDirective.callbackCache.get(uniqueKey);
         if (!callback) throw TypeError('Auto focus callback not cached.');
         callback();
-        AutoFocusDirective.firedCache.add(uniqueKey);
+        /** Only auto focus once! */
+        const isFireOnce = Boolean(
+          AutoFocusDirective.fireOnceSettings.get(uniqueKey)
+        );
+        if (isFireOnce) {
+          AutoFocusDirective.observer.unobserve(el);
+        }
       })
   );
 
+  @Input() customCallback?: () => void;
+  @Input() once = true;
   private uniqueKey = Symbol('InstanceStaticCacheKey');
   private el = inject(ElementRef);
   get nativeElement() {
@@ -48,16 +54,18 @@ export class AutoFocusDirective implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     this.nativeElement[AutoFocusDirective.attributeKey] = this.uniqueKey;
-    AutoFocusDirective.callbackCache.set(this.uniqueKey, () =>
-      this.nativeElement.focus()
+    AutoFocusDirective.callbackCache.set(
+      this.uniqueKey,
+      this.customCallback ?? (() => this.nativeElement.focus())
     );
+    AutoFocusDirective.fireOnceSettings.set(this.uniqueKey, this.once);
     AutoFocusDirective.observer.observe(this.nativeElement);
   }
 
   ngOnDestroy(): void {
     AutoFocusDirective.observer.unobserve(this.nativeElement);
     AutoFocusDirective.callbackCache.delete(this.uniqueKey);
-    AutoFocusDirective.firedCache.delete(this.uniqueKey);
+    AutoFocusDirective.fireOnceSettings.delete(this.uniqueKey);
   }
 
   static ngTemplateContextGuard(
@@ -73,5 +81,7 @@ interface AutoFocusDirectiveContext extends HTMLElement {}
 declare global {
   interface HTMLElement {
     [AutoFocusDirective.attributeKey]?: symbol;
+    customCallback?: () => void;
+    once?: boolean;
   }
 }
