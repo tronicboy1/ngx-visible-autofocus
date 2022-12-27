@@ -1,6 +1,7 @@
 {
   "name": "ngx-visible-autofocus",
-  "version": "0.1.2",
+  "version": "0.2.0",
+  "license": "MIT",
   "schematics": "./schematics/collection.json",
   "repository": {
     "type": "git",
