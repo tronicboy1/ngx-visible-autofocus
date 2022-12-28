@@ -12,6 +12,9 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
+      "ngx-observable-directive": [
+        "dist/ngx-observable-directive"
+      ],
       "ngx-visible-autofocus": [
         "dist/ngx-visible-autofocus"
       ]

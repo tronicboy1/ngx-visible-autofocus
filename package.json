@@ -1,9 +1,13 @@
 {
-  "name": "auto-focus-workspace",
+  "name": "tronicboy-ngx",
   "version": "0.0.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tronicboy1/ngx-visible-autofocus"
+    "url": "https://github.com/tronicboy1/tronicboy1-ngx-libraries"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Austin John Mayer"
   },
   "scripts": {
     "ng": "ng",
@@ -31,6 +35,7 @@
     "@angular/cli": "~14.2.6",
     "@angular/compiler-cli": "^14.2.0",
     "@types/jasmine": "~4.0.0",
+    "copyfiles": "^2.4.1",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

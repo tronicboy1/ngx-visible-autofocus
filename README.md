@@ -1,51 +1,20 @@
-# About this Package
+# About this Repo
+
+This is a project for various small Angular packages.
+
+## Packages
+
+### ngx-visible-autofocus
+
+[README](projects/ngx-visible-autofocus/README.md)
 
 This is a module for Angular to autofocus an element when it is visible in the DOM.
 
-## How this Package Differs from normal autofocus
+### ngx-observable-directive
 
-This package uses an Intersection Observer to detect if an element is visible before focussing it.
+[README](projects/ngx-observable-directive/README.md)
 
-This directive will always autofocus an element when it comes into view, making is useful for hidden inputs that come into view after the page is loaded.
-
-The directive also ensures that only one IntersectionObserver instance is created for all components with this directive, preventing extra usage of resources.
-
-# How to use this package
-
-### Install the package with ng add.
-
-```
-ng add ngx-visible-autofocus
-```
-
-OR
-
-```
-npm i ngx-visible-autofocus
-ng add ngx-visible-autofocus
-```
-
-### Add the package to desired module imports
-
-Commonly add to `app.module.ts`
-
-```typescript
-import { NgxVisibleAutofocusModule } from 'ngx-visible-autofocus';
-
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [..., NgxVisibleAutofocusModule],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
-```
-
-### Use as directive on Component
-
-```html
-<input type="text" ngxAutofocus />
-```
+A directive that emits a visible event for handling side effects like page loading.
 
 ## Development server
 
