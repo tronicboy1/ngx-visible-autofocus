@@ -5,11 +5,10 @@ import { ObserverService, ObserverSettings } from './observer.service';
 @NgModule({
   declarations: [NgxObservableDirective],
   imports: [],
-  providers: [ObserverService],
   exports: [NgxObservableDirective],
 })
 export class NgxObservableDirectiveModule {
-  static fotRoot(
+  static forRoot(
     settings: IntersectionObserverInit = {}
   ): ModuleWithProviders<NgxObservableDirectiveModule> {
     return {

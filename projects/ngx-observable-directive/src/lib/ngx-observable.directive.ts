@@ -8,43 +8,16 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { ObserverService } from './observer.service';
 
 @Directive({
-  selector: '[ngxNgxObservable]',
+  selector: '[ngxObservable]',
 })
 export class NgxObservableDirective implements OnInit, OnDestroy {
-  static readonly attributeKey: unique symbol = Symbol(
-    'NgxObservableDirectiveKey'
-  );
-  static readonly callbackCache = new Map<symbol, () => void>();
-  /** only create when needed */
-  private static _observer?: IntersectionObserver;
-  static get observer() {
-    return (this._observer ||= this.setObserver());
-  }
-  static setObserver(settings?: IntersectionObserverInit) {
-    return (this._observer ||= new IntersectionObserver((entries) =>
-      entries
-        .filter((entry) => entry.isIntersecting)
-        .map((entry) => {
-          const { target } = entry;
-          if (!(target instanceof HTMLElement))
-            throw TypeError('Must observe HTMLElements');
-          return target;
-        })
-        .forEach((el) => {
-          const uniqueKey = el[NgxObservableDirective.attributeKey];
-          if (!uniqueKey) throw TypeError('Unique key not found.');
-          const callback = NgxObservableDirective.callbackCache.get(uniqueKey);
-          if (!callback) throw TypeError('Callback not found.');
-          callback();
-        })
-    ));
-  }
-
-  /** Settings can only be applied  */
-  @Input() settings?: IntersectionObserverInit;
+  @Input() once?: boolean;
+  @Input() customCallback?: () => void;
   @Output('in-view') inView = new EventEmitter<void>();
+  private observerService = inject(ObserverService);
   private el = inject(ElementRef);
   private get nativeEl() {
     if (!(this.el.nativeElement instanceof HTMLElement))
@@ -54,20 +27,28 @@ export class NgxObservableDirective implements OnInit, OnDestroy {
   private uniqueKey = Symbol('UniqueKey');
 
   ngOnInit(): void {
-    NgxObservableDirective.callbackCache.set(this.uniqueKey, () =>
-      this.inView.emit()
+    this.observerService.observe(
+      this.nativeEl,
+      this.uniqueKey,
+      this.customCallback ?? (() => this.inView.emit()),
+      this.once
     );
-    NgxObservableDirective.observer.observe(this.nativeEl);
   }
 
   ngOnDestroy(): void {
-    NgxObservableDirective.callbackCache.delete(this.uniqueKey);
-    NgxObservableDirective.observer.unobserve(this.nativeEl);
+    this.observerService.unobserve(this.nativeEl, this.uniqueKey);
+  }
+
+  static ngTemplateContextGuard(
+    directive: NgxObservableDirective,
+    context: HTMLElement
+  ): context is NgxObservableDirectiveContext {
+    return true;
   }
 }
 
-declare global {
-  interface HTMLElement {
-    [NgxObservableDirective.attributeKey]?: symbol;
-  }
+interface NgxObservableDirectiveContext extends HTMLElement {
+  customCallback?: () => void;
+  /** Defaults to false. */
+  once?: boolean;
 }
