@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   inject,
+  Input,
   OnDestroy,
   OnInit,
   Output,
@@ -19,6 +20,9 @@ export class NgxObservableDirective implements OnInit, OnDestroy {
   /** only create when needed */
   private static _observer?: IntersectionObserver;
   static get observer() {
+    return (this._observer ||= this.setObserver());
+  }
+  static setObserver(settings?: IntersectionObserverInit) {
     return (this._observer ||= new IntersectionObserver((entries) =>
       entries
         .filter((entry) => entry.isIntersecting)
@@ -38,6 +42,8 @@ export class NgxObservableDirective implements OnInit, OnDestroy {
     ));
   }
 
+  /** Settings can only be applied  */
+  @Input() settings?: IntersectionObserverInit;
   @Output('in-view') inView = new EventEmitter<void>();
   private el = inject(ElementRef);
   private get nativeEl() {
