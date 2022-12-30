@@ -74,7 +74,7 @@ After importing the module, simply add the directive to an element and provide a
 You can also only have this observable only fire once.
 
 ```html
-<div ngxObservable (intersection)="handleInView()" [once]=""></div>
+<div ngxObservable (intersection)="handleInView()" [once]="true"></div>
 ```
 
 #### Custom callback

@@ -1,6 +1,6 @@
 {
   "name": "ngx-observable-directive",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "schematics": "./schematics/collection.json",
   "ng-add": {
     "save": "dependencies"
@@ -11,6 +11,7 @@
   },
   "license": "MIT",
   "scripts": {
+    "build:watch": "ng build --watch -c development ngx-observable-directive",
     "build": "ng build ngx-observable-directive && tsc -p tsconfig.schematics.json && yarn postbuild",
     "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/ngx-observable-directive/"
   },
