@@ -66,7 +66,7 @@ export class AppModule {}
 After importing the module, simply add the directive to an element and provide a callback when it comes into view.
 
 ```html
-<div ngxObservable (in-view)="handleInView()"></div>
+<div ngxObservable (intersection)="handleInView()"></div>
 ```
 
 #### Only firing once
@@ -74,7 +74,7 @@ After importing the module, simply add the directive to an element and provide a
 You can also only have this observable only fire once.
 
 ```html
-<div ngxObservable (in-view)="handleInView()" [once]=""></div>
+<div ngxObservable (intersection)="handleInView()" [once]=""></div>
 ```
 
 #### Custom callback
