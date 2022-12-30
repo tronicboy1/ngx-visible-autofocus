@@ -16,7 +16,7 @@ import { ObserverService } from './observer.service';
 export class NgxObservableDirective implements OnInit, OnDestroy {
   @Input() once?: boolean;
   @Input() customCallback?: () => void;
-  @Output('in-view') inView = new EventEmitter<void>();
+  @Output() intersection = new EventEmitter<void>();
   private observerService = inject(ObserverService);
   private el = inject(ElementRef);
   private get nativeEl() {
@@ -30,7 +30,7 @@ export class NgxObservableDirective implements OnInit, OnDestroy {
     this.observerService.observe(
       this.nativeEl,
       this.uniqueKey,
-      this.customCallback ?? (() => this.inView.emit()),
+      this.customCallback ?? (() => this.intersection.emit()),
       this.once
     );
   }
