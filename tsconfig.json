@@ -12,6 +12,9 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
+      "ngx-firebase-user-platform": [
+        "dist/ngx-firebase-user-platform"
+      ],
       "ngx-observable-directive": [
         "dist/ngx-observable-directive"
       ],
