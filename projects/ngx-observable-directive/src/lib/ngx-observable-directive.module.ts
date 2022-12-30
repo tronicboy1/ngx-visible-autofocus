@@ -1,6 +1,11 @@
-import { ModuleWithProviders, NgModule } from '@angular/core';
+import {
+  ModuleWithProviders,
+  NgModule,
+  Optional,
+  SkipSelf,
+} from '@angular/core';
 import { NgxObservableDirective } from './ngx-observable.directive';
-import { ObserverService, ObserverSettings } from './observer.service';
+import { ObserverSettings } from './observer.service';
 
 @NgModule({
   declarations: [NgxObservableDirective],
@@ -8,6 +13,16 @@ import { ObserverService, ObserverSettings } from './observer.service';
   exports: [NgxObservableDirective],
 })
 export class NgxObservableDirectiveModule {
+  constructor(
+    @Optional() @SkipSelf() parentModule?: NgxObservableDirectiveModule
+  ) {
+    if (parentModule) {
+      throw new Error(
+        'NgxObservableDirectiveModule is already loaded. Import AppModule.'
+      );
+    }
+  }
+
   static forRoot(
     settings: IntersectionObserverInit = {}
   ): ModuleWithProviders<NgxObservableDirectiveModule> {
