@@ -24,11 +24,19 @@ export class NgxObservableDirectiveModule {
   }
 
   static forRoot(
-    settings: IntersectionObserverInit = {}
+    /** Options to provide to IntersectionObserver instance, ie the second parameter of new IntersectionObserver(..., { ...  }) */
+    settings: IntersectionObserverInit = {},
+    /** Optional callback to overwrite default IntersectionObserver callback */
+    intersectionObserverCallback?: IntersectionObserverCallback
   ): ModuleWithProviders<NgxObservableDirectiveModule> {
     return {
       ngModule: NgxObservableDirectiveModule,
-      providers: [{ provide: ObserverSettings, useValue: { settings } }],
+      providers: [
+        {
+          provide: ObserverSettings,
+          useValue: { settings, intersectionObserverCallback },
+        },
+      ],
     };
   }
 }

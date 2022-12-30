@@ -1,7 +1,9 @@
 import { Injectable, Optional } from '@angular/core';
 
 export class ObserverSettings {
-  settings: IntersectionObserverInit = {};
+  /** Optional callback to overwrite default IntersectionObserver callback */
+  intersectionObserverCallback?: (entries: IntersectionObserverEntry[]) => void;
+  settings?: IntersectionObserverInit;
 }
 
 @Injectable({
@@ -16,33 +18,36 @@ export class ObserverService {
   /** only create when needed */
   private _observer?: IntersectionObserver;
   private settings: IntersectionObserverInit = {};
+  private callback: IntersectionObserverCallback = (entries) =>
+    entries
+      .filter((entry) => entry.isIntersecting)
+      .map((entry) => {
+        const { target } = entry;
+        if (!(target instanceof HTMLElement))
+          throw TypeError('Must observe HTMLElements');
+        return target;
+      })
+      .forEach((el) => {
+        const uniqueKey = el[ObserverService.attributeKey];
+        if (!uniqueKey) throw TypeError('Unique key not found.');
+        const callback = this.callbackCache.get(uniqueKey);
+        if (!callback) throw TypeError('Callback not found.');
+        callback();
+        const isOnce = this.onceSettingsCache.get(uniqueKey);
+        if (isOnce) this.observer.unobserve(el);
+      });
 
   constructor(@Optional() config: ObserverSettings | null) {
-    if (config) {
-      this.settings = config.settings;
+    if (!config) return;
+    this.settings = config.settings ?? {};
+    if (config.intersectionObserverCallback) {
+      this.callback = config.intersectionObserverCallback;
     }
   }
 
   get observer() {
     return (this._observer ||= new IntersectionObserver(
-      (entries) =>
-        entries
-          .filter((entry) => entry.isIntersecting)
-          .map((entry) => {
-            const { target } = entry;
-            if (!(target instanceof HTMLElement))
-              throw TypeError('Must observe HTMLElements');
-            return target;
-          })
-          .forEach((el) => {
-            const uniqueKey = el[ObserverService.attributeKey];
-            if (!uniqueKey) throw TypeError('Unique key not found.');
-            const callback = this.callbackCache.get(uniqueKey);
-            if (!callback) throw TypeError('Callback not found.');
-            callback();
-            const isOnce = this.onceSettingsCache.get(uniqueKey);
-            if (isOnce) this.observer.unobserve(el);
-          }),
+      this.callback,
       this.settings
     ));
   }
