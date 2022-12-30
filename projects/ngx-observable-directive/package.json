@@ -1,6 +1,10 @@
 {
   "name": "ngx-observable-directive",
-  "version": "0.0.2",
+  "version": "0.0.5",
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "dependencies"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/tronicboy1/tronicboy1-ngx-libraries"
