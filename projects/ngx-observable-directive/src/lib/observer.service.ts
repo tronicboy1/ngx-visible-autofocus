@@ -21,7 +21,6 @@ export class ObserverService {
     if (config) {
       this.settings = config.settings;
     }
-    console.log('observer instace', config);
   }
 
   get observer() {
