@@ -24,7 +24,7 @@ export class NgxObservableDirectiveModule {
   }
 
   static forRoot(
-    /** Options to provide to IntersectionObserver instance, ie the second parameter of new IntersectionObserver(..., { ...  }) */
+    /** Options to provide to IntersectionObserver instance, ie the second parameter of new IntersectionObserver(..., { ... }) */
     settings: IntersectionObserverInit = {},
     /** Optional callback to overwrite default IntersectionObserver callback */
     intersectionObserverCallback?: IntersectionObserverCallback
