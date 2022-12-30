@@ -1,12 +1,14 @@
 {
   "name": "ngx-observable-directive",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "https://github.com/tronicboy1/tronicboy1-ngx-libraries"
   },
+  "license": "MIT",
   "scripts": {
-    "build": "ng build ngx-observable-directive"
+    "build": "ng build ngx-observable-directive && tsc -p tsconfig.schematics.json && yarn postbuild",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/ngx-observable-directive/"
   },
   "peerDependencies": {
     "@angular/common": "^14.2.0",
@@ -14,5 +16,8 @@
   },
   "dependencies": {
     "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1"
   }
 }
