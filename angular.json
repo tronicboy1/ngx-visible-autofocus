@@ -84,9 +84,7 @@
               "projects/test-env/src/favicon.ico",
               "projects/test-env/src/assets"
             ],
-            "styles": [
-              "projects/test-env/src/styles.css"
-            ],
+            "styles": ["projects/test-env/src/styles.css"],
             "scripts": []
           },
           "configurations": {
@@ -151,9 +149,7 @@
               "projects/test-env/src/favicon.ico",
               "projects/test-env/src/assets"
             ],
-            "styles": [
-              "projects/test-env/src/styles.css"
-            ],
+            "styles": ["projects/test-env/src/styles.css"],
             "scripts": []
           }
         }

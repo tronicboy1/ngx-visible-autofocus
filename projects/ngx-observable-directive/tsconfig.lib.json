@@ -6,10 +6,11 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "preserveSymlinks": true
   },
-  "exclude": [
-    "src/test.ts",
-    "**/*.spec.ts"
-  ]
+  "angularCompilerOptions": {
+    "compilationMode": "ivy"
+  },
+  "exclude": ["src/test.ts", "**/*.spec.ts"]
 }

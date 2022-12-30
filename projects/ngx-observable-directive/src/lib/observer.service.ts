@@ -17,7 +17,7 @@ export class ObserverService {
   private _observer?: IntersectionObserver;
   private settings: IntersectionObserverInit = {};
 
-  constructor(@Optional() config?: ObserverSettings) {
+  constructor(@Optional() config: ObserverSettings | null) {
     if (config) {
       this.settings = config.settings;
     }
