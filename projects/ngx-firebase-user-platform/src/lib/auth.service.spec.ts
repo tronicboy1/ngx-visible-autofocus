@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 
 import { AuthService } from './auth.service';
-import { UserModule } from './user.module';
+import { NgxFirebaseUserPlatformModule } from './ngx-firebase-user-platform.module';
 
 describe('AuthService', () => {
   let service: AuthService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [UserModule],
+      imports: [NgxFirebaseUserPlatformModule],
     });
     service = TestBed.inject(AuthService);
   });
