@@ -36,10 +36,9 @@ export type UserData = {
 export class UserService {
   static usersPath = 'users';
   private firebaseService = inject(FirebaseService);
-  private collection = collection(
-    this.firebaseService.firestore,
-    UserService.usersPath
-  );
+  private get collection() {
+    return collection(this.firebaseService.firestore, UserService.usersPath);
+  }
 
   constructor() {}
 

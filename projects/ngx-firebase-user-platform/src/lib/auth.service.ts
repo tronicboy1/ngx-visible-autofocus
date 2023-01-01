@@ -16,7 +16,7 @@ import {
   uploadBytes,
   getDownloadURL,
 } from 'firebase/storage';
-import { filter, map, Observable, shareReplay } from 'rxjs';
+import { catchError, filter, map, Observable, shareReplay, tap } from 'rxjs';
 import type { OperatorFunction } from 'rxjs';
 import type { User } from 'firebase/auth';
 import { UserService } from './user.service';
@@ -120,7 +120,15 @@ export class AuthService {
         }
       );
       return unsubscribe;
-    }).pipe(shareReplay(1)));
+    }).pipe(
+      tap({
+        error: () => {
+          /** Reset firebase auth in error */
+          this.authState$ = undefined;
+        },
+      }),
+      shareReplay(1)
+    ));
   }
 
   /**

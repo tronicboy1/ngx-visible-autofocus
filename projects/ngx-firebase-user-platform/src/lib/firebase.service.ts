@@ -5,7 +5,7 @@ import { Analytics, getAnalytics } from 'firebase/analytics';
 import { connectFirestoreEmulator, getFirestore } from 'firebase/firestore';
 import { connectStorageEmulator, getStorage } from 'firebase/storage';
 import { initializeAppCheck } from 'firebase/app-check';
-import { getAuth } from 'firebase/auth';
+import { connectAuthEmulator, getAuth } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -14,32 +14,34 @@ export class FirebaseService {
   constructor(
     @Inject(FirebaseSettings) private firebaseSettings: FirebaseSettings
   ) {
-    console.log(firebaseSettings);
-    const app = initializeApp(firebaseSettings.config);
-
     if (!firebaseSettings.production && firebaseSettings.emulators) {
-      const firestore = getFirestore(app);
       connectFirestoreEmulator(
-        firestore,
+        this.firestore,
         'localhost',
         firebaseSettings.emulators.firestore
       );
-      const storage = getStorage(app);
       connectStorageEmulator(
-        storage,
+        this.storage,
         'localhost',
         firebaseSettings.emulators.storage
       );
+      connectAuthEmulator(
+        this.auth,
+        `http://localhost:${firebaseSettings.emulators.auth}`
+      );
     }
 
-    if (firebaseSettings.production && firebaseSettings.appCheck) {
-      initializeAppCheck(app, firebaseSettings.appCheck);
-      getAnalytics(app);
+    if (!firebaseSettings.production) return;
+    if (firebaseSettings.appCheck) {
+      initializeAppCheck(this.app, firebaseSettings.appCheck);
+    }
+    if (firebaseSettings.analytics) {
+      getAnalytics(this.app);
     }
   }
 
   get app() {
-    return initializeApp(this.firebaseSettings.config);
+    return initializeApp(this.firebaseSettings.firebaseConfig);
   }
 
   get auth() {
