@@ -1,0 +1,42 @@
+div {
+  margin: auto;
+  height: 100%;
+  width: auto;
+  max-width: 100px;
+  position: relative;
+}
+svg {
+  animation: spin 4s linear infinite;
+  -webkit-animation: spin 4s linear infinite;
+  fill: rgb(0, 140, 255);
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+  min-height: none;
+}
+
+.blue {
+  fill: rgb(0, 140, 255);
+}
+
+.white {
+  fill: rgb(255, 255, 255);
+}
+
+.auto {
+  fill: var(--highlight-color);
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .auto {
+    fill: white;
+  }
+}

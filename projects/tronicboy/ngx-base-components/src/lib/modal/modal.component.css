@@ -1,0 +1,78 @@
+:host([show]) #backdrop {
+  display: flex;
+  animation: fadeIn forwards 0.3s;
+}
+#backdrop {
+  display: none;
+  position: fixed;
+  opacity: 0;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+#modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: var(--primary-color);
+  border: 1px var(--primary-color) solid;
+  border-radius: 10px;
+  padding: 1rem;
+  width: 95%;
+  max-width: 450px;
+  max-height: 80%;
+  margin: auto;
+  position: relative;
+}
+#modal-content {
+  height: 100%;
+  overflow-y: auto;
+}
+
+#title {
+  font-size: 1.5rem;
+}
+
+header {
+  border-bottom: 1px solid var(--secondary-color);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+header h1 {
+  word-wrap: break-word;
+}
+
+svg {
+  height: 34px;
+  width: auto;
+  cursor: pointer;
+  fill: var(--secondary-color);
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}

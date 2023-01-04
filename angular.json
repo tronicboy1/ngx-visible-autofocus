@@ -95,6 +95,72 @@
           }
         }
       }
+    },
+    "@tronicboy/ngx-base-components": {
+      "projectType": "library",
+      "root": "projects/tronicboy/ngx-base-components",
+      "sourceRoot": "projects/tronicboy/ngx-base-components/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/tronicboy/ngx-base-components/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/tronicboy/ngx-base-components/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/tronicboy/ngx-base-components/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/tronicboy/ngx-base-components/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "@tronicboy/ngx-geolocation": {
+      "projectType": "library",
+      "root": "projects/tronicboy/ngx-geolocation",
+      "sourceRoot": "projects/tronicboy/ngx-geolocation/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/tronicboy/ngx-geolocation/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/tronicboy/ngx-geolocation/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/tronicboy/ngx-geolocation/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/tronicboy/ngx-geolocation/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {

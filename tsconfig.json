@@ -12,6 +12,12 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
+      "@tronicboy/ngx-base-components": [
+        "dist/tronicboy/ngx-base-components"
+      ],
+      "@tronicboy/ngx-geolocation": [
+        "dist/tronicboy/ngx-geolocation"
+      ],
       "ngx-firebase-user-platform": [
         "dist/ngx-firebase-user-platform"
       ],

@@ -1,0 +1,29 @@
+{
+  "name": "@tronicboy/ngx-base-components",
+  "version": "0.0.1",
+  "schematics": "./schematics/collection.json",
+  "ng-add": {
+    "save": "dependencies"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tronicboy1/tronicboy1-ngx-libraries"
+  },
+  "license": "MIT",
+  "scripts": {
+    "build:watch": "ng build --watch -c development @tronicboy/ngx-base-components",
+    "build": "ng build @tronicboy/ngx-base-components && tsc -p tsconfig.schematics.json && yarn postbuild",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/tronicboy/ngx-base-components/"
+  },
+  "peerDependencies": {
+    "@angular/common": "^15.0.0",
+    "@angular/core": "^15.0.0"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "firebase": "^9.15.0"
+  }
+}
