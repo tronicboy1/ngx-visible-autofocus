@@ -13,8 +13,8 @@
   </ng-template>
 </div>
 
-<base-modal [show]="this.showMap | async" modal-title="位置情報確認" (modal-closed)="this.toggleMap(false)">
-  <loading-spinner *ngIf="this.loading | async"></loading-spinner>
+<base-modal [show]="(this.showMap | async) ?? false" modal-title="位置情報確認" (modal-closed)="this.toggleMap(false)">
+  <base-spinner *ngIf="this.loading | async"></base-spinner>
   <div class="map" *ngIf="this.showMap | async">
     <iframe *ngIf="this.googleMapsURL; else setLocation" height="350" style="border: 0" loading="lazy" allowfullscreen
       referrerpolicy="no-referrer-when-downgrade" [src]="this.googleMapsURL">

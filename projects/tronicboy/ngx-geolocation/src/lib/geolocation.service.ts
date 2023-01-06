@@ -1,7 +1,14 @@
 import { Injectable, Optional } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
-import { GeolocationSettings } from './ngx-geolocation.module';
+
+export class GeolocationSettings {
+  /**
+   * Google Maps API key is required to display map in LocationComponent.
+   * https://developers.google.com/maps/documentation/javascript/get-api-key
+   */
+  googleMapsAPIKey = '';
+}
 
 export type LocationArray = [
   /** Latitude */

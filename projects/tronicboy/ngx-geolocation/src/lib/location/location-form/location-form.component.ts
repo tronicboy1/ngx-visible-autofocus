@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Location } from '../location.component';
+import { LocationArray } from '../../geolocation.service';
 
 @Component({
   selector: 'app-location-form',
@@ -21,7 +21,7 @@ export class LocationFormComponent implements OnInit {
     ]),
     altitude: new FormControl<number | null>(null),
   });
-  @Output() submitted = new EventEmitter<Location>();
+  @Output() submitted = new EventEmitter<LocationArray>();
 
   constructor() {}
 

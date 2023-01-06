@@ -1,5 +1,5 @@
 import {
-  Component,
+  Directive,
   EventEmitter,
   inject,
   OnDestroy,
@@ -10,7 +10,7 @@ import type { User } from 'firebase/auth';
 import { AuthService } from 'ngx-firebase-user-platform';
 import type { Subscription } from 'rxjs';
 
-@Component({ template: '' })
+@Directive()
 export class InheritableAccountDetailsComponent implements OnInit, OnDestroy {
   protected authService = inject(AuthService);
   public loading = false;

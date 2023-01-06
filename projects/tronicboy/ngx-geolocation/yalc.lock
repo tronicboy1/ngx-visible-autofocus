@@ -1,0 +1,8 @@
+{
+  "version": "v1",
+  "packages": {
+    "@tronicboy/ngx-base-components": {
+      "signature": "b6069fab2e9156f17ae882dbbe1e7a3f"
+    }
+  }
+}
