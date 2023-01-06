@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { ModalComponent } from './modal/modal.component';
 import { AccountCircleComponent } from './nav-bar/account-circle/account-circle.component';
 import { AccountDetailsFormComponent } from './nav-bar/account-circle/account-details-form/account-details-form.component';
@@ -17,7 +19,7 @@ import { SpinnerComponent } from './spinner/spinner.component';
     AccountDetailsFormComponent,
     SpinnerComponent,
   ],
-  imports: [],
+  imports: [BrowserModule, RouterModule],
   exports: [ModalComponent, NavBarComponent, SpinnerComponent],
 })
 export class NgxBaseComponentsModule {}

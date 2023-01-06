@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   Output,
 } from '@angular/core';
@@ -14,8 +15,8 @@ import {
 })
 export class ModalComponent {
   @Input('modal-title') modalTitle?: string;
-  @Input() show: boolean | undefined | null = true;
-  @Output('close-modal') closeModal = new EventEmitter<void>();
+  @HostBinding('class.show') @Input() show: boolean | undefined | null = true;
+  @Output('modal-closed') closeModal = new EventEmitter<void>();
 
   stopPropagation: EventListener = (event) => event.stopPropagation();
 }

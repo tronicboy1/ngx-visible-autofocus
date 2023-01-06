@@ -1,4 +1,4 @@
-:host([show]) #backdrop {
+:host.show #backdrop {
   display: flex;
   animation: fadeIn forwards 0.3s;
 }
