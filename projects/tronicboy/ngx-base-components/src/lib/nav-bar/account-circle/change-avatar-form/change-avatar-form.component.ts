@@ -6,7 +6,7 @@ import { InheritableAccountDetailsComponent } from '../inheritable-account-detai
   selector: 'app-change-avatar-form',
   templateUrl: './change-avatar-form.component.html',
   styleUrls: [
-    '../../../../../styles/basic-form.css',
+    './change-avatar-form.component.css',
     '../../../../../styles/basic-form.css',
   ],
 })

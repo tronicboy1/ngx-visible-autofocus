@@ -672,6 +672,13 @@ mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
+ngx-firebase-user-platform@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/ngx-firebase-user-platform/-/ngx-firebase-user-platform-0.0.6.tgz#ee9c26fb4cb8beae9be5d0e15772e5cb990cd7f7"
+  integrity sha512-bLXZLr3A98BpbjPQy3h8c+DeZyJG/PxFNj4vwqDjI67R/PoxAVFPbp3tPScj4eWx3Jbx4jFkWxuQkJrxmFcfkw==
+  dependencies:
+    tslib "^2.3.0"
+
 node-fetch@2.6.7:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"

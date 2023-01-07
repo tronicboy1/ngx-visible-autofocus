@@ -1,8 +1,11 @@
-:host.show #backdrop {
-  display: flex;
+.show {
+  display: flex !important;
   animation: fadeIn forwards 0.3s;
 }
-#backdrop {
+.fadeout {
+  animation: fadeOut forwards 0.3s;
+}
+.backdrop {
   display: none;
   position: fixed;
   opacity: 0;
@@ -16,7 +19,7 @@
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.4);
 }
-#modal-container {
+.modal-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -30,12 +33,12 @@
   margin: auto;
   position: relative;
 }
-#modal-content {
+.modal-content {
   height: 100%;
   overflow-y: auto;
 }
 
-#title {
+.title {
   font-size: 1.5rem;
 }
 

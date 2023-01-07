@@ -1,11 +1,26 @@
 # NgxBaseComponents
 
+A collection of components I use in  projects.
+
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.0.
+
+## How to Use
+
+### <base-modal>
+
+A simple modal with a title and close button.
+
+```html
+<base-modal [show]="this.showEditModal$ | async" (modal-closed)="this.toggleShowEditModal(false)"
+  [modal-title]="(this.areaEditTitle$ | async) ?? ''">
+  <farm-edit-area-form (submitted)="this.toggleShowEditModal(false)"></farm-edit-area-form>
+</base-modal>
+```
 
 ## Code scaffolding
 
 Run `ng generate component component-name --project ngx-base-components` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-base-components`.
-> Note: Don't forget to add `--project ngx-base-components` or else it will be added to the default project in your `angular.json` file. 
+> Note: Don't forget to add `--project ngx-base-components` or else it will be added to the default project in your `angular.json` file.
 
 ## Build
 
