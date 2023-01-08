@@ -1,6 +1,6 @@
 {
   "name": "@tronicboy/ngx-geolocation",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "schematics": "./schematics/collection.json",
   "ng-add": {
     "save": "dependencies"

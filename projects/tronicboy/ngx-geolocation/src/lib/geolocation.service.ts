@@ -26,7 +26,7 @@ export class GeolocationService {
   private googleMapsAPIKey?: string;
   constructor(
     private sanitizer: DomSanitizer,
-    @Optional() private config: GeolocationSettings | null
+    @Optional() config: GeolocationSettings | null
   ) {
     if (config) {
       this.googleMapsAPIKey = config.googleMapsAPIKey;

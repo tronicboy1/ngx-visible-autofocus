@@ -7,7 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { BehaviorSubject, catchError, finalize } from 'rxjs';
+import { BehaviorSubject, catchError, finalize, of } from 'rxjs';
 import { GeolocationService, LocationArray } from '../geolocation.service';
 
 @Component({
@@ -38,7 +38,7 @@ export class LocationComponent implements OnInit {
       .pipe(
         catchError((err, caught) => {
           this.locationError.next(true);
-          return caught;
+          throw err;
         }),
         finalize(() => {
           this.loading.next(false);

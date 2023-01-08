@@ -22,9 +22,12 @@
     <ng-template #setLocation>
       <p>場所は設定されていません。</p>
     </ng-template>
-    <p *ngIf="this.locationError | async" class="error">位置情報取得に失敗しました。ブラウザの設定をご確認ください。</p>
-    <app-location-form *ngIf="this.locationError | async" (submitted)="this.handleLocationFormSubmit($event)">
-    </app-location-form>
+    <ng-container *ngIf="this.locationError | async">
+      <p class="warning">位置情報取得に失敗しました。ブラウザの設定をご確認ください。</p>
+      <p>もしくは、手動で位置情報を登録することもできます。</p>
+      <app-location-form (submitted)="this.handleLocationFormSubmit($event)">
+      </app-location-form>
+    </ng-container>
     <button (click)="this.handleLocationClick()">場所を設定する</button>
   </div>
 </base-modal>
