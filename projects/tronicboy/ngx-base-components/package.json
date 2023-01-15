@@ -26,6 +26,7 @@
     "tslib": "^2.3.0"
   },
   "devDependencies": {
+    "@angular/localize": "15.0.4",
     "copyfiles": "^2.4.1",
     "firebase": "^9.15.0",
     "ngx-firebase-user-platform": "^0.0.6"

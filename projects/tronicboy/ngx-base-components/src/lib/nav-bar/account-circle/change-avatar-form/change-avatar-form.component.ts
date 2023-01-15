@@ -16,6 +16,7 @@ export class ChangeAvatarFormComponent
 {
   filename?: string;
   photoPreview?: string;
+  readonly noFileNameText = $localize`Select Photo`
 
   @ViewChild('photoCanvas')
   private canvas!: ElementRef<HTMLCanvasElement>;

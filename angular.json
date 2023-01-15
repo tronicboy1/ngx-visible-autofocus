@@ -101,6 +101,9 @@
       "root": "projects/tronicboy/ngx-base-components",
       "sourceRoot": "projects/tronicboy/ngx-base-components/src",
       "prefix": "lib",
+      "i18n": {
+        "sourceLocale": "en-US"
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",

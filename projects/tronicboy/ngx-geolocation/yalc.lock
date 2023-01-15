@@ -2,7 +2,7 @@
   "version": "v1",
   "packages": {
     "@tronicboy/ngx-base-components": {
-      "signature": "1f7bf45eaa80512fa364bd8885ffefad"
+      "signature": "21bf09736328d5c505459ed52c287c67"
     }
   }
 }
