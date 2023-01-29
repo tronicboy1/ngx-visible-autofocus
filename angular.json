@@ -137,6 +137,9 @@
       "root": "projects/tronicboy/ngx-geolocation",
       "sourceRoot": "projects/tronicboy/ngx-geolocation/src",
       "prefix": "lib",
+      "i18n": {
+        "sourceLocale": "ja"
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",

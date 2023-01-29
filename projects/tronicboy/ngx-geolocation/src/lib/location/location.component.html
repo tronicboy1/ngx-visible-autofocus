@@ -1,5 +1,5 @@
 <div [title]="this.googleMapsURL ? '位置情報を確認したり、再設定する画面' : '位置情報が未設定'" class="card round" (click)="this.toggleMap()"
-  title="位置情報を確認したり、更新したりする" style="position: relative" [class.warning-icon]="!this.googleMapsURL">
+  i18n-title title="位置情報を確認したり、更新したりする" style="position: relative" [class.warning-icon]="!this.googleMapsURL">
   <svg *ngIf="this.googleMapsURL; else locationNotSet" xmlns="http://www.w3.org/2000/svg" height="48" width="48"
     viewBox="0,0,48,48">
     <path
@@ -20,11 +20,11 @@
       referrerpolicy="no-referrer-when-downgrade" [src]="this.googleMapsURL">
     </iframe>
     <ng-template #setLocation>
-      <p>場所は設定されていません。</p>
+      <p i18n>場所は設定されていません。</p>
     </ng-template>
     <ng-container *ngIf="this.locationError | async">
-      <p class="warning">位置情報取得に失敗しました。ブラウザの設定をご確認ください。</p>
-      <p>もしくは、手動で位置情報を登録することもできます。</p>
+      <p class="warning" i18n>位置情報取得に失敗しました。ブラウザの設定をご確認ください。</p>
+      <p i18n>もしくは、手動で位置情報を登録することもできます。</p>
       <app-location-form (submitted)="this.handleLocationFormSubmit($event)">
       </app-location-form>
     </ng-container>

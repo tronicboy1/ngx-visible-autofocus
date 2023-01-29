@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class SpinnerComponent {
   @Input() color: 'blue' | 'white' | 'auto' = 'auto';
+  @Input() fullScreen = false;
 }
