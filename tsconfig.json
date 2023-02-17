@@ -15,6 +15,9 @@
       "@tronicboy/ngx-base-components": [
         "dist/tronicboy/ngx-base-components"
       ],
+      "@tronicboy/ngx-firebase-user-navbar": [
+        "dist/tronicboy/ngx-firebase-user-navbar"
+      ],
       "@tronicboy/ngx-geolocation": [
         "dist/tronicboy/ngx-geolocation"
       ],

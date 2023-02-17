@@ -167,6 +167,39 @@
           }
         }
       }
+    },
+    "@tronicboy/ngx-firebase-user-navbar": {
+      "projectType": "library",
+      "root": "projects/tronicboy/ngx-firebase-user-navbar",
+      "sourceRoot": "projects/tronicboy/ngx-firebase-user-navbar/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/tronicboy/ngx-firebase-user-navbar/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/tronicboy/ngx-firebase-user-navbar/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/tronicboy/ngx-firebase-user-navbar/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/tronicboy/ngx-firebase-user-navbar/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
     }
   },
   "cli": {
