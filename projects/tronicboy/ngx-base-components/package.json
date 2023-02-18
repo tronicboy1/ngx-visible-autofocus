@@ -18,17 +18,13 @@
   },
   "peerDependencies": {
     "@angular/common": "^15.0.0",
-    "@angular/core": "^15.0.0",
-    "firebase": "^9.15.0",
-    "ngx-firebase-user-platform": "^0.0.6"
+    "@angular/core": "^15.0.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
   "devDependencies": {
     "@angular/localize": "15.0.4",
-    "copyfiles": "^2.4.1",
-    "firebase": "^9.15.0",
-    "ngx-firebase-user-platform": "^0.0.6"
+    "copyfiles": "^2.4.1"
   }
 }

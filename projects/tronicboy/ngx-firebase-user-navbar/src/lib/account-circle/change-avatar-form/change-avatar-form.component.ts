@@ -7,7 +7,7 @@ import { InheritableAccountDetailsComponent } from '../inheritable-account-detai
   templateUrl: './change-avatar-form.component.html',
   styleUrls: [
     './change-avatar-form.component.css',
-    '../../../../../styles/basic-form.css',
+    '../../../../../../../projects/tronicboy/ngx-base-components/styles/basic-form.css',
   ],
 })
 export class ChangeAvatarFormComponent

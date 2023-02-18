@@ -7,7 +7,7 @@ import { InheritableAccountDetailsComponent } from '../inheritable-account-detai
   templateUrl: './account-details-form.component.html',
   styleUrls: [
     './account-details-form.component.css',
-    '../../../../../styles/basic-form.css',
+    '../../../../../../../projects/tronicboy/ngx-base-components/styles/basic-form.css',
   ],
 })
 export class AccountDetailsFormComponent

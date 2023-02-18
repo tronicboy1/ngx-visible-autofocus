@@ -3,10 +3,22 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^15.1.0",
-    "@angular/core": "^15.1.0"
+    "@angular/core": "^15.1.0",
+    "firebase": "^9.17.1",
+    "ngx-firebase-user-platform": "^0.0.6"
+  },
+  "scripts": {
+    "build:watch": "ng build --watch -c development @tronicboy/ngx-firebase-user-navbar",
+    "build": "ng build @tronicboy/ngx-firebase-user-navbar && tsc -p tsconfig.schematics.json",
+    "postbuild": "copyfiles schematics/*/schema.json schematics/*/files/** schematics/collection.json ../../dist/tronicboy/ngx-firebase-user-navbar/"
   },
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "firebase": "^9.17.1",
+    "ngx-firebase-user-platform": "^0.0.6"
+  }
 }
