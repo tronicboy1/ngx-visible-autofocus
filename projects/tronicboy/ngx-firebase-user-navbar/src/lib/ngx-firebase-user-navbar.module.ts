@@ -6,6 +6,7 @@ import { ChangeAvatarFormComponent } from './account-circle/change-avatar-form/c
 import { ChangeEmailFormComponent } from './account-circle/change-email-form/change-email-form.component';
 import { NgxBaseComponentsModule } from '@tronicboy/ngx-base-components';
 import { AccountDetailsFormComponent } from './account-circle/account-details-form/account-details-form.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,6 @@ import { AccountDetailsFormComponent } from './account-circle/account-details-fo
     AccountDetailsFormComponent,
   ],
   exports: [NavBarComponent],
-  imports: [CommonModule, NgxBaseComponentsModule],
+  imports: [CommonModule, NgxBaseComponentsModule, RouterModule],
 })
 export class NgxFirebaseUserNavbarModule {}

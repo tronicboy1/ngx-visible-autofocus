@@ -1,4 +1,4 @@
-<div (mousedown)="this.closeModal.emit()" class="backdrop" [class.show]="this.show$ | async"
+<div appCloseOnEsc (mousedown)="this.closeModal.emit()" class="backdrop" [class.show]="this.show$ | async"
   [class.fadeout]="this.fadeOut$ | async">
   <div (mousedown)="this.stopPropagation($event)" class="modal-container">
     <header>
