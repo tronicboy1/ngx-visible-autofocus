@@ -1,10 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import type { FirebaseOptions } from 'firebase/app';
 import type { AppCheckOptions } from 'firebase/app-check';
 
 @NgModule({
   declarations: [],
-  imports: [],
+  imports: [CommonModule],
   exports: [],
 })
 export class NgxFirebaseUserPlatformModule {

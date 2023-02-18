@@ -13,15 +13,8 @@ import { ObserverSettings } from './observer.service';
   exports: [NgxObservableDirective],
 })
 export class NgxObservableDirectiveModule {
-  constructor(
-    @Optional() @SkipSelf() parentModule?: NgxObservableDirectiveModule
-  ) {
-    if (parentModule) {
-      throw new Error(
-        'NgxObservableDirectiveModule is already loaded. Import AppModule.'
-      );
-    }
-  }
+  static settingsCache?: IntersectionObserverInit;
+  static callbackCache?: IntersectionObserverCallback;
 
   static forRoot(
     /** Options to provide to IntersectionObserver instance, ie the second parameter of new IntersectionObserver(..., { ... }) */
@@ -29,12 +22,30 @@ export class NgxObservableDirectiveModule {
     /** Optional callback to overwrite default IntersectionObserver callback */
     intersectionObserverCallback?: IntersectionObserverCallback
   ): ModuleWithProviders<NgxObservableDirectiveModule> {
+    this.settingsCache = settings;
+    this.callbackCache = intersectionObserverCallback;
     return {
       ngModule: NgxObservableDirectiveModule,
       providers: [
         {
           provide: ObserverSettings,
           useValue: { settings, intersectionObserverCallback },
+        },
+      ],
+    };
+  }
+
+  static forChild(): ModuleWithProviders<NgxObservableDirectiveModule> {
+    if (!this.settingsCache) throw Error('Not imported in root.');
+    return {
+      ngModule: NgxObservableDirectiveModule,
+      providers: [
+        {
+          provide: ObserverSettings,
+          useValue: {
+            settings: this.settingsCache,
+            intersectionObserverCallback: this.callbackCache,
+          },
         },
       ],
     };
