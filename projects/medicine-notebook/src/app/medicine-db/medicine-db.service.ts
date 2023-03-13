@@ -1,26 +1,33 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
-import { DbWorker } from './db-worker';
+import { Medicine } from './medicine-db.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MedicineDbService {
   worker?: Worker;
-  message$: Observable<MessageEvent> = new Observable();
+  message$: Observable<MessageEvent<string[]>> = new Observable();
 
   constructor() {
     if (typeof Worker !== 'undefined') {
-      this.worker = new Worker(
-        new URL('./medicine-db.worker', import.meta.url)
-      );
+      this.worker = new Worker(new URL('./medicine-db.worker', import.meta.url));
       this.message$ = fromEvent<MessageEvent>(this.worker, 'message');
-      this.worker.postMessage('hello');
     }
-    this.message$.subscribe((event) => {
-      console.log('message from worker', event.data);
-      const worker = new DbWorker();
+  }
 
+  search$(text: string) {
+    return new Observable<Medicine[]>((observer) => {
+      if (!this.worker) throw ReferenceError();
+      this.worker.addEventListener(
+        'message',
+        ({ data }) => {
+          observer.next(data);
+          observer.complete();
+        },
+        { once: true },
+      );
+      this.worker.postMessage(text);
     });
   }
 }

@@ -1,14 +1,6 @@
 import { filter, first, map, mergeMap, Observable, of, ReplaySubject, switchMap, take, tap, toArray } from 'rxjs';
 import { DbWorkerAbstract } from './db-worker.abstract';
-
-export type Medicines = Map<string, Medicine>;
-
-interface Medicine {
-  name: string;
-  code: string;
-  manufacturer: string;
-  generic: boolean;
-}
+import { Medicine, Medicines } from './medicine-db.model';
 
 export class DbWorker extends DbWorkerAbstract<Medicine> {
   static override dbName = 'MedicineDatabase';

@@ -1,4 +1,6 @@
 import { Component, inject } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { switchMap } from 'rxjs';
 import { MedicineDbService } from './medicine-db/medicine-db.service';
 
 @Component({
@@ -9,4 +11,8 @@ import { MedicineDbService } from './medicine-db/medicine-db.service';
 export class AppComponent {
   title = 'medicine-notebook';
   private medicineDbService = inject(MedicineDbService);
+
+  searchInput = new FormControl<string>('', { nonNullable: true });
+
+  searchResult$ = this.searchInput.valueChanges.pipe(switchMap((value) => this.medicineDbService.search$(value)));
 }
