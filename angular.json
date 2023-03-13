@@ -200,6 +200,97 @@
           }
         }
       }
+    },
+    "medicine-notebook": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/medicine-notebook",
+      "sourceRoot": "projects/medicine-notebook/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/medicine-notebook",
+            "index": "projects/medicine-notebook/src/index.html",
+            "main": "projects/medicine-notebook/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/medicine-notebook/tsconfig.app.json",
+            "assets": [
+              "projects/medicine-notebook/src/favicon.ico",
+              "projects/medicine-notebook/src/assets"
+            ],
+            "styles": [
+              "projects/medicine-notebook/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "medicine-notebook:build:production"
+            },
+            "development": {
+              "browserTarget": "medicine-notebook:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "medicine-notebook:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/medicine-notebook/tsconfig.spec.json",
+            "assets": [
+              "projects/medicine-notebook/src/favicon.ico",
+              "projects/medicine-notebook/src/assets"
+            ],
+            "styles": [
+              "projects/medicine-notebook/src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
     }
   },
   "cli": {
