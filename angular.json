@@ -211,7 +211,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/medicine-notebook",
+            "outputPath": "projects/medicine-notebook/dist",
             "index": "projects/medicine-notebook/src/index.html",
             "main": "projects/medicine-notebook/src/main.ts",
             "polyfills": [

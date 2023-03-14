@@ -1,0 +1,11 @@
+{
+  "name": "medicine-notebook",
+  "version": "0.0.1",
+  "description": "A notebook to record medicines you are taking",
+  "main": "index.js",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "emulate": "firebase emulators:start"
+  }
+}
