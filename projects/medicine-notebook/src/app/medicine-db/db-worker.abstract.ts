@@ -2,8 +2,8 @@ import { Observable } from 'rxjs';
 
 export abstract class DbWorkerAbstract<T extends Object> {
   static dbName: string;
-  static storeName: string;
-  static version: number;
+  protected abstract storeName: string;
+  protected abstract version: number;
   abstract readonly ready$: Observable<boolean>;
 
   abstract createDb$(csvRaw?: string): Observable<IDBDatabase>;

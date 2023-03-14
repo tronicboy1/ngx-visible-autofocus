@@ -1,26 +1,25 @@
 import { filter, first, map, mergeMap, Observable, of, ReplaySubject, switchMap, take, tap, toArray } from 'rxjs';
 import { DbWorkerAbstract } from './db-worker.abstract';
-import { Medicine, Medicines } from './medicine-db.model';
+import { EntryFactory } from './entry-factory';
 
-export class DbWorker extends DbWorkerAbstract<Medicine> {
+export abstract class DbWorker<T extends Record<string, any>> extends DbWorkerAbstract<T> {
   static override dbName = 'MedicineDatabase';
-  static override storeName = 'medicines';
-  static override version = 1;
 
   private readySubject = new ReplaySubject<boolean>();
   readonly ready$ = this.readySubject.asObservable();
+  protected abstract factory: EntryFactory<T>;
 
   createDb$(csvRaw: string) {
-    const medicines = this.parseRawCsv(csvRaw);
+    const entries = this.factory.parse(csvRaw);
     return this.getDb$().pipe(
-      mergeMap(({ db, needsUpgrade }) => (needsUpgrade ? this.upgradeDb$(db, medicines) : of(db))),
+      mergeMap(({ db, needsUpgrade }) => (needsUpgrade ? this.upgradeDb$(db, entries) : of(db))),
       tap(() => {
         this.readySubject.next(true);
       }),
     );
   }
 
-  get$(key: string): Observable<Medicine> {
+  get$(key: string): Observable<T> {
     return this.ready$.pipe(
       filter(Boolean),
       first(),
@@ -28,10 +27,10 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
       map(({ db }) => db),
       mergeMap(
         (db) =>
-          new Observable<Medicine>((observer) => {
+          new Observable<T>((observer) => {
             const controller = new AbortController();
             let finished = false;
-            const transaction = db.transaction([DbWorker.storeName], 'readonly');
+            const transaction = db.transaction([this.storeName], 'readonly');
             transaction.addEventListener(
               'complete',
               () => {
@@ -44,7 +43,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
               signal: controller.signal,
             });
 
-            const store = transaction.objectStore(DbWorker.storeName);
+            const store = transaction.objectStore(this.storeName);
             const request = store.get(key);
             request.addEventListener('success', () => observer.next(request.result), {
               signal: controller.signal,
@@ -59,7 +58,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
     );
   }
 
-  search$(field: keyof Medicine, searchValue: string | boolean): Observable<Medicine[]> {
+  search$(field: keyof T, searchValue: T[keyof T]): Observable<T[]> {
     return this.ready$.pipe(
       filter(Boolean),
       first(),
@@ -67,10 +66,10 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
       map(({ db }) => db),
       switchMap(
         (db) =>
-          new Observable<Medicine>((observer) => {
+          new Observable<T>((observer) => {
             const controller = new AbortController();
             let finished = false;
-            const transaction = db.transaction([DbWorker.storeName], 'readonly');
+            const transaction = db.transaction([this.storeName], 'readonly');
             transaction.addEventListener(
               'complete',
               () => {
@@ -83,15 +82,15 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
             });
 
             const regex = new RegExp(`^${searchValue}`);
-            const store = transaction.objectStore(DbWorker.storeName);
+            const store = transaction.objectStore(this.storeName);
             const cursorRequest = store.openCursor();
             cursorRequest.addEventListener(
               'success',
               (event) => {
                 const cursor = (event.target as IDBRequest).result as IDBCursorWithValue;
                 if (!cursor) return observer.complete();
-                const value = cursor.value as Medicine;
-                const isPartialMatch = value[field].toString().match(regex);
+                const value = cursor.value as T;
+                const isPartialMatch = String(value[field]).match(regex);
                 if (isPartialMatch) {
                   observer.next(value);
                 }
@@ -113,7 +112,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
     );
   }
 
-  add$(object: Medicine): Observable<void> {
+  add$(object: T): Observable<void> {
     return this.ready$.pipe(
       filter(Boolean),
       first(),
@@ -124,7 +123,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
           new Observable<void>((observer) => {
             const controller = new AbortController();
             let finished = false;
-            const transaction = db.transaction([DbWorker.storeName], 'readwrite');
+            const transaction = db.transaction([this.storeName], 'readwrite');
             transaction.addEventListener(
               'complete',
               () => {
@@ -137,8 +136,8 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
               signal: controller.signal,
             });
 
-            const store = transaction.objectStore(DbWorker.storeName);
-            const request = store.add(object);
+            const store = transaction.objectStore(this.storeName);
+            const request = store.add(this.factory.create(object));
             request.addEventListener('success', () => observer.next(undefined), {
               signal: controller.signal,
             });
@@ -162,7 +161,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
           new Observable<void>((observer) => {
             const controller = new AbortController();
             let finished = false;
-            const transaction = db.transaction([DbWorker.storeName], 'readwrite');
+            const transaction = db.transaction([this.storeName], 'readwrite');
             transaction.addEventListener(
               'complete',
               () => {
@@ -176,7 +175,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
               signal: controller.signal,
             });
 
-            const store = transaction.objectStore(DbWorker.storeName);
+            const store = transaction.objectStore(this.storeName);
             store.delete(key);
 
             return () => {
@@ -188,22 +187,6 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
     );
   }
 
-  protected parseRawCsv(csvRaw: string): Medicines {
-    const endOfFirstLine = csvRaw.indexOf('\n');
-    const body = csvRaw.slice(endOfFirstLine + 1);
-    const rows = body.split('\n');
-    const rowsWithColumns = rows.map((row) => row.split(','));
-    return rowsWithColumns.reduce((acc, current) => {
-      if (!current[1]) return acc;
-      return acc.set(current[1], {
-        name: current[7],
-        code: current[1],
-        manufacturer: current[8],
-        generic: current[9] === '後発品',
-      });
-    }, new Map() as Medicines);
-  }
-
   private db?: IDBDatabase;
   private getDb$() {
     return new Observable<{ db: IDBDatabase; needsUpgrade: boolean }>((observer) => {
@@ -213,7 +196,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
         return;
       }
       const controller = new AbortController();
-      const request = indexedDB.open(DbWorker.dbName, DbWorker.version);
+      const request = indexedDB.open(DbWorker.dbName, this.version);
       request.addEventListener(
         'success',
         (event) => {
@@ -239,12 +222,12 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
     }).pipe(tap(({ db }) => (this.db = db)));
   }
 
-  private upgradeDb$(db: IDBDatabase, medicines: Medicines) {
+  private upgradeDb$(db: IDBDatabase, medicines: Map<string, T>) {
     return new Observable<IDBDatabase>((observer) => {
       const controller = new AbortController();
       let transactionCompleted = false;
-      if (DbWorker.version > 1) db.deleteObjectStore(DbWorker.storeName);
-      const objectStore = db.createObjectStore(DbWorker.storeName, {
+      if (this.version > 1) db.deleteObjectStore(this.storeName);
+      const objectStore = db.createObjectStore(this.storeName, {
         keyPath: 'code',
       });
       objectStore.transaction.addEventListener(
@@ -270,7 +253,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
         (db) =>
           new Observable<IDBDatabase>((observer) => {
             const controller = new AbortController();
-            const transaction = db.transaction(DbWorker.storeName, 'readwrite');
+            const transaction = db.transaction(this.storeName, 'readwrite');
             let transactionCompleted = false;
             transaction.addEventListener(
               'complete',
@@ -284,7 +267,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
             transaction.addEventListener('error', () => observer.error(), {
               signal: controller.signal,
             });
-            const medicinesStore = transaction.objectStore(DbWorker.storeName);
+            const medicinesStore = transaction.objectStore(this.storeName);
             medicines.forEach((medicine) => medicinesStore.add(medicine));
 
             return () => {

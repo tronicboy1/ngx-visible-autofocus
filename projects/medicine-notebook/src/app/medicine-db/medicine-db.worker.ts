@@ -1,9 +1,9 @@
 /// <reference lib="webworker" />
 
 import { from, fromEvent, mergeMap, switchMap } from 'rxjs';
-import { DbWorker } from './db-worker';
+import { MedicineDbWorker } from './medicine-db-worker';
 
-const worker = new DbWorker();
+const worker = new MedicineDbWorker();
 
 const message$ = fromEvent<MessageEvent<string>>(self, 'message');
 
