@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { FirebaseService } from 'projects/ngx-firebase-user-platform/src/lib/firebase.service';
 import { switchMap } from 'rxjs';
 import { MedicineDbService } from './medicine-db/medicine-db.service';
 
@@ -10,6 +11,7 @@ import { MedicineDbService } from './medicine-db/medicine-db.service';
 })
 export class AppComponent {
   private medicineDbService = inject(MedicineDbService);
+  private firebase = inject(FirebaseService)
 
   searchInput = new FormControl<string>('', { nonNullable: true });
 
