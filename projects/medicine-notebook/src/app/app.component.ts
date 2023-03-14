@@ -9,10 +9,13 @@ import { MedicineDbService } from './medicine-db/medicine-db.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  title = 'medicine-notebook';
   private medicineDbService = inject(MedicineDbService);
 
   searchInput = new FormControl<string>('', { nonNullable: true });
 
   searchResult$ = this.searchInput.valueChanges.pipe(switchMap((value) => this.medicineDbService.search$(value)));
+
+  handleClick(value: string) {
+    this.searchInput.setValue(value, { emitEvent: false });
+  }
 }

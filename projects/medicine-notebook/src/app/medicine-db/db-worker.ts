@@ -104,7 +104,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
             return () => {
               finished = true;
               controller.abort();
-              if (!finished) transaction.abort();
+              transaction.abort();
             };
           }),
       ),
@@ -188,7 +188,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
     );
   }
 
-  private parseRawCsv(csvRaw: string): Medicines {
+  protected parseRawCsv(csvRaw: string): Medicines {
     const endOfFirstLine = csvRaw.indexOf('\n');
     const body = csvRaw.slice(endOfFirstLine + 1);
     const rows = body.split('\n');
@@ -242,6 +242,8 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
   private upgradeDb$(db: IDBDatabase, medicines: Medicines) {
     return new Observable<IDBDatabase>((observer) => {
       const controller = new AbortController();
+      let transactionCompleted = false;
+      if (DbWorker.version > 1) db.deleteObjectStore(DbWorker.storeName);
       const objectStore = db.createObjectStore(DbWorker.storeName, {
         keyPath: 'code',
       });
@@ -249,6 +251,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
         'complete',
         () => {
           observer.next(db);
+          transactionCompleted = true;
           observer.complete();
         },
         { signal: controller.signal },
@@ -260,7 +263,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
 
       return () => {
         controller.abort();
-        objectStore.transaction.abort();
+        if (!transactionCompleted) objectStore.transaction.abort();
       };
     }).pipe(
       mergeMap(
@@ -268,10 +271,12 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
           new Observable<IDBDatabase>((observer) => {
             const controller = new AbortController();
             const transaction = db.transaction(DbWorker.storeName, 'readwrite');
+            let transactionCompleted = false;
             transaction.addEventListener(
               'complete',
               () => {
                 observer.next(db);
+                transactionCompleted = true;
                 observer.complete();
               },
               { signal: controller.signal },
@@ -284,7 +289,7 @@ export class DbWorker extends DbWorkerAbstract<Medicine> {
 
             return () => {
               controller.abort();
-              transaction.abort();
+              if (!transactionCompleted) transaction.abort();
             };
           }),
       ),
