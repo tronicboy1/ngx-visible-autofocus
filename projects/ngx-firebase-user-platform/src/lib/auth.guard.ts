@@ -1,37 +1,29 @@
-import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
-import { map, Observable, take } from 'rxjs';
-import { AuthService } from './auth.service';
-import { NgxFirebaseUserPlatformModule } from './ngx-firebase-user-platform.module';
+import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
+import { first, map } from 'rxjs';
 
-@Injectable({
-  providedIn: NgxFirebaseUserPlatformModule,
-})
-export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
+export const authGuard: CanActivateFn = (_route, _state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  return authService.getAuthState().pipe(
+    first(),
+    map((user) => Boolean(user)),
+    map((isLoggedIn) => isLoggedIn || router.createUrlTree(['auth'], { queryParamsHandling: 'merge' })),
+  );
+};
 
-  canActivate(
-    _route: ActivatedRouteSnapshot,
-    _state: RouterStateSnapshot
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
-    return this.authService.getAuthState().pipe(
-      take(1),
-      map((user) => {
-        const isAuth = Boolean(user);
-        /** to be fixed : https://github.com/angular/angular/issues/16211 */
-        if (!isAuth) this.router.navigateByUrl('/auth');
-        return isAuth;
-      })
+type CreateUrlParams = Parameters<InstanceType<typeof Router>['createUrlTree']>;
+export const authGuardWithCustomRedirect: (...args: CreateUrlParams) => CanActivateFn =
+  (commands, navigationExtras) => (_route, _state) => {
+    const authService = inject(AuthService);
+    const router = inject(Router);
+    return authService.getAuthState().pipe(
+      first(),
+      map((user) => Boolean(user)),
+      map((isLoggedIn) => isLoggedIn || router.createUrlTree(commands, navigationExtras)),
     );
-  }
-}
+  };
+
+/** Backwards compatibility with class based */
+export const AuthGuard = authGuard;

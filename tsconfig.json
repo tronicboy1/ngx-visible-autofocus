@@ -12,24 +12,12 @@
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "paths": {
-      "@tronicboy/ngx-base-components": [
-        "dist/tronicboy/ngx-base-components"
-      ],
-      "@tronicboy/ngx-firebase-user-navbar": [
-        "dist/tronicboy/ngx-firebase-user-navbar"
-      ],
-      "@tronicboy/ngx-geolocation": [
-        "dist/tronicboy/ngx-geolocation"
-      ],
-      "ngx-firebase-user-platform": [
-        "dist/ngx-firebase-user-platform"
-      ],
-      "ngx-observable-directive": [
-        "dist/ngx-observable-directive"
-      ],
-      "ngx-visible-autofocus": [
-        "dist/ngx-visible-autofocus"
-      ]
+      "@tronicboy/ngx-base-components": ["dist/tronicboy/ngx-base-components"],
+      "@tronicboy/ngx-firebase-user-navbar": ["dist/tronicboy/ngx-firebase-user-navbar"],
+      "@tronicboy/ngx-geolocation": ["dist/tronicboy/ngx-geolocation"],
+      "ngx-firebase-user-platform": ["dist/ngx-firebase-user-platform"],
+      "ngx-observable-directive": ["dist/ngx-observable-directive"],
+      "ngx-visible-autofocus": ["dist/ngx-visible-autofocus"]
     },
     "declaration": false,
     "downlevelIteration": true,
@@ -38,14 +26,8 @@
     "importHelpers": true,
     "target": "es2022",
     "module": "es2022",
-    "lib": [
-      "es2022",
-      "dom",
-      "DOM.Iterable"
-    ],
-    "types": [
-      "@angular/localize"
-    ]
+    "lib": ["es2022", "dom", "DOM.Iterable"],
+    "types": ["@angular/localize", "jasmine"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
