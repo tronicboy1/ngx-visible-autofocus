@@ -24,6 +24,7 @@ import { AppComponent } from './app.component';
         measurementId: 'G-WP0LN01QWV',
       },
       production: environment.production,
+      emulators: environment.emulatorPorts
     }),
   ],
   providers: [],

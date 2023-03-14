@@ -34,7 +34,7 @@ export class FirebaseSettings {
   emulators?: {
     auth: number;
     firestore: number;
-    database: number;
+    database?: number;
     storage: number;
   };
   /**
