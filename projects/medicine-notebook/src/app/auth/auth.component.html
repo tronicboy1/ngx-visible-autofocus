@@ -1,1 +1,30 @@
-<p>auth works!</p>
+<div class="card" *ngIf="this.mode$ | async as mode">
+  <nav class="button-group">
+    <button [class.active]="mode === this.AuthMode.Login" class="button-left" id="login-button" type="button"
+      (click)="this.changeMode(this.AuthMode.Login)">
+      ログイン
+    </button>
+    <button [class.active]="this.mode === this.AuthMode.Register" class="button-right" id="register-button"
+      type="button" (click)="this.changeMode(this.AuthMode.Register)">
+      登録
+    </button>
+  </nav>
+  <p *ngIf="this.error$ | async as error" id="errors">{{ error }}</p>
+  <form class="login-form" (submit)="this.handleSubmit()" appSubmitOnModifierEnter [formGroup]="this.loginFormGroup">
+    <div class="form-group">
+      <label for="email">メールアドレス</label>
+      <input id="email" name="email" type="email" required autocomplete="email" />
+    </div>
+    <div class="form-group">
+      <label for="password">パスワード</label>
+      <input id="password" name="password" type="password" minlength="6" maxlength="64" required
+        autocomplete="{{ this.mode === this.AuthMode.Register ? 'new-password' : 'current-password' }}" />
+      <a *ngIf="this.AuthMode.Login" routerLink="./reset-password">パスワードをお忘れ？</a>
+    </div>
+    <button type="submit">
+      <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+      <ng-template #submitText>送信</ng-template>
+    </button>
+  </form>
+</div>
+<router-outlet></router-outlet>
