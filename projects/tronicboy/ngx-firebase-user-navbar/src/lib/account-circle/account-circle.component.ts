@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import '@web-components/base-modal';
-import { AuthService, UserService } from 'ngx-firebase-user-platform';
+import { AuthService, UserService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { fromEvent, map, mergeMap, Subscription, take } from 'rxjs';
 
 @Component({
@@ -9,6 +9,9 @@ import { fromEvent, map, mergeMap, Subscription, take } from 'rxjs';
   styleUrls: ['./account-circle.component.css'],
 })
 export class AccountCircleComponent implements OnInit, OnDestroy, AfterViewInit {
+  private authService = inject(AuthService);
+  private userService = inject(UserService);
+
   public showAccountMenu = false;
   public showChangeEmailModal = false;
   public showChangeAvatarModal = false;
@@ -19,8 +22,6 @@ export class AccountCircleComponent implements OnInit, OnDestroy, AfterViewInit 
   @ViewChild('avatar')
   private avatarElement!: ElementRef<HTMLImageElement>;
   private subscriptions: Subscription[] = [];
-
-  constructor(private authService: AuthService, private userService: UserService) {}
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -44,9 +45,7 @@ export class AccountCircleComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngAfterViewInit(): void {
     if (!this.avatarElement) throw Error('Avatar image element not found.');
-    this.subscriptions.push(
-      fromEvent(this.avatarElement.nativeElement, 'load').subscribe(() => (this.photoLoaded = true)),
-    );
+    this.subscriptions.push(fromEvent(this.avatarElement.nativeElement, 'load').subscribe(() => (this.photoLoaded = true)));
   }
 
   ngOnDestroy(): void {
