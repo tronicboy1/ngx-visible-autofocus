@@ -1,3 +1,20 @@
+h1 {
+  text-align: center;
+  font-size: 4rem;
+  margin: 0 0 1rem 0;
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+a {
+  margin: 1rem 0;
+  text-align: center;
+  cursor: pointer;
+}
+
 nav {
   display: flex;
   flex-direction: row;
@@ -50,6 +67,16 @@ form {
   flex-direction: column;
 }
 
+form:invalid button {
+  background-color: var(--secondary-color);
+  border-color: var(--secondary-color);
+  cursor: not-allowed;
+}
+form:valid button {
+  border-color: var(--highlight-color);
+  background-color: var(--highlight-color);
+}
+
 .form-group {
   margin-bottom: 1rem;
   display: flex;
@@ -66,4 +93,14 @@ form {
 
 .form-group label {
   margin-bottom: 0.25rem;
+}
+
+#errors {
+  --error-color: orange;
+  --error-secondary: rgb(255, 225, 170);
+  background-color: var(--danger-color);
+  padding: 1rem;
+  border: 1px solid var(--danger-color);
+  border-radius: 4px;
+  display: block;
 }

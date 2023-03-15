@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 @Component({
   selector: 'app-password-reset-form',
   templateUrl: './password-reset-form.component.html',
-  styleUrls: ['./password-reset-form.component.css'],
+  styleUrls: ['./password-reset-form.component.css', '../auth.component.css'],
 })
 export class PasswordResetFormComponent {
   private authService = inject(AuthService);

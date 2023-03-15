@@ -1,29 +1,30 @@
 <div class="card" *ngIf="this.mode$ | async as mode">
+  <h1>ログイン</h1>
   <nav class="button-group">
     <button [class.active]="mode === this.AuthMode.Login" class="button-left" id="login-button" type="button"
-      (click)="this.changeMode(this.AuthMode.Login)">
+      (click)="this.changeMode(this.AuthMode.Login)" i18n>
       ログイン
     </button>
     <button [class.active]="this.mode === this.AuthMode.Register" class="button-right" id="register-button"
-      type="button" (click)="this.changeMode(this.AuthMode.Register)">
+      type="button" (click)="this.changeMode(this.AuthMode.Register)" i18n>
       登録
     </button>
   </nav>
   <p *ngIf="this.error$ | async as error" id="errors">{{ error }}</p>
   <form class="login-form" (submit)="this.handleSubmit()" appSubmitOnModifierEnter [formGroup]="this.loginFormGroup">
     <div class="form-group">
-      <label for="email">メールアドレス</label>
-      <input id="email" name="email" type="email" required autocomplete="email" />
+      <label for="email" i18n>メールアドレス</label>
+      <input id="email" name="email" formControlName="email" type="email" required autocomplete="email" />
     </div>
     <div class="form-group">
-      <label for="password">パスワード</label>
-      <input id="password" name="password" type="password" minlength="6" maxlength="64" required
-        autocomplete="{{ this.mode === this.AuthMode.Register ? 'new-password' : 'current-password' }}" />
-      <a *ngIf="this.AuthMode.Login" routerLink="./reset-password">パスワードをお忘れ？</a>
+      <label for="password" i18n>パスワード</label>
+      <input id="password" name="password" formControlName="password" type="password" minlength="8" maxlength="64"
+        required [autocomplete]=" this.mode === this.AuthMode.Register ? 'new-password' : 'current-password'" />
+      <a *ngIf="this.AuthMode.Login" routerLink="./reset-password" i18n>パスワードをお忘れ？</a>
     </div>
     <button type="submit">
       <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
-      <ng-template #submitText>送信</ng-template>
+      <ng-template #submitText i18n>送信</ng-template>
     </button>
   </form>
 </div>
