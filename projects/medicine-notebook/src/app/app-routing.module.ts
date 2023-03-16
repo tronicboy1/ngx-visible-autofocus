@@ -8,7 +8,8 @@ const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) },
   {
     path: 'startup',
-    canActivate: [authGuard, setupFinishedGuard],
+    canActivate: [authGuard],
+    canMatch: [setupFinishedGuard],
     loadChildren: () => import('./startup/startup.module').then((m) => m.StartupModule),
   },
   { path: '', pathMatch: 'full', redirectTo: 'home' },

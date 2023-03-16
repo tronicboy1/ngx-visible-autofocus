@@ -28,9 +28,14 @@ export class FamilyService extends AbstractFamilyService {
 
   getMembersFamily$(memberId: string) {
     const contraints: QueryConstraint[] = [where('memberIds', 'array-contains', memberId)];
-    return this.firestoreService
-      .query$(this.rootKey, ...contraints)
-      .pipe(map((result) => (result.empty ? undefined : (result.docs[0].data() as Family))));
+    return this.firestoreService.query$(this.rootKey, ...contraints).pipe(
+      map((result) => {
+        if (result.empty) return undefined;
+        const familyFound = result.docs[0];
+        const data = familyFound.data() as Family;
+        return { ...data, id: familyFound.id };
+      }),
+    );
   }
 
   update$(id: string, data: Partial<Family>) {

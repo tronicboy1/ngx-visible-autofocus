@@ -8,7 +8,7 @@ export abstract class AbstractFamilyService {
 
   abstract get$(id: string): Observable<FamilyWithId>;
 
-  abstract getMembersFamily$(memberId: string): Observable<Family | undefined>;
+  abstract getMembersFamily$(memberId: string): Observable<FamilyWithId | undefined>;
 
   abstract update$(id: string, data: Partial<Family>): Observable<any>;
 
