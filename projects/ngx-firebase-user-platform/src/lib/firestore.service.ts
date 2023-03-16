@@ -29,7 +29,12 @@ export class FirestoreService extends AbstractFirestoreService {
 
   get$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions) {
     const ref = this.getRef(key, id);
-    return from(getDoc(ref)).pipe(map((result) => ({ ...result.data(options), id: result.id } as T)));
+    return from(getDoc(ref)).pipe(
+      map((result) => {
+        if (!result.exists) return undefined;
+        return { ...result.data(options), id: result.id } as T;
+      }),
+    );
   }
 
   getAll$(key: string) {

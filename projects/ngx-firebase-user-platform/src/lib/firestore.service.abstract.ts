@@ -2,7 +2,7 @@ import { DocumentData, DocumentReference, QueryConstraint, QuerySnapshot, Snapsh
 import { Observable } from 'rxjs';
 
 export abstract class AbstractFirestoreService {
-  abstract get$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions): Observable<T>;
+  abstract get$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions): Observable<T | undefined>;
   abstract getAll$(key: string): Observable<QuerySnapshot<DocumentData>>;
   abstract watch$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions): Observable<T>;
   abstract query$(key: string, ...args: QueryConstraint[]): Observable<QuerySnapshot<DocumentData>>;
