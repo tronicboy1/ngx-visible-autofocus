@@ -17,7 +17,7 @@ export class FinishSignupComponent implements OnInit {
 
   ngOnInit(): void {
     const { email, groupId, memberId } = this.route.snapshot.queryParams;
-    if (email && groupId && memberId) throw ReferenceError('InvalidUrl');
+    if (!(email && groupId && memberId)) throw ReferenceError('InvalidUrl');
     from(this.auth.finishSignInWithEmail(email))
       .pipe(switchMap((result) => this.member.addMemberAccount$(groupId, memberId, result.user.uid)))
       .subscribe({
