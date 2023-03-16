@@ -12,12 +12,12 @@ const routes: Routes = [
     canMatch: [setupFinishedGuard],
     loadChildren: () => import('./startup/startup.module').then((m) => m.StartupModule),
   },
-  { path: '', pathMatch: 'full', redirectTo: 'home' },
   {
     path: 'home',
     canActivate: [authGuard, setupNotFinishedGuard],
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
+  { path: '', pathMatch: 'full', redirectTo: 'home' },
 ];
 
 @NgModule({

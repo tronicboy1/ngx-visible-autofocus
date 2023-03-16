@@ -9,7 +9,7 @@ export const authGuard: CanActivateFn = (_route, _state) => {
   return authService.getAuthState().pipe(
     first(),
     map((user) => Boolean(user)),
-    map((isLoggedIn) => isLoggedIn || router.createUrlTree(['auth'], { queryParamsHandling: 'merge' })),
+    map((isLoggedIn) => isLoggedIn || router.createUrlTree(['/auth'], { queryParamsHandling: 'merge' })),
   );
 };
 

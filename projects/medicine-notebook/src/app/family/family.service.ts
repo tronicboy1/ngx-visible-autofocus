@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { QueryConstraint, where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
+import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { forkJoin, map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { Family, FamilyFactory, FamilyWithId } from './family-factory';
 import { AbstractFamilyService } from './family.service.abstract';
 
@@ -11,6 +13,7 @@ import { AbstractFamilyService } from './family.service.abstract';
 export class FamilyService extends AbstractFamilyService {
   private factory = new FamilyFactory();
   private firestoreService = inject(FirestoreService);
+  private auth = inject(AuthService);
 
   create$(data: Omit<Family, 'createdAt' | 'memberIds' | 'setupCompleted'>) {
     const family = this.factory.create(data);
@@ -47,5 +50,13 @@ export class FamilyService extends AbstractFamilyService {
 
   delete$(id: string): Observable<void> {
     return this.firestoreService.delete$(this.rootKey, id);
+  }
+
+  sendInvite(email: string, familyId: string, memberId: string) {
+    const url = new URL('auth/finish-signup', environment.url);
+    url.searchParams.set('familyId', familyId);
+    url.searchParams.set('email', email);
+    url.searchParams.set('memberId', memberId);
+    return this.auth.sendSignInEmail(email, url.toString());
   }
 }

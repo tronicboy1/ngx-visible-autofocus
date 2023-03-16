@@ -5,4 +5,5 @@ export const environment = {
     firestore: 8080,
     storage: 9199,
   },
+  url: 'https://medicine-notebook-58ea8.web.app',
 };

@@ -7,4 +7,5 @@ export const environment = {
     database: 9000,
     storage: 9199,
   },
+  url: 'http://localhost:4200/',
 };

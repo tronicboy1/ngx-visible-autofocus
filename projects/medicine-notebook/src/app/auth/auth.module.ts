@@ -8,9 +8,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/src/public-api';
 import { PasswordResetFormComponent } from './password-reset-form/password-reset-form.component';
 import { PasswordResetModalComponent } from './password-reset-modal/password-reset-modal.component';
+import { FinishSignupComponent } from './finish-signup/finish-signup.component';
 
 @NgModule({
-  declarations: [AuthComponent, PasswordResetFormComponent, PasswordResetModalComponent],
-  imports: [CommonModule, AuthRoutingModule, NgxFirebaseUserPlatformModule, ReactiveFormsModule, NgxBaseComponentsModule],
+  declarations: [AuthComponent, PasswordResetFormComponent, PasswordResetModalComponent, FinishSignupComponent],
+  imports: [
+    CommonModule,
+    AuthRoutingModule,
+    NgxFirebaseUserPlatformModule,
+    ReactiveFormsModule,
+    NgxBaseComponentsModule,
+  ],
 })
 export class AuthModule {}

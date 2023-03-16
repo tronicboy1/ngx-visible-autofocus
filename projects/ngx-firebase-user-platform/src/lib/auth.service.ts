@@ -10,6 +10,7 @@ import {
   fetchSignInMethodsForEmail,
   updateEmail,
   updateProfile,
+  sendSignInLinkToEmail,
 } from 'firebase/auth';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { filter, map, Observable, shareReplay } from 'rxjs';
@@ -33,12 +34,21 @@ export class AuthService {
 
   public signInUser(email: string, password: string) {
     return signInWithEmailAndPassword(this.firebaseService.auth, email, password).then((creds) => {
-      return this.userService.setUidRecord(email, creds.user.uid).then(() => this.userService.setOnlineStatus(creds.user.uid, 'online'));
+      return this.userService
+        .setUidRecord(email, creds.user.uid)
+        .then(() => this.userService.setOnlineStatus(creds.user.uid, 'online'));
     });
   }
 
-  public sendSignInEmail(email: string) {
-    return signInWithEmailLink(this.firebaseService.auth, email);
+  public sendSignInEmail(email: string, url: string) {
+    return sendSignInLinkToEmail(this.firebaseService.auth, email, {
+      url,
+      handleCodeInApp: true,
+    });
+  }
+
+  public finishSignInWithEmail(email: string) {
+    return signInWithEmailLink(this.firebaseService.auth, email, window.location.href);
   }
 
   public sendPasswordResetEmail(email: string) {
