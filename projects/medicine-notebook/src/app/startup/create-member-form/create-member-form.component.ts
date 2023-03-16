@@ -67,9 +67,9 @@ export class CreateMemberFormComponent {
               return this.member.create$(data).pipe(withLatestFrom(of(family)));
           }
         }),
-        tap(([ref, family]) => {
+        tap(([memberId, family]) => {
           if (!(sendInvite && email)) return;
-          this.family.sendInvite(email, family.id, ref.id as any);
+          this.family.sendInvite(email, family.id, memberId);
         }),
       )
       .subscribe({

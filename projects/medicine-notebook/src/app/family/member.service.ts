@@ -20,19 +20,20 @@ export class MemberService extends AbstractMemberService {
         if (members.find((member) => member.name === data.name)) throw Error('SameNameError');
         return members;
       }),
-      mergeMap(() =>
-        runTransaction(this.firestore.db, async (transaction) => {
-          const familyRef = doc(this.firestore.db, AbstractFamilyService.rootKey, member.familyId);
-          const family = await transaction.get(familyRef);
-          if (!family.exists()) throw ReferenceError('Family ID is incorrect');
-          const memberRef = doc(collection(this.firestore.db, this.rootKey));
-          await transaction.set(memberRef, member);
-          if (member.uid) {
-            await transaction.update(familyRef, { memberIds: arrayUnion(member.uid) });
-          }
-        }),
-      ),
+      mergeMap(() => this.firestore.create$(this.rootKey, member)),
+      map((ref) => ref.id),
     );
+  }
+
+  addMemberAccount$(familyId: string, memberId: string, memberUid: string) {
+    return runTransaction(this.firestore.db, async (transaction) => {
+      const familyRef = doc(this.firestore.db, AbstractFamilyService.rootKey, familyId);
+      const family = await transaction.get(familyRef);
+      if (!family.exists()) throw ReferenceError('Family ID is incorrect');
+      await transaction.update(familyRef, { memberIds: arrayUnion(memberUid) });
+      const memberRef = doc(this.firestore.db, this.rootKey, memberId);
+      await transaction.update(memberRef, { familyId });
+    });
   }
 
   update$(id: string, data: Partial<Member>): Observable<void> {

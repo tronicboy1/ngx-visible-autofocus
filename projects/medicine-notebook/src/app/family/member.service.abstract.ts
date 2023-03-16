@@ -4,7 +4,7 @@ import { Member } from './member-factory';
 export abstract class AbstractMemberService {
   protected rootKey = 'members';
 
-  abstract create$(data: Member): Observable<any>;
+  abstract create$(data: Member): Observable<string>;
 
   abstract delete$(id: string): Observable<void>;
 

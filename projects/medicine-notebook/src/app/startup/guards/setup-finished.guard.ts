@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { first, map, switchMap } from 'rxjs';
-import { FamilyService } from '../family/family.service';
+import { FamilyService } from '../../family/family.service';
 
 /**
  * Redirect users to home if they are finished with init setup
