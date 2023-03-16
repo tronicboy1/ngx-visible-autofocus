@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { arrayUnion, doc, runTransaction, where } from 'firebase/firestore';
+import { arrayUnion, collection, doc, runTransaction, where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
-import { from, map, mergeMap, Observable } from 'rxjs';
+import { filter, from, map, mergeMap, Observable } from 'rxjs';
 import { AbstractFamilyService } from './family.service.abstract';
 import { Member, MemberFactory, MemberWithId } from './member-factory';
 import { AbstractMemberService } from './member.service.abstract';
@@ -20,8 +20,19 @@ export class MemberService extends AbstractMemberService {
         if (members.find((member) => member.name === data.name)) throw Error('SameNameError');
         return members;
       }),
-      mergeMap(() => this.firestore.create$(this.rootKey, member)),
-      map((ref) => ref.id),
+      mergeMap(() =>
+        runTransaction(this.firestore.db, async (transaction) => {
+          const familyRef = doc(this.firestore.db, AbstractFamilyService.rootKey, member.familyId);
+          const family = await transaction.get(familyRef);
+          if (!family.exists()) throw ReferenceError('Family ID is incorrect');
+          const memberRef = doc(collection(this.firestore.db, this.rootKey));
+          await transaction.set(memberRef, member);
+          if (member.uid) {
+            await transaction.update(familyRef, { memberIds: arrayUnion(member.uid) });
+          }
+          return memberRef.id;
+        }),
+      ),
     );
   }
 

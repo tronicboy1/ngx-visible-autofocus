@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { filter, first, map, startWith, switchMap, tap } from 'rxjs';
+import { filter, first, map, startWith, switchMap } from 'rxjs';
 import { FamilyService } from '../../family/family.service';
 import { MemberService } from '../../family/member.service';
 
@@ -17,10 +17,9 @@ export class AddMembersComponent implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
-  private refresh$ = this.router.events.pipe(filter((event) => event instanceof NavigationEnd));
+  private refresh$ = this.router.events.pipe(filter((event) => event instanceof NavigationEnd && !event.url.includes('add')));
 
   readonly members$ = this.refresh$.pipe(
-    tap((ev) => console.log('refres')),
     startWith(undefined),
     switchMap(() => this.auth.getUid()),
     switchMap((uid) => this.family.getMembersFamily$(uid)),

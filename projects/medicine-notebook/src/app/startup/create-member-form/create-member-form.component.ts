@@ -19,7 +19,7 @@ export class CreateMemberFormComponent {
 
   readonly isFirstMember$ = this.auth.getUid().pipe(
     switchMap((uid) => this.family.getMembersFamily$(uid)),
-    map((family) => family && family.memberIds.length === 0),
+    map((family) => family && !family.memberIds.length),
   );
   readonly Sex = Sex;
   readonly currentDate = new Date().toISOString().split('T')[0];
@@ -43,7 +43,6 @@ export class CreateMemberFormComponent {
     if (sendInvite && !email) throw ReferenceError('must have email if inviting');
     this.loading$.next(true);
     const dobNumber = new Date(dob).getTime();
-    console.log(email);
     this.auth
       .getUid()
       .pipe(
