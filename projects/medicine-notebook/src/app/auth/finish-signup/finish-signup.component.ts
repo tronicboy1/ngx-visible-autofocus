@@ -1,8 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { first, switchMap } from 'rxjs';
-import { FamilyService } from '../../family/family.service';
+import { from, switchMap } from 'rxjs';
 import { MemberService } from '../../family/member.service';
 
 @Component({
@@ -12,17 +11,18 @@ import { MemberService } from '../../family/member.service';
 })
 export class FinishSignupComponent implements OnInit {
   private auth = inject(AuthService);
-  private family = inject(FamilyService);
   private member = inject(MemberService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
-    this.route.queryParams
-      .pipe(
-        first(),
-        switchMap((params) => this.auth.finishSignInWithEmail(params['email'])),
-      )
-      .subscribe(console.log);
+    const { email, familyId, memberId } = this.route.snapshot.queryParams;
+    if (email && familyId && memberId) throw ReferenceError('InvalidUrl');
+    from(this.auth.finishSignInWithEmail(email))
+      .pipe(switchMap((result) => this.member.addMemberAccount$(familyId, memberId, result.user.uid)))
+      .subscribe({
+        next: () => this.router.navigate(['/']),
+        error: () => this.router.navigate(['/auth']),
+      });
   }
 }

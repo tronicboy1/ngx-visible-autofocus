@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { arrayUnion, collection, doc, runTransaction, where } from 'firebase/firestore';
+import { arrayUnion, doc, runTransaction, where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
-import { filter, from, map, mergeMap, Observable } from 'rxjs';
+import { from, map, mergeMap, Observable } from 'rxjs';
 import { AbstractFamilyService } from './family.service.abstract';
 import { Member, MemberFactory, MemberWithId } from './member-factory';
 import { AbstractMemberService } from './member.service.abstract';
@@ -26,14 +26,16 @@ export class MemberService extends AbstractMemberService {
   }
 
   addMemberAccount$(familyId: string, memberId: string, memberUid: string) {
-    return runTransaction(this.firestore.db, async (transaction) => {
-      const familyRef = doc(this.firestore.db, AbstractFamilyService.rootKey, familyId);
-      const family = await transaction.get(familyRef);
-      if (!family.exists()) throw ReferenceError('Family ID is incorrect');
-      await transaction.update(familyRef, { memberIds: arrayUnion(memberUid) });
-      const memberRef = doc(this.firestore.db, this.rootKey, memberId);
-      await transaction.update(memberRef, { familyId });
-    });
+    return from(
+      runTransaction(this.firestore.db, async (transaction) => {
+        const familyRef = doc(this.firestore.db, AbstractFamilyService.rootKey, familyId);
+        const family = await transaction.get(familyRef);
+        if (!family.exists()) throw ReferenceError('Family ID is incorrect');
+        await transaction.update(familyRef, { memberIds: arrayUnion(memberUid) });
+        const memberRef = doc(this.firestore.db, this.rootKey, memberId);
+        await transaction.update(memberRef, { familyId });
+      }),
+    );
   }
 
   update$(id: string, data: Partial<Member>): Observable<void> {
