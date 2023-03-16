@@ -15,7 +15,7 @@ export class GroupService extends AbstractGroupService {
   private firestoreService = inject(FirestoreService);
   private auth = inject(AuthService);
 
-  create$(data: Omit<Group, 'createdAt' | 'memberIds' | 'setupCompleted' | 'useMode'>) {
+  create$(data: Omit<Group, 'createdAt' | 'memberIds' | 'setupCompleted'>) {
     const group = this.factory.create(data);
     return this.firestoreService.create$(this.rootKey, group);
   }

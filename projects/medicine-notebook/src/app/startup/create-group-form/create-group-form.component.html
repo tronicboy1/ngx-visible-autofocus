@@ -1,6 +1,6 @@
 <form [formGroup]="this.formGroup" (ngSubmit)="this.handleSubmit()" appSubmitOnModifierEnter>
-  <label for="last-name" i18n>苗字を教えてください</label>
-  <input type="text" name="last-name" id="last-name" formControlName="lastName" required minlength="1" maxlength="255"
+  <label for="name">{{ this.labelText$ | async }}</label>
+  <input type="text" name="name" id="name" formControlName="name" required minlength="1" maxlength="255"
     autocomplete="off">
   <button type="submit" i18n>
     <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>

@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
-import { CanMatchFn, Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { first, map, switchMap } from 'rxjs';
 import { GroupService } from '../../group/group.service';
 
-export const chooseModeGuard: CanMatchFn = (route, segments) => {
+export const chooseModeGuard: CanActivateFn = (route, state) => {
   const auth = inject(AuthService);
   const group = inject(GroupService);
   const router = inject(Router);
@@ -12,8 +12,9 @@ export const chooseModeGuard: CanMatchFn = (route, segments) => {
     first(),
     switchMap((uid) => group.getMembersGroup$(uid)),
     map((group) => {
-      if (!group) return router.createUrlTree(['/startup', 'group']);
-      if (group.useMode) return router.createUrlTree(['/startup', 'members']);
+      if (group && group.useMode) return router.createUrlTree(['/startup', 'members']);
+      if (route.queryParams['useMode'])
+        return router.createUrlTree(['/startup', 'group'], { queryParamsHandling: 'preserve' });
       return true;
     }),
   );

@@ -17,8 +17,8 @@ const routes: Routes = [
     path: '',
     component: StartupComponent,
     children: [
-      { path: 'group', component: CreateGroupComponent, canMatch: [createGroupGuard] },
-      { path: 'choose-mode', component: ChooseModeComponent, canMatch: [chooseModeGuard] },
+      { path: 'choose-mode', component: ChooseModeComponent, canActivate: [chooseModeGuard] },
+      { path: 'group', component: CreateGroupComponent, canActivate: [createGroupGuard] },
       {
         path: 'members',
         component: AddMembersComponent,

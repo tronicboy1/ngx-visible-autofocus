@@ -1,5 +1,5 @@
 export type Group = {
-  lastName: string;
+  name: string;
   memberIds: [];
   owner: string;
   createdAt: number;
@@ -18,7 +18,7 @@ export type GroupWithId = Group & { id: string };
 export class GroupFactory {
   create(data: Partial<Group>): Group {
     return Object.assign<Group, typeof data>(
-      { lastName: '', memberIds: [], owner: '', createdAt: Date.now(), setupCompleted: false, useMode: UseMode.NotSet },
+      { name: '', memberIds: [], owner: '', createdAt: Date.now(), setupCompleted: false, useMode: UseMode.NotSet },
       data,
     );
   }

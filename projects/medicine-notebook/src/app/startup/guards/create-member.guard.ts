@@ -14,7 +14,6 @@ export const createMemberGuard: CanMatchFn = (_route, _segments) => {
     switchMap((uid) => group.getMembersGroup$(uid)),
     map((group) => {
       if (!group) return router.createUrlTree(['/startup', 'group']);
-      if (!group.useMode) return router.createUrlTree(['/startup', 'choose-mode']);
       if (group.useMode === UseMode.SingleUser) return router.createUrlTree(['/startup', 'single-user']);
       return true;
     }),
