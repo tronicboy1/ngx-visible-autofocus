@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { map, startWith, Subject, switchMap } from 'rxjs';
+import { filter, first, map, startWith, switchMap, tap } from 'rxjs';
 import { FamilyService } from '../../family/family.service';
 import { MemberService } from '../../family/member.service';
 
@@ -9,14 +10,17 @@ import { MemberService } from '../../family/member.service';
   templateUrl: './add-members.component.html',
   styleUrls: ['./add-members.component.css'],
 })
-export class AddMembersComponent {
+export class AddMembersComponent implements OnInit {
   private auth = inject(AuthService);
   private family = inject(FamilyService);
   private member = inject(MemberService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
-  private refresh$ = new Subject<void>();
+  private refresh$ = this.router.events.pipe(filter((event) => event instanceof NavigationEnd));
 
   readonly members$ = this.refresh$.pipe(
+    tap((ev) => console.log('refres')),
     startWith(undefined),
     switchMap(() => this.auth.getUid()),
     switchMap((uid) => this.family.getMembersFamily$(uid)),
@@ -26,4 +30,15 @@ export class AddMembersComponent {
     }),
     switchMap((family) => this.member.getFamilyMembers$(family.id)),
   );
+
+  ngOnInit() {
+    this.members$
+      .pipe(
+        first(),
+        map((members) => !members.length),
+      )
+      .subscribe((noMembers) => {
+        if (noMembers) this.router.navigate(['add'], { relativeTo: this.route });
+      });
+  }
 }

@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
   private router = inject(Router);
 
   ngOnInit() {
-    this.router.events.subscribe(console.log)
+    //this.router.events.subscribe(console.log)
   }
   searchInput = new FormControl<string>('', { nonNullable: true });
 
