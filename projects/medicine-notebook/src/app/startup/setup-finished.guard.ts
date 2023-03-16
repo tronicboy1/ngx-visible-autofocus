@@ -15,7 +15,6 @@ export const setupFinishedGuard: CanActivateFn = (route, state) => {
   return auth.getUid().pipe(
     first(),
     switchMap((uid) => family.getMembersFamily$(uid)),
-    map(Boolean),
-    map((hasFamily) => !hasFamily || router.createUrlTree(['/home'])),
+    map((family) => !family || !family.memberIds.length || router.createUrlTree(['/home'])),
   );
 };

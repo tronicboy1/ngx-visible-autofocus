@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import {
   addDoc,
+  arrayRemove,
+  arrayUnion,
   collection,
   CollectionReference,
   deleteDoc,
@@ -26,6 +28,7 @@ import { AbstractFirestoreService } from './firestore.service.abstract';
 })
 export class FirestoreService extends AbstractFirestoreService {
   private firebaseService = inject(FirebaseService);
+  readonly db = this.firebaseService.firestore;
 
   get$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions) {
     const ref = this.getRef(key, id);
@@ -73,6 +76,16 @@ export class FirestoreService extends AbstractFirestoreService {
   update$(key: string, id: string, data: any): Observable<void> {
     const ref = this.getRef(key, id);
     return from(updateDoc(ref, data));
+  }
+
+  addToArrayField$(key: string, id: string, field: string, item: any): Observable<void> {
+    const ref = this.getRef(key, id);
+    return from(updateDoc(ref, { [field]: arrayUnion(item) }));
+  }
+
+  removeFromArrayField$(key: string, id: string, field: string, item: any): Observable<void> {
+    const ref = this.getRef(key, id);
+    return from(updateDoc(ref, { [field]: arrayRemove(item) }));
   }
 
   delete$(key: string, id: string): Observable<void> {

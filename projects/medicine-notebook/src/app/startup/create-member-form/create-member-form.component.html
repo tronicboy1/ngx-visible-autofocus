@@ -1,1 +1,27 @@
-<p>create-member-form works!</p>
+<form [formGroup]="this.formGroup" (ngSubmit)="this.handleSubmit()" appSubmitOnModifierEnter>
+  <label for="name" i18n>名前</label>
+  <input type="text" name="name" id="name" formControlName="name" required minlength="1" maxlength="255"
+    autocomplete="off">
+  <label for="dob">生年月日</label>
+  <input name="dob" id="dob" type="date" required formControlName="dob" min="1940-01-01" [max]="currentDate">
+  <label for="weight">体重</label>
+  <input type="number" name="weight" id="weight" min="1" max="150" formControlName="weight">
+  <label for="sex">性別</label>
+  <select name="sex" id="sex" formControlName="sex" required>
+    <option [ngValue]="Sex.Q">その他</option>
+    <option [ngValue]="Sex.Male">男性</option>
+    <option [ngValue]="Sex.Female">女性</option>
+  </select>
+  <ng-container *ngIf="!((this.isFirstMember$ | async) ?? true)">
+    <label for="send-invite">アプリに招待メールを送る？</label>
+    <input type="checkbox" name="send-invite" id="send-invite" formControlName="sendInvite">
+    <ng-container *ngIf="(this.formGroup.controls.sendInvite.valueChanges | async)">
+      <label for="email">メールアドレス</label>
+      <input type="email" name="email" id="email" formControlName="email">
+    </ng-container>
+  </ng-container>
+  <button type="submit" i18n>
+    <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+    <ng-template #submitText>追加</ng-template>
+  </button>
+</form>

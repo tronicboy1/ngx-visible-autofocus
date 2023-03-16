@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { QueryConstraint, where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { Family, FamilyFactory, FamilyWithId } from './family-factory';
 import { AbstractFamilyService } from './family.service.abstract';
 
@@ -12,7 +12,7 @@ export class FamilyService extends AbstractFamilyService {
   private factory = new FamilyFactory();
   private firestoreService = inject(FirestoreService);
 
-  create$(data: Family) {
+  create$(data: Omit<Family, 'createdAt' | 'memberIds'>) {
     const family = this.factory.create(data);
     return this.firestoreService.create$(this.rootKey, family);
   }
@@ -27,11 +27,14 @@ export class FamilyService extends AbstractFamilyService {
   }
 
   getMembersFamily$(memberId: string) {
-    const contraints: QueryConstraint[] = [where('memberIds', 'array-contains', memberId)];
-    return this.firestoreService.query$(this.rootKey, ...contraints).pipe(
-      map((result) => {
-        if (result.empty) return undefined;
-        const familyFound = result.docs[0];
+    return forkJoin([
+      this.firestoreService.query$(this.rootKey, where('memberIds', 'array-contains', memberId)),
+      this.firestoreService.query$(this.rootKey, where('owner', '==', memberId)),
+    ]).pipe(
+      map(([memberIdsQuery, ownerQuery]) => {
+        const hit = !memberIdsQuery.empty ? memberIdsQuery : !ownerQuery.empty ? ownerQuery : undefined;
+        if (!hit) return undefined;
+        const familyFound = hit.docs[0];
         const data = familyFound.data() as Family;
         return { ...data, id: familyFound.id };
       }),

@@ -1,1 +1,9 @@
-<p>create-family-form works!</p>
+<form [formGroup]="this.formGroup" (ngSubmit)="this.handleSubmit()" appSubmitOnModifierEnter>
+  <label for="last-name" i18n>家族の苗字を教えてください</label>
+  <input type="text" name="last-name" id="last-name" formControlName="lastName" required minlength="1" maxlength="255"
+    autocomplete="off">
+  <button type="submit" i18n>
+    <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+    <ng-template #submitText>次へ</ng-template>
+  </button>
+</form>

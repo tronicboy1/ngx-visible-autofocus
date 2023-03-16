@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FirebaseService } from 'projects/ngx-firebase-user-platform/src/lib/firebase.service';
+import { Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { MedicineDbService } from './medicine-db/medicine-db.service';
 
@@ -9,10 +9,13 @@ import { MedicineDbService } from './medicine-db/medicine-db.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   private medicineDbService = inject(MedicineDbService);
-  private firebase = inject(FirebaseService)
+  private router = inject(Router);
 
+  ngOnInit() {
+    this.router.events.subscribe(console.log)
+  }
   searchInput = new FormControl<string>('', { nonNullable: true });
 
   searchResult$ = this.searchInput.valueChanges.pipe(switchMap((value) => this.medicineDbService.search$(value)));

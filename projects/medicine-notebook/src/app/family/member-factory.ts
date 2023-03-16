@@ -12,7 +12,7 @@ export type Member = {
   diseaseHistory: string[];
   pharmacies: string[];
   medicalInstitutions: string[];
-  userId?: string; // Users that can login have an id
+  uid?: string; // Users that can login have an id
   email?: string;
 };
 
@@ -28,6 +28,7 @@ export class MemberFactory {
   create(data: Partial<Member>) {
     return Object.assign<Member, typeof data>(
       {
+        uid: '',
         name: '',
         dob: new Date('1990/1/1').getTime(),
         familyId: '',

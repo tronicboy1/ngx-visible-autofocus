@@ -7,9 +7,19 @@ import { CreateFamilyFormComponent } from './create-family-form/create-family-fo
 import { CreateMemberFormComponent } from './create-member-form/create-member-form.component';
 import { CreateFamilyComponent } from './create-family/create-family.component';
 import { AddMembersComponent } from './add-members/add-members.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/src/public-api';
+import { AddMemberDetailsFormComponent } from './add-member-details-form/add-member-details-form.component';
 
 @NgModule({
-  declarations: [StartupComponent, CreateFamilyFormComponent, CreateMemberFormComponent, CreateFamilyComponent, AddMembersComponent],
-  imports: [CommonModule, StartupRoutingModule],
+  declarations: [
+    StartupComponent,
+    CreateFamilyFormComponent,
+    CreateMemberFormComponent,
+    CreateFamilyComponent,
+    AddMembersComponent,
+    AddMemberDetailsFormComponent,
+  ],
+  imports: [CommonModule, StartupRoutingModule, ReactiveFormsModule, NgxBaseComponentsModule],
 })
 export class StartupModule {}
