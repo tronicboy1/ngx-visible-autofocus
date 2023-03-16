@@ -11,7 +11,10 @@ export const createMemberGuard: CanMatchFn = (_route, _segments) => {
   return auth.getUid().pipe(
     first(),
     switchMap((uid) => family.getMembersFamily$(uid)),
-    map(Boolean),
-    map((family) => family || router.createUrlTree(['/startup', 'family'])),
+    map((family) => {
+      if (!family) return router.createUrlTree(['/startup', 'family']);
+      if (!family.useMode) return router.createUrlTree(['/startup', 'choose-mode']);
+      return true;
+    }),
   );
 };

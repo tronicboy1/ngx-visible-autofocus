@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { QueryConstraint, where } from 'firebase/firestore';
+import { where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { forkJoin, map, Observable } from 'rxjs';
@@ -15,7 +15,7 @@ export class FamilyService extends AbstractFamilyService {
   private firestoreService = inject(FirestoreService);
   private auth = inject(AuthService);
 
-  create$(data: Omit<Family, 'createdAt' | 'memberIds' | 'setupCompleted'>) {
+  create$(data: Omit<Family, 'createdAt' | 'memberIds' | 'setupCompleted' | 'useMode'>) {
     const family = this.factory.create(data);
     return this.firestoreService.create$(this.rootKey, family);
   }
