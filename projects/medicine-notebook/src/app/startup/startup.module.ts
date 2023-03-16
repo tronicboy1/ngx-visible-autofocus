@@ -14,6 +14,7 @@ import { AddMemberModalComponent } from './add-member-modal/add-member-modal.com
 import { NgxVisibleAutofocusModule } from 'projects/ngx-visible-autofocus/src/public-api';
 import { AddMemberDetailsModalComponent } from './add-member-details-modal/add-member-details-modal.component';
 import { ChooseModeComponent } from './choose-mode/choose-mode.component';
+import { SingleUserRegisterComponent } from './single-user-register/single-user-register.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ChooseModeComponent } from './choose-mode/choose-mode.component';
     AddMemberModalComponent,
     AddMemberDetailsModalComponent,
     ChooseModeComponent,
+    SingleUserRegisterComponent,
   ],
   imports: [CommonModule, StartupRoutingModule, ReactiveFormsModule, NgxBaseComponentsModule, NgxVisibleAutofocusModule],
 })

@@ -5,7 +5,7 @@ import { first, map, switchMap } from 'rxjs';
 import { UseMode } from '../../family/family-factory';
 import { FamilyService } from '../../family/family.service';
 
-export const createMemberGuard: CanMatchFn = (_route, _segments) => {
+export const singleUserGuard: CanMatchFn = (route, segments) => {
   const auth = inject(AuthService);
   const family = inject(FamilyService);
   const router = inject(Router);
@@ -15,7 +15,7 @@ export const createMemberGuard: CanMatchFn = (_route, _segments) => {
     map((family) => {
       if (!family) return router.createUrlTree(['/startup', 'family']);
       if (!family.useMode) return router.createUrlTree(['/startup', 'choose-mode']);
-      if (family.useMode === UseMode.SingleUser) return router.createUrlTree(['/startup', 'single-user']);
+      if (family.useMode === UseMode.Family) return router.createUrlTree(['/startup', 'members']);
       return true;
     }),
   );

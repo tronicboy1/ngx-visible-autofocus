@@ -1,0 +1,10 @@
+nav {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  width: 100%;
+}
+
+nav button {
+   flex: 1;
+}
