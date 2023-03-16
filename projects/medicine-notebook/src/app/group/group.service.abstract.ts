@@ -5,7 +5,7 @@ export abstract class AbstractGroupService {
   static rootKey = 'families';
   protected rootKey = AbstractGroupService.rootKey;
 
-  abstract create$(data: Group): Observable<any>;
+  abstract create$(data: Group): Observable<string>;
 
   abstract get$(id: string): Observable<GroupWithId>;
 

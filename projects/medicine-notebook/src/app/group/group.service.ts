@@ -17,7 +17,7 @@ export class GroupService extends AbstractGroupService {
 
   create$(data: Omit<Group, 'createdAt' | 'memberIds' | 'setupCompleted'>) {
     const group = this.factory.create(data);
-    return this.firestoreService.create$(this.rootKey, group);
+    return this.firestoreService.create$(this.rootKey, group).pipe(map((ref) => ref.id));
   }
 
   get$(id: string) {

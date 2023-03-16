@@ -46,7 +46,8 @@ export class CreateGroupFormComponent {
         mergeMap(([uid, useMode]) => this.group.create$({ name: name.trim(), owner: uid, useMode })),
       )
       .subscribe({
-        next: () => this.router.navigate(['members'], { relativeTo: this.route.parent }),
+        next: (groupId) =>
+          this.router.navigate(['members'], { relativeTo: this.route.parent, queryParams: { groupId } }),
         complete: () => this.loading$.next(false),
       });
   }
