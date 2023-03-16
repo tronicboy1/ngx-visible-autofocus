@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
@@ -17,6 +17,7 @@ export class CreateMemberFormComponent {
   private family = inject(FamilyService);
   private member = inject(MemberService);
   private router = inject(Router);
+  @Output() submitted = new EventEmitter<void>();
 
   readonly isFirstMember$ = this.auth.getUid().pipe(
     switchMap((uid) => this.family.getMembersFamily$(uid)),
@@ -68,7 +69,7 @@ export class CreateMemberFormComponent {
         }),
       )
       .subscribe({
-        next: () => this.router.navigate(['../']),
+        next: () => this.submitted.emit(),
         complete: () => this.loading$.next(false),
       });
   }

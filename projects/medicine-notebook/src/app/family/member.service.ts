@@ -49,7 +49,7 @@ export class MemberService extends AbstractMemberService {
   getFamilyMembers$(familyId: string): Observable<MemberWithId[]> {
     return this.firestore.query$(this.rootKey, where('familyId', '==', familyId)).pipe(
       map((results) => {
-        if (results.empty) throw ReferenceError('Invalid Family ID');
+        if (results.empty) return [];
         return results.docs.map((doc) => {
           const data = doc.data() as Member;
           return { ...data, id: doc.id };

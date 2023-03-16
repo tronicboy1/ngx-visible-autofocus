@@ -10,6 +10,7 @@ import { AddMembersComponent } from './add-members/add-members.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/src/public-api';
 import { AddMemberDetailsFormComponent } from './add-member-details-form/add-member-details-form.component';
+import { AddMemberModalComponent } from './add-member-modal/add-member-modal.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { AddMemberDetailsFormComponent } from './add-member-details-form/add-mem
     CreateFamilyComponent,
     AddMembersComponent,
     AddMemberDetailsFormComponent,
+    AddMemberModalComponent,
   ],
   imports: [CommonModule, StartupRoutingModule, ReactiveFormsModule, NgxBaseComponentsModule],
 })
