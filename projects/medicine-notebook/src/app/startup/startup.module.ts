@@ -11,6 +11,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/src/public-api';
 import { AddMemberDetailsFormComponent } from './add-member-details-form/add-member-details-form.component';
 import { AddMemberModalComponent } from './add-member-modal/add-member-modal.component';
+import { NgxVisibleAutofocusModule } from 'projects/ngx-visible-autofocus/src/public-api';
+import { AddMemberDetailsModalComponent } from './add-member-details-modal/add-member-details-modal.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,8 @@ import { AddMemberModalComponent } from './add-member-modal/add-member-modal.com
     AddMembersComponent,
     AddMemberDetailsFormComponent,
     AddMemberModalComponent,
+    AddMemberDetailsModalComponent,
   ],
-  imports: [CommonModule, StartupRoutingModule, ReactiveFormsModule, NgxBaseComponentsModule],
+  imports: [CommonModule, StartupRoutingModule, ReactiveFormsModule, NgxBaseComponentsModule, NgxVisibleAutofocusModule],
 })
 export class StartupModule {}

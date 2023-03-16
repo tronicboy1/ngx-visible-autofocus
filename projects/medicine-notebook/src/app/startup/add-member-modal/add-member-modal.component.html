@@ -1,3 +1,5 @@
 <base-modal i18n-modal-title [modal-title]="(this.modalTitle$ | async)!" [show]="true" (modal-closed)="this.close()">
+  <p *ngIf="this.isFirstMember$ | async" i18n><small>まずは自信の情報を記入して、家族に追加しましょう</small></p>
+  <br>
   <startup-create-member-form (submitted)="this.close()"></startup-create-member-form>
 </base-modal>

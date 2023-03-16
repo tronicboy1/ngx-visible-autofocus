@@ -1,7 +1,7 @@
 <form [formGroup]="this.formGroup" (ngSubmit)="this.handleSubmit()" appSubmitOnModifierEnter>
   <label for="name" i18n>名前</label>
   <input type="text" name="name" id="name" formControlName="name" required minlength="1" maxlength="255"
-    autocomplete="off">
+    autocomplete="off" ngxAutofocus>
   <label for="dob">生年月日</label>
   <input name="dob" id="dob" type="date" required formControlName="dob" min="1940-01-01" [max]="currentDate">
   <label for="weight">体重</label>

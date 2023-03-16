@@ -24,6 +24,6 @@ export class AddMemberModalComponent {
   );
 
   close() {
-    this.router.navigate(['/'], { relativeTo: this.route });
+    this.router.navigate([''], { relativeTo: this.route.parent });
   }
 }

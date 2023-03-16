@@ -12,7 +12,7 @@ export class FamilyService extends AbstractFamilyService {
   private factory = new FamilyFactory();
   private firestoreService = inject(FirestoreService);
 
-  create$(data: Omit<Family, 'createdAt' | 'memberIds'>) {
+  create$(data: Omit<Family, 'createdAt' | 'memberIds' | 'setupCompleted'>) {
     const family = this.factory.create(data);
     return this.firestoreService.create$(this.rootKey, family);
   }

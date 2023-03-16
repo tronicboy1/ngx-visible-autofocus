@@ -3,12 +3,16 @@ export type Family = {
   memberIds: [];
   owner: string;
   createdAt: number;
+  setupCompleted: boolean;
 };
 
 export type FamilyWithId = Family & { id: string };
 
 export class FamilyFactory {
   create(data: Partial<Family>): Family {
-    return Object.assign<Family, typeof data>({ lastName: '', memberIds: [], owner: '', createdAt: Date.now() }, data);
+    return Object.assign<Family, typeof data>(
+      { lastName: '', memberIds: [], owner: '', createdAt: Date.now(), setupCompleted: false },
+      data,
+    );
   }
 }
