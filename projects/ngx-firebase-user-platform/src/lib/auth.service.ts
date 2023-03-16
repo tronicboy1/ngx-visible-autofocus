@@ -11,6 +11,7 @@ import {
   updateEmail,
   updateProfile,
   sendSignInLinkToEmail,
+  UserCredential,
 } from 'firebase/auth';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { filter, map, Observable, shareReplay } from 'rxjs';
@@ -47,8 +48,10 @@ export class AuthService {
     });
   }
 
-  public finishSignInWithEmail(email: string) {
-    return signInWithEmailLink(this.firebaseService.auth, email, window.location.href);
+  public finishSignInWithEmail(email: string): Promise<UserCredential> {
+    return signInWithEmailLink(this.firebaseService.auth, email, window.location.href).then((credentials) =>
+      this.userService.setUidRecord(email, credentials.user.uid).then(() => credentials),
+    );
   }
 
   public sendPasswordResetEmail(email: string) {
