@@ -5,9 +5,9 @@ import { first, map, switchMap } from 'rxjs';
 import { FamilyService } from '../family/family.service';
 
 /**
- * Redirect users to home if they are finished with init setup
+ * Redirect users to startup if they are NOT finished with init setup
  */
-export const setupFinishedGuard: CanActivateFn = (route, state) => {
+export const setupNotFinishedGuard: CanActivateFn = (_route, _state) => {
   const auth = inject(AuthService);
   const family = inject(FamilyService);
   const router = inject(Router);
@@ -16,6 +16,6 @@ export const setupFinishedGuard: CanActivateFn = (route, state) => {
     first(),
     switchMap((uid) => family.getMembersFamily$(uid)),
     map(Boolean),
-    map((hasFamily) => !hasFamily || router.createUrlTree(['/home'])),
+    map((hasFamily) => hasFamily || router.createUrlTree(['/startup'])),
   );
 };
