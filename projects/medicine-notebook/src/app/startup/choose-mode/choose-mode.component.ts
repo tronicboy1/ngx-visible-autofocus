@@ -2,8 +2,8 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { first, mergeMap } from 'rxjs';
-import { UseMode } from '../../family/family-factory';
-import { FamilyService } from '../../family/family.service';
+import { UseMode } from '../../group/group-factory';
+import { GroupService } from '../../group/group.service';
 
 @Component({
   selector: 'startup-choose-mode',
@@ -12,7 +12,7 @@ import { FamilyService } from '../../family/family.service';
 })
 export class ChooseModeComponent {
   private auth = inject(AuthService);
-  private family = inject(FamilyService);
+  private group = inject(GroupService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
 
@@ -23,10 +23,10 @@ export class ChooseModeComponent {
       .getUid()
       .pipe(
         first(),
-        mergeMap((uid) => this.family.getMembersFamily$(uid)),
-        mergeMap((family) => {
-          if (!family) throw ReferenceError('NoFamilyError');
-          return this.family.update$(family.id, { useMode: decision });
+        mergeMap((uid) => this.group.getMembersGroup$(uid)),
+        mergeMap((group) => {
+          if (!group) throw ReferenceError('NoGroupError');
+          return this.group.update$(group.id, { useMode: decision });
         }),
       )
       .subscribe({

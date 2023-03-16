@@ -2,8 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { filter, first, map, startWith, switchMap } from 'rxjs';
-import { FamilyService } from '../../family/family.service';
-import { MemberService } from '../../family/member.service';
+import { GroupService } from '../../group/group.service';
+import { MemberService } from '../../group/member.service';
 
 @Component({
   selector: 'startup-add-members',
@@ -12,7 +12,7 @@ import { MemberService } from '../../family/member.service';
 })
 export class AddMembersComponent implements OnInit {
   private auth = inject(AuthService);
-  private family = inject(FamilyService);
+  private group = inject(GroupService);
   private member = inject(MemberService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
@@ -22,12 +22,12 @@ export class AddMembersComponent implements OnInit {
   readonly members$ = this.refresh$.pipe(
     startWith(undefined),
     switchMap(() => this.auth.getUid()),
-    switchMap((uid) => this.family.getMembersFamily$(uid)),
-    map((family) => {
-      if (!family) throw ReferenceError('NoFamily');
-      return family;
+    switchMap((uid) => this.group.getMembersGroup$(uid)),
+    map((group) => {
+      if (!group) throw ReferenceError('NoGroup');
+      return group;
     }),
-    switchMap((family) => this.member.getFamilyMembers$(family.id)),
+    switchMap((group) => this.member.getGroupMembers$(group.id)),
   );
 
   ngOnInit() {

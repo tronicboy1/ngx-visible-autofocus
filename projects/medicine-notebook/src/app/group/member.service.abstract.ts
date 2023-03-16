@@ -8,11 +8,11 @@ export abstract class AbstractMemberService {
 
   abstract delete$(id: string): Observable<void>;
 
-  abstract addMemberAccount$(familyId: string, memberId: string, memberUid: string): Observable<void>;
+  abstract addMemberAccount$(groupId: string, memberId: string, memberUid: string): Observable<void>;
 
   abstract update$(id: string, data: Partial<Member>): Observable<void>;
 
   abstract get$(id: string): Observable<Member>;
 
-  abstract getFamilyMembers$(familyId: string): Observable<Member[]>;
+  abstract getGroupMembers$(groupId: string): Observable<Member[]>;
 }

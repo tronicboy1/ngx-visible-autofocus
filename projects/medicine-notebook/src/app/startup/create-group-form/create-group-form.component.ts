@@ -3,16 +3,16 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { BehaviorSubject, first, mergeMap } from 'rxjs';
-import { FamilyService } from '../../family/family.service';
+import { GroupService } from '../../group/group.service';
 
 @Component({
-  selector: 'startup-create-family-form',
-  templateUrl: './create-family-form.component.html',
-  styleUrls: ['./create-family-form.component.css', '../../../styles/basic-form.css'],
+  selector: 'startup-create-group-form',
+  templateUrl: './create-group-form.component.html',
+  styleUrls: ['./create-group-form.component.css', '../../../styles/basic-form.css'],
 })
-export class CreateFamilyFormComponent {
+export class CreateGroupFormComponent {
   private auth = inject(AuthService);
-  private family = inject(FamilyService);
+  private group = inject(GroupService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
 
@@ -33,7 +33,7 @@ export class CreateFamilyFormComponent {
       .getUid()
       .pipe(
         first(),
-        mergeMap((uid) => this.family.create$({ lastName: lastName.trim(), owner: uid })),
+        mergeMap((uid) => this.group.create$({ lastName: lastName.trim(), owner: uid })),
       )
       .subscribe({
         next: () => this.router.navigate(['members'], { relativeTo: this.route }),

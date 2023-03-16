@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { first, mergeMap } from 'rxjs';
-import { FamilyService } from '../../family/family.service';
+import { GroupService } from '../../group/group.service';
 
 @Component({
   selector: 'startup-single-user-register',
@@ -11,7 +11,7 @@ import { FamilyService } from '../../family/family.service';
 })
 export class SingleUserRegisterComponent {
   private auth = inject(AuthService);
-  private family = inject(FamilyService);
+  private group = inject(GroupService);
   private router = inject(Router);
 
   handleSubmission() {
@@ -19,10 +19,10 @@ export class SingleUserRegisterComponent {
       .getUid()
       .pipe(
         first(),
-        mergeMap((uid) => this.family.getMembersFamily$(uid)),
-        mergeMap((family) => {
-          if (!family) throw ReferenceError('NoFamilyError');
-          return this.family.update$(family.id, { setupCompleted: true });
+        mergeMap((uid) => this.group.getMembersGroup$(uid)),
+        mergeMap((group) => {
+          if (!group) throw ReferenceError('NoGroupError');
+          return this.group.update$(group.id, { setupCompleted: true });
         }),
       )
       .subscribe({

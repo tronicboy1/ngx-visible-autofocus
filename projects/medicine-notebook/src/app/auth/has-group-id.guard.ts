@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
-export const hasFamilyIdGuard: CanActivateFn = (route, _state) => {
+export const hasGroupIdGuard: CanActivateFn = (route, _state) => {
   const router = inject(Router);
   return (
-    Boolean(route.queryParams['familyId'] && route.queryParams['email'] && route.queryParams['memberId']) ||
+    Boolean(route.queryParams['groupId'] && route.queryParams['email'] && route.queryParams['memberId']) ||
     router.createUrlTree(['/auth'])
   );
 };

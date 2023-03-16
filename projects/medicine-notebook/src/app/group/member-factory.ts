@@ -1,7 +1,7 @@
 export type Member = {
   name: string;
   dob: number;
-  familyId: string;
+  groupId: string;
   weight: number;
   sex: Sex;
   medicineAllergies: string[];
@@ -31,7 +31,7 @@ export class MemberFactory {
         uid: '',
         name: '',
         dob: new Date('1990/1/1').getTime(),
-        familyId: '',
+        groupId: '',
         weight: 60,
         sex: Sex.Q,
         medicineAllergies: [],

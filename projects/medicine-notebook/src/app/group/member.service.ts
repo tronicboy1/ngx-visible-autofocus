@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { arrayUnion, collection, doc, runTransaction, where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
-import { filter, from, map, mergeMap, Observable } from 'rxjs';
-import { AbstractFamilyService } from './family.service.abstract';
+import { from, map, mergeMap, Observable } from 'rxjs';
+import { AbstractGroupService } from './group.service.abstract';
 import { Member, MemberFactory, MemberWithId } from './member-factory';
 import { AbstractMemberService } from './member.service.abstract';
 
@@ -13,22 +13,22 @@ export class MemberService extends AbstractMemberService {
   private factory = new MemberFactory();
   private firestore = inject(FirestoreService);
 
-  create$(data: Partial<Omit<Member, 'familyId'>> & { familyId: string }) {
+  create$(data: Partial<Omit<Member, 'groupId'>> & { groupId: string }) {
     const member = this.factory.create(data);
-    return this.getFamilyMembers$(data.familyId).pipe(
+    return this.getGroupMembers$(data.groupId).pipe(
       map((members) => {
         if (members.find((member) => member.name === data.name)) throw Error('SameNameError');
         return members;
       }),
       mergeMap(() =>
         runTransaction(this.firestore.db, async (transaction) => {
-          const familyRef = doc(this.firestore.db, AbstractFamilyService.rootKey, member.familyId);
-          const family = await transaction.get(familyRef);
-          if (!family.exists()) throw ReferenceError('Family ID is incorrect');
+          const groupRef = doc(this.firestore.db, AbstractGroupService.rootKey, member.groupId);
+          const group = await transaction.get(groupRef);
+          if (!group.exists()) throw ReferenceError('Group ID is incorrect');
           const memberRef = doc(collection(this.firestore.db, this.rootKey));
           await transaction.set(memberRef, member);
           if (member.uid) {
-            await transaction.update(familyRef, { memberIds: arrayUnion(member.uid) });
+            await transaction.update(groupRef, { memberIds: arrayUnion(member.uid) });
           }
           return memberRef.id;
         }),
@@ -36,15 +36,15 @@ export class MemberService extends AbstractMemberService {
     );
   }
 
-  addMemberAccount$(familyId: string, memberId: string, memberUid: string) {
+  addMemberAccount$(groupId: string, memberId: string, memberUid: string) {
     return from(
       runTransaction(this.firestore.db, async (transaction) => {
-        const familyRef = doc(this.firestore.db, AbstractFamilyService.rootKey, familyId);
-        const family = await transaction.get(familyRef);
-        if (!family.exists()) throw ReferenceError('Family ID is incorrect');
-        await transaction.update(familyRef, { memberIds: arrayUnion(memberUid) });
+        const groupRef = doc(this.firestore.db, AbstractGroupService.rootKey, groupId);
+        const group = await transaction.get(groupRef);
+        if (!group.exists()) throw ReferenceError('Group ID is incorrect');
+        await transaction.update(groupRef, { memberIds: arrayUnion(memberUid) });
         const memberRef = doc(this.firestore.db, this.rootKey, memberId);
-        await transaction.update(memberRef, { familyId });
+        await transaction.update(memberRef, { groupId });
       }),
     );
   }
@@ -66,8 +66,8 @@ export class MemberService extends AbstractMemberService {
     );
   }
 
-  getFamilyMembers$(familyId: string): Observable<MemberWithId[]> {
-    return this.firestore.query$(this.rootKey, where('familyId', '==', familyId)).pipe(
+  getGroupMembers$(groupId: string): Observable<MemberWithId[]> {
+    return this.firestore.query$(this.rootKey, where('groupId', '==', groupId)).pipe(
       map((results) => {
         if (results.empty) return [];
         return results.docs.map((doc) => {

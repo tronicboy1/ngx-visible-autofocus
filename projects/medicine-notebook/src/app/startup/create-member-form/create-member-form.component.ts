@@ -2,9 +2,9 @@ import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { BehaviorSubject, first, forkJoin, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
-import { FamilyService } from '../../family/family.service';
-import { Sex } from '../../family/member-factory';
-import { MemberService } from '../../family/member.service';
+import { GroupService } from '../../group/group.service';
+import { Sex } from '../../group/member-factory';
+import { MemberService } from '../../group/member.service';
 
 @Component({
   selector: 'startup-create-member-form',
@@ -13,13 +13,13 @@ import { MemberService } from '../../family/member.service';
 })
 export class CreateMemberFormComponent {
   private auth = inject(AuthService);
-  private family = inject(FamilyService);
+  private group = inject(GroupService);
   private member = inject(MemberService);
   @Output() submitted = new EventEmitter<void>();
 
   readonly isFirstMember$ = this.auth.getUid().pipe(
-    switchMap((uid) => this.family.getMembersFamily$(uid)),
-    map((family) => family && !family.memberIds.length),
+    switchMap((uid) => this.group.getMembersGroup$(uid)),
+    map((group) => group && !group.memberIds.length),
   );
   readonly Sex = Sex;
   readonly currentDate = new Date().toISOString().split('T')[0];
@@ -49,26 +49,26 @@ export class CreateMemberFormComponent {
         first(),
         switchMap((uid) =>
           forkJoin([
-            this.family.getMembersFamily$(uid),
+            this.group.getMembersGroup$(uid),
             this.isFirstMember$.pipe(first()),
             this.auth.getAuthState().pipe(first()),
           ]),
         ),
-        mergeMap(([family, isFirstMember, authState]) => {
-          if (!family) throw Error('no family found');
-          const data = { name: name.trim(), dob: dobNumber, sex, familyId: family.id };
+        mergeMap(([group, isFirstMember, authState]) => {
+          if (!group) throw Error('no group found');
+          const data = { name: name.trim(), dob: dobNumber, sex, groupId: group.id };
           switch (true) {
             case isFirstMember:
               return this.member
                 .create$({ ...data, uid: authState!.uid, email: authState!.email! })
-                .pipe(withLatestFrom(of(family)));
+                .pipe(withLatestFrom(of(group)));
             default:
-              return this.member.create$(data).pipe(withLatestFrom(of(family)));
+              return this.member.create$(data).pipe(withLatestFrom(of(group)));
           }
         }),
-        tap(([memberId, family]) => {
+        tap(([memberId, group]) => {
           if (!(sendInvite && email)) return;
-          this.family.sendInvite(email, family.id, memberId);
+          this.group.sendInvite(email, group.id, memberId);
         }),
       )
       .subscribe({

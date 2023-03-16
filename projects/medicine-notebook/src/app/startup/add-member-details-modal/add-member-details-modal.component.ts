@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, switchMap } from 'rxjs';
-import { MemberService } from '../../family/member.service';
+import { MemberService } from '../../group/member.service';
 
 @Component({
   selector: 'startup-add-member-details-modal',

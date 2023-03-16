@@ -1,4 +1,4 @@
-export type Family = {
+export type Group = {
   lastName: string;
   memberIds: [];
   owner: string;
@@ -10,14 +10,14 @@ export type Family = {
 export enum UseMode {
   NotSet = 0,
   SingleUser,
-  Family,
+  Group,
 }
 
-export type FamilyWithId = Family & { id: string };
+export type GroupWithId = Group & { id: string };
 
-export class FamilyFactory {
-  create(data: Partial<Family>): Family {
-    return Object.assign<Family, typeof data>(
+export class GroupFactory {
+  create(data: Partial<Group>): Group {
+    return Object.assign<Group, typeof data>(
       { lastName: '', memberIds: [], owner: '', createdAt: Date.now(), setupCompleted: false, useMode: UseMode.NotSet },
       data,
     );

@@ -3,9 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { StartupRoutingModule } from './startup-routing.module';
 import { StartupComponent } from './startup.component';
-import { CreateFamilyFormComponent } from './create-family-form/create-family-form.component';
 import { CreateMemberFormComponent } from './create-member-form/create-member-form.component';
-import { CreateFamilyComponent } from './create-family/create-family.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/src/public-api';
@@ -15,13 +13,15 @@ import { NgxVisibleAutofocusModule } from 'projects/ngx-visible-autofocus/src/pu
 import { AddMemberDetailsModalComponent } from './add-member-details-modal/add-member-details-modal.component';
 import { ChooseModeComponent } from './choose-mode/choose-mode.component';
 import { SingleUserRegisterComponent } from './single-user-register/single-user-register.component';
+import { CreateGroupComponent } from './create-group/create-group.component';
+import { CreateGroupFormComponent } from './create-group-form/create-group-form.component';
 
 @NgModule({
   declarations: [
     StartupComponent,
-    CreateFamilyFormComponent,
+    CreateGroupFormComponent,
     CreateMemberFormComponent,
-    CreateFamilyComponent,
+    CreateGroupComponent,
     AddMembersComponent,
     AddMemberDetailsFormComponent,
     AddMemberModalComponent,
@@ -29,6 +29,12 @@ import { SingleUserRegisterComponent } from './single-user-register/single-user-
     ChooseModeComponent,
     SingleUserRegisterComponent,
   ],
-  imports: [CommonModule, StartupRoutingModule, ReactiveFormsModule, NgxBaseComponentsModule, NgxVisibleAutofocusModule],
+  imports: [
+    CommonModule,
+    StartupRoutingModule,
+    ReactiveFormsModule,
+    NgxBaseComponentsModule,
+    NgxVisibleAutofocusModule,
+  ],
 })
 export class StartupModule {}

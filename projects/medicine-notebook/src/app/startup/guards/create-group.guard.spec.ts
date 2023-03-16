@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanMatchFn } from '@angular/router';
 
-import { createFamilyGuard } from './create-family.guard';
+import { createGroupGuard } from './create-group.guard';
 
-describe('createFamilyGuard', () => {
-  const executeGuard: CanMatchFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => createFamilyGuard(...guardParameters));
+describe('createGroupGuard', () => {
+  const executeGuard: CanMatchFn = (...guardParameters) =>
+      TestBed.runInInjectionContext(() => createGroupGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

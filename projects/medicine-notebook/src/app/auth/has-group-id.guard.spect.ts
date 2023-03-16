@@ -1,11 +1,11 @@
 import { TestBed } from '@angular/core/testing';
 import { CanActivateFn } from '@angular/router';
 
-import { hasFamilyIdGuard } from './has-family-id.guard';
+import { hasGroupIdGuard } from './has-group-id.guard';
 
-describe('hasFamilyIdGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => hasFamilyIdGuard(...guardParameters));
+describe('hasGroupIdGuard', () => {
+  const executeGuard: CanActivateFn = (...guardParameters) =>
+      TestBed.runInInjectionContext(() => hasGroupIdGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
