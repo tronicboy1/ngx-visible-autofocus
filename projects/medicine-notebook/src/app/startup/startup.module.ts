@@ -19,6 +19,7 @@ import { EditMemberFormComponent } from './edit-member-form/edit-member-form.com
 import { EditMemberDetailsFormComponent } from './edit-member-details-form/edit-member-details-form.component';
 import { GroupModule } from '../group/group.module';
 import { DeleteMemberCheckComponent } from './delete-member-check/delete-member-check.component';
+import { EditMemberModalComponent } from './edit-member-modal/edit-member-modal.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { DeleteMemberCheckComponent } from './delete-member-check/delete-member-
     EditMemberFormComponent,
     EditMemberDetailsFormComponent,
     DeleteMemberCheckComponent,
+    EditMemberModalComponent,
   ],
   imports: [
     CommonModule,

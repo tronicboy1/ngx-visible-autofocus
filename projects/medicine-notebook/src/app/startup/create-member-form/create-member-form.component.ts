@@ -29,7 +29,10 @@ export class CreateMemberFormComponent {
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(255)],
       nonNullable: true,
     }),
-    dob: new FormControl('1990-1-1', { validators: [Validators.required], nonNullable: true }),
+    dob: new FormControl(new Date('1990-1-2').toISOString().split('T')[0], {
+      validators: [Validators.required],
+      nonNullable: true,
+    }),
     weight: new FormControl(60, { nonNullable: true }),
     sex: new FormControl(Sex.Q, { nonNullable: true, validators: [Validators.required] }),
     sendInvite: new FormControl(false, { nonNullable: true }),
