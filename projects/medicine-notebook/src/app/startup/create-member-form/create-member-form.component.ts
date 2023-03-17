@@ -59,7 +59,7 @@ export class CreateMemberFormComponent {
         ),
         mergeMap(([group, isFirstMember, authState]) => {
           if (!group) throw Error('no group found');
-          const data = { name: name.trim(), dob: dobNumber, sex, groupId: group.id };
+          const data = { name: name.trim(), dob: dobNumber, weight, sex, groupId: group.id };
           switch (true) {
             case isFirstMember:
               return this.member
