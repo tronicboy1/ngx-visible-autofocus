@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import '@web-components/base-modal';
 import { AuthService, UserService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { fromEvent, map, mergeMap, Subscription, take } from 'rxjs';
 

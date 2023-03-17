@@ -1,22 +1,26 @@
-<div id="preview-box" class="preview-box" [style.display]="this.previewImage || this.user?.photoURL ? 'flex' : 'none'">
-  <div class="preview-box" style="display: flex">
-    <p i18n>Before</p>
-    <img *ngIf="this.user?.photoURL; else noAvatar" id="original" [src]="this.user?.photoURL" i18n-alt="Original Avatar"
-      alt="Original Avatar" />
+<ng-container *ngIf="this.user$ | async as user">
+  <div id="preview-box" class="preview-box"
+    [style.display]="this.previewImage || this.user?.photoURL ? 'flex' : 'none'">
+    <div class="preview-box" style="display: flex">
+      <p i18n>Before</p>
+      <img *ngIf="this.user?.photoURL; else noAvatar" id="original" [src]="this.user?.photoURL"
+        i18n-alt="Original Avatar" alt="Original Avatar" />
+    </div>
+    <div class="preview-box" [style.display]="this.photoPreview ? 'flex' : 'none'">
+      <p i18n>After</p>
+      <img crossorigin="anonymous" [attr.src]="this.photoPreview" alt="New Avatar" #previewImage />
+      <p i18n>Compressed</p>
+      <canvas height="100" width="100" #photoCanvas></canvas>
+    </div>
+    <input name="avatar" id="preview-input" type="file" accept="image/png, image/jpeg"
+      (input)="this.handleFileInput($event)" required />
+    <label class="photo-label" for="preview-input"><span>{{ this.filename ?? this.noFileNameText }}</span></label>
   </div>
-  <div class="preview-box" [style.display]="this.photoPreview ? 'flex' : 'none'">
-    <p i18n>After</p>
-    <img crossorigin="anonymous" [attr.src]="this.photoPreview" alt="New Avatar" #previewImage />
-    <p i18n>Compressed</p>
-    <canvas height="100" width="100" #photoCanvas></canvas>
-  </div>
-  <input name="avatar" id="preview-input" type="file" accept="image/png, image/jpeg"
-    (input)="this.handleFileInput($event)" required />
-  <label class="photo-label" for="preview-input"><span>{{ this.filename ?? this.noFileNameText }}</span></label>
-</div>
-<ng-template [ngIf]="!(this.user?.photoURL || this.previewImage)" #noAvatar>
-  <p i18n>No Photo</p>
-</ng-template>
+  <ng-template #noAvatar>
+    <p i18n>No Photo</p>
+  </ng-template>
+</ng-container>
+
 
 <form (submit)="this.handleSubmit($event)">
   <input type="file" name="avatar" required #fileInput />

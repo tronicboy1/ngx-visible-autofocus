@@ -11,7 +11,7 @@ import { map } from 'rxjs';
 export class NavBarComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
-  public isAuth = this.authService.getAuthState().pipe(map(Boolean));
+  readonly isAuth$ = this.authService.getAuthState().pipe(map(Boolean));
 
   public handleLogoutClick = () => {
     this.authService.signOutUser().then(() => this.router.navigateByUrl('/auth'));

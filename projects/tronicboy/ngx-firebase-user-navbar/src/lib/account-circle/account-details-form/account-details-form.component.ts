@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import '@web-components/loading-spinner';
+import { Component } from '@angular/core';
+import { map } from 'rxjs';
 import { InheritableAccountDetailsComponent } from '../inheritable-account-details-component';
 
 @Component({
@@ -10,16 +10,10 @@ import { InheritableAccountDetailsComponent } from '../inheritable-account-detai
     '../../../../../../../projects/tronicboy/ngx-base-components/styles/basic-form.css',
   ],
 })
-export class AccountDetailsFormComponent
-  extends InheritableAccountDetailsComponent
-  implements OnInit, OnDestroy
-{
+export class AccountDetailsFormComponent extends InheritableAccountDetailsComponent {
   private photoPreview?: string;
-  get photoURL(): string | undefined {
-    if (this.photoPreview) return this.photoPreview;
-    if (this.user?.photoURL) return this.user.photoURL;
-    return undefined;
-  }
+
+  readonly photoUrl$ = this.user$.pipe(map((user) => this.photoPreview || user.photoURL));
 
   public handleSubmit: EventListener = (event) => {
     const { formData } = InheritableAccountDetailsComponent.getFormData(event);

@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
-import { fromEvent, map } from 'rxjs';
+import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { fromEvent, map, Subject, takeUntil } from 'rxjs';
 import { InheritableAccountDetailsComponent } from '../inheritable-account-details-component';
 
 @Component({
@@ -10,13 +10,11 @@ import { InheritableAccountDetailsComponent } from '../inheritable-account-detai
     '../../../../../../../projects/tronicboy/ngx-base-components/styles/basic-form.css',
   ],
 })
-export class ChangeAvatarFormComponent
-  extends InheritableAccountDetailsComponent
-  implements AfterViewInit
-{
+export class ChangeAvatarFormComponent extends InheritableAccountDetailsComponent implements AfterViewInit, OnDestroy {
   filename?: string;
   photoPreview?: string;
-  readonly noFileNameText = $localize`Select Photo`
+  readonly noFileNameText = $localize`Select Photo`;
+  private teardown$ = new Subject<void>();
 
   @ViewChild('photoCanvas')
   private canvas!: ElementRef<HTMLCanvasElement>;
@@ -25,37 +23,29 @@ export class ChangeAvatarFormComponent
   @ViewChild('previewImage')
   private previewImage!: ElementRef<HTMLImageElement>;
 
+  ngOnDestroy() {
+    this.teardown$.next();
+  }
+
   ngAfterViewInit(): void {
     if (!this.canvas) throw TypeError('Canvase element was not found.');
     if (!this.fileInput) throw TypeError('File Input was not found.');
     if (!this.previewImage) throw TypeError('Preview image element not found.');
-    const previewImageLoadSubscription = fromEvent(
-      this.previewImage.nativeElement,
-      'load'
-    )
+    fromEvent(this.previewImage.nativeElement, 'load')
       .pipe(
+        takeUntil(this.teardown$),
         map((event) => {
           const imgElement = event.target;
           if (!(imgElement instanceof HTMLImageElement)) throw TypeError();
           return imgElement;
-        })
+        }),
       )
       .subscribe((imgElement) => {
         const context = this.canvas.nativeElement.getContext('2d');
         if (!context) throw Error('Unable to load context.');
         const { width, height } = this.canvas.nativeElement;
         context!.clearRect(0, 0, width, height);
-        context.drawImage(
-          imgElement,
-          0,
-          0,
-          imgElement.naturalWidth,
-          imgElement.naturalHeight,
-          0,
-          0,
-          width,
-          height
-        );
+        context.drawImage(imgElement, 0, 0, imgElement.naturalWidth, imgElement.naturalHeight, 0, 0, width, height);
         this.canvas.nativeElement.toBlob((blob) => {
           if (!blob) throw Error('No blob was generated');
           const file = new File([blob], 'img.png', {
@@ -66,14 +56,12 @@ export class ChangeAvatarFormComponent
           this.fileInput.nativeElement.files = transfer.files;
         });
       });
-    this.subscriptions.push(previewImageLoadSubscription);
   }
 
   public handleSubmit: EventListener = (event) => {
     const { formData } = InheritableAccountDetailsComponent.getFormData(event);
     const avatar = formData.get('avatar')!;
-    if (!(avatar instanceof File))
-      throw TypeError('Avatar formdata should be file.');
+    if (!(avatar instanceof File)) throw TypeError('Avatar formdata should be file.');
     if (!avatar.size) return;
     this.loading = true;
     this.authService
@@ -86,16 +74,13 @@ export class ChangeAvatarFormComponent
   public handleFileInput: EventListener = (event) => {
     this.filename = undefined;
     const input = event.currentTarget;
-    if (!(input instanceof HTMLInputElement))
-      throw TypeError('This listener must be used with file input.');
+    if (!(input instanceof HTMLInputElement)) throw TypeError('This listener must be used with file input.');
     const { files } = input;
     if (!files) throw TypeError('Files were not associated with file input.');
     const photo = files[0];
     if (!photo.size) return;
     this.filename = photo.name;
-    this.getImageDataURL(photo).then(
-      (dataURL) => (this.photoPreview = dataURL)
-    );
+    this.getImageDataURL(photo).then((dataURL) => (this.photoPreview = dataURL));
   };
 
   private getImageDataURL = (file: File) =>
@@ -104,8 +89,7 @@ export class ChangeAvatarFormComponent
 
       reader.addEventListener('load', () => {
         const { result } = reader;
-        if (typeof result !== 'string')
-          throw TypeError('Reader result type was incorrect.');
+        if (typeof result !== 'string') throw TypeError('Reader result type was incorrect.');
         return resolve(result);
       });
 
