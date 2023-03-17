@@ -9,6 +9,7 @@ import { canCloseAddMemberModalGuard } from './guards/can-close-add-member-modal
 import { chooseModeGuard } from './guards/choose-mode.guard';
 import { createGroupGuard } from './guards/create-group.guard';
 import { createMemberGuard } from './guards/create-member.guard';
+import { isSingleUserGroupGuard } from './guards/is-single-user-group.guard';
 import { SingleUserRegisterComponent } from './single-user-register/single-user-register.component';
 import { StartupComponent } from './startup.component';
 
@@ -22,7 +23,7 @@ const routes: Routes = [
       {
         path: 'members',
         component: AddMembersComponent,
-        canMatch: [createMemberGuard],
+        canActivate: [createMemberGuard],
         children: [
           { path: 'add', component: AddMemberModalComponent, canDeactivate: [canCloseAddMemberModalGuard] },
           { path: 'add-details/:memberId', component: AddMemberDetailsModalComponent },
@@ -31,6 +32,7 @@ const routes: Routes = [
       {
         path: 'single-user',
         component: SingleUserRegisterComponent,
+        canActivate: [isSingleUserGroupGuard],
       },
       { path: '', redirectTo: 'group', pathMatch: 'full' },
     ],

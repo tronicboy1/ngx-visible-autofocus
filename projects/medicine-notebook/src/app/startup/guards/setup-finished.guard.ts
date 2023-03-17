@@ -10,12 +10,10 @@ let setupFinished = false;
  * Redirect users to home if they are finished with init setup
  */
 export const setupFinishedGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  if (setupFinished) return router.createUrlTree(['/home']);
   const auth = inject(AuthService);
   const group = inject(GroupService);
-  const router = inject(Router);
-
-  console.log('setup fin guard')
-  if (setupFinished) return router.createUrlTree(['/home']);
   return auth.getUid().pipe(
     first(),
     switchMap((uid) => group.getMembersGroup$(uid)),

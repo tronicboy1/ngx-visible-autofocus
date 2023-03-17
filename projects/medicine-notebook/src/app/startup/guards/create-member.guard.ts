@@ -1,11 +1,11 @@
 import { inject } from '@angular/core';
-import { CanMatchFn, Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { first, map, switchMap } from 'rxjs';
 import { UseMode } from '../../group/group-factory';
 import { GroupService } from '../../group/group.service';
 
-export const createMemberGuard: CanMatchFn = (_route, _segments) => {
+export const createMemberGuard: CanActivateFn = (_route, _segments) => {
   const auth = inject(AuthService);
   const group = inject(GroupService);
   const router = inject(Router);
