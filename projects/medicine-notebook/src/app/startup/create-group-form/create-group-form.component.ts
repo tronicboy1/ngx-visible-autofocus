@@ -48,7 +48,7 @@ export class CreateGroupFormComponent {
       .subscribe({
         next: (groupId) =>
           this.router.navigate(['members'], { relativeTo: this.route.parent, queryParams: { groupId } }),
-        complete: () => this.loading$.next(false),
+        error: () => this.loading$.next(false),
       });
   }
 }

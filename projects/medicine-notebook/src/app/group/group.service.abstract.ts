@@ -2,7 +2,7 @@ import { Observable } from 'rxjs';
 import { Group, GroupWithId } from './group-factory';
 
 export abstract class AbstractGroupService {
-  static rootKey = 'families';
+  static rootKey = 'groups';
   protected rootKey = AbstractGroupService.rootKey;
 
   abstract create$(data: Group): Observable<string>;

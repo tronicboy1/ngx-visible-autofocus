@@ -4,6 +4,8 @@ import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api'
 import { first, map, switchMap } from 'rxjs';
 import { GroupService } from '../../group/group.service';
 
+let setupFinished = false;
+
 /**
  * Redirect users to startup if they are NOT finished with init setup
  */
@@ -12,9 +14,10 @@ export const setupNotFinishedGuard: CanActivateFn = (_route, _state) => {
   const group = inject(GroupService);
   const router = inject(Router);
 
+  if (setupFinished) return true;
   return auth.getUid().pipe(
     first(),
     switchMap((uid) => group.getMembersGroup$(uid)),
-    map((group) => group?.setupCompleted || router.createUrlTree(['/startup'])),
+    map((group) => (setupFinished = Boolean(group?.setupCompleted)) || router.createUrlTree(['/startup'])),
   );
 };

@@ -5,15 +5,23 @@ import { first, map, switchMap } from 'rxjs';
 import { GroupService } from '../../group/group.service';
 import { MemberService } from '../../group/member.service';
 
+/**
+ * Improve performance
+ */
+let hasMoreThanOneMemberCache = false;
+
 export const canCloseAddMemberModalGuard: CanDeactivateFn<unknown> = (
   _component,
   _currentRoute,
   _currentState,
   _nextState,
 ) => {
+  if (hasMoreThanOneMemberCache) return true;
+
   const auth = inject(AuthService);
   const group = inject(GroupService);
   const member = inject(MemberService);
+
   return auth.getUid().pipe(
     first(),
     switchMap((uid) => group.getMembersGroup$(uid)),
@@ -22,6 +30,6 @@ export const canCloseAddMemberModalGuard: CanDeactivateFn<unknown> = (
       return group;
     }),
     switchMap((group) => member.getGroupMembers$(group.id)),
-    map((members) => members.length > 0),
+    map((members) => (hasMoreThanOneMemberCache = members.length > 0)),
   );
 };

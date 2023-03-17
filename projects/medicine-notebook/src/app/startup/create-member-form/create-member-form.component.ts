@@ -73,7 +73,7 @@ export class CreateMemberFormComponent {
       )
       .subscribe({
         next: () => this.submitted.emit(),
-        complete: () => this.loading$.next(false),
+        error: () => this.loading$.next(false),
       });
   }
 }
