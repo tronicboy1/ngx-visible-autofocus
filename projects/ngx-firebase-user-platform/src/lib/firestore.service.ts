@@ -31,24 +31,24 @@ export class FirestoreService extends AbstractFirestoreService {
   readonly db = this.firebaseService.firestore;
 
   get$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions) {
-    const ref = this.getRef(key, id);
+    const ref = this.getRef<T>(key, id);
     return from(getDoc(ref)).pipe(
       map((result) => {
         if (!result.exists) return undefined;
-        return { ...result.data(options), id: result.id } as T;
+        return { ...result.data(options)!, id: result.id };
       }),
     );
   }
 
-  getAll$(key: string) {
-    const ref = this.getRef(key);
+  getAll$<T>(key: string) {
+    const ref = this.getRef<T>(key);
     return from(getDocs(ref));
   }
 
   watch$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions): Observable<T> {
-    return new Observable<DocumentSnapshot<DocumentData>>((observer) => {
+    return new Observable<DocumentSnapshot<T>>((observer) => {
       return onSnapshot(
-        this.getRef(key, id),
+        this.getRef<T>(key, id),
         (result) => observer.next(result),
         observer.error.bind(this),
         observer.complete.bind(this),
@@ -57,13 +57,13 @@ export class FirestoreService extends AbstractFirestoreService {
       map((result) => {
         if (!result.exists) throw Error('Tree not found.');
         const data = result.data(options)!;
-        return { ...data, id: result.id } as T;
+        return { ...data, id: result.id };
       }),
     );
   }
 
-  query$(key: string, ...args: QueryConstraint[]): Observable<QuerySnapshot<DocumentData>> {
-    const ref = this.getRef(key);
+  query$<T>(key: string, ...args: QueryConstraint[]): Observable<QuerySnapshot<T>> {
+    const ref = this.getRef<T>(key);
     const q = query(ref, ...args);
     return from(getDocs(q));
   }
@@ -93,8 +93,8 @@ export class FirestoreService extends AbstractFirestoreService {
     return from(deleteDoc(ref));
   }
 
-  private getRef(key: string): CollectionReference<DocumentData>;
-  private getRef(key: string, id: string): DocumentReference<DocumentData>;
+  private getRef<T = DocumentData>(key: string): CollectionReference<T>;
+  private getRef<T = DocumentData>(key: string, id: string): DocumentReference<T>;
   private getRef(key: string, id?: string) {
     return id ? doc(this.firebaseService.firestore, key, id) : collection(this.firebaseService.firestore, key);
   }
