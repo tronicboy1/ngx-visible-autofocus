@@ -44,7 +44,8 @@ export class MemberService extends AbstractMemberService {
         if (!group.exists()) throw ReferenceError('Group ID is incorrect');
         await transaction.update(groupRef, { memberIds: arrayUnion(memberUid) });
         const memberRef = doc(this.firestore.db, this.rootKey, memberId);
-        await transaction.update(memberRef, { groupId });
+        const memberUpdates: Partial<Member> = { groupId, uid: memberUid };
+        await transaction.update(memberRef, memberUpdates);
       }),
     );
   }
@@ -54,7 +55,12 @@ export class MemberService extends AbstractMemberService {
   }
 
   delete$(id: string): Observable<void> {
-    return this.firestore.delete$(this.rootKey, id);
+    return this.get$(id).pipe(
+      mergeMap((member) => {
+        if (member.uid) throw Error('Cannot delete member who is registered.');
+        return this.firestore.delete$(this.rootKey, id);
+      }),
+    );
   }
 
   get$(id: string): Observable<Member> {

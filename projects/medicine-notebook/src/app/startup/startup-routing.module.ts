@@ -5,6 +5,7 @@ import { AddMemberModalComponent } from './add-member-modal/add-member-modal.com
 import { AddMembersComponent } from './add-members/add-members.component';
 import { ChooseModeComponent } from './choose-mode/choose-mode.component';
 import { CreateGroupComponent } from './create-group/create-group.component';
+import { DeleteMemberCheckComponent } from './delete-member-check/delete-member-check.component';
 import { canCloseAddMemberModalGuard } from './guards/can-close-add-member-modal.guard';
 import { chooseModeGuard } from './guards/choose-mode.guard';
 import { createGroupGuard } from './guards/create-group.guard';
@@ -26,7 +27,8 @@ const routes: Routes = [
         canActivate: [createMemberGuard],
         children: [
           { path: 'add', component: AddMemberModalComponent, canDeactivate: [canCloseAddMemberModalGuard] },
-          { path: 'add-details/:memberId', component: AddMemberDetailsModalComponent },
+          { path: ':memberId/add-details', component: AddMemberDetailsModalComponent },
+          { path: ':memberId/delete', component: DeleteMemberCheckComponent },
         ],
       },
       {

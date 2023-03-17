@@ -15,6 +15,10 @@ import { ChooseModeComponent } from './choose-mode/choose-mode.component';
 import { SingleUserRegisterComponent } from './single-user-register/single-user-register.component';
 import { CreateGroupComponent } from './create-group/create-group.component';
 import { CreateGroupFormComponent } from './create-group-form/create-group-form.component';
+import { EditMemberFormComponent } from './edit-member-form/edit-member-form.component';
+import { EditMemberDetailsFormComponent } from './edit-member-details-form/edit-member-details-form.component';
+import { GroupModule } from '../group/group.module';
+import { DeleteMemberCheckComponent } from './delete-member-check/delete-member-check.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +32,9 @@ import { CreateGroupFormComponent } from './create-group-form/create-group-form.
     AddMemberDetailsModalComponent,
     ChooseModeComponent,
     SingleUserRegisterComponent,
+    EditMemberFormComponent,
+    EditMemberDetailsFormComponent,
+    DeleteMemberCheckComponent,
   ],
   imports: [
     CommonModule,
@@ -35,6 +42,7 @@ import { CreateGroupFormComponent } from './create-group-form/create-group-form.
     ReactiveFormsModule,
     NgxBaseComponentsModule,
     NgxVisibleAutofocusModule,
+    GroupModule,
   ],
 })
 export class StartupModule {}
