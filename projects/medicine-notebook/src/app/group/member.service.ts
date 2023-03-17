@@ -63,7 +63,7 @@ export class MemberService extends AbstractMemberService {
     );
   }
 
-  get$(id: string): Observable<Member> {
+  get$(id: string): Observable<MemberWithId> {
     return this.firestore.get$<MemberWithId>(this.rootKey, id).pipe(
       map((value) => {
         if (!value) throw ReferenceError('Member not found.');
