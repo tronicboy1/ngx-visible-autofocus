@@ -5,7 +5,7 @@ import { MedicineDbService } from '../medicine-db/medicine-db.service';
 import { MedicineCandidatesComponent } from './medicine-candidates/medicine-candidates.component';
 
 /**
- * Adds a dropdown to an input for possible medicines based on input
+ * Adds a dropdown to an input for possible candidates based on input
  */
 @Directive({
   selector: '[appMedicineInput]',
@@ -31,7 +31,7 @@ export class MedicineInputDirective {
                 filter((results) => Boolean(results.length)),
                 switchMap((results) => {
                   const componentRef = this.viewContainerRef.createComponent(MedicineCandidatesComponent);
-                  componentRef.instance.medicines = results;
+                  componentRef.instance.candidates = results;
                   return componentRef.instance.candidateClick;
                 }),
               )
