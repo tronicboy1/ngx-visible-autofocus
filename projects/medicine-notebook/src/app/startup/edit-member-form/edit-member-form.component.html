@@ -34,8 +34,11 @@
         </svg>
       </div>
       <div *ngFor="let control of this.formGroup.controls.diseaseHistory.controls; let i = index" class="input-array">
-        <input appMedicineInput type="text" name="disease-history" aria-labelledby="disease-history-label" maxlength="255" required
-          [formControl]="control" autocomplete="off">
+        <select name="disease-history" id="disease-history" aria-labelledby="disease-history-label" required
+          [formControl]="control">
+          <option *ngFor="let history of this.diseaseHistoryValues" [ngValue]="history">{{ history | diseaseHistory }}
+          </option>
+        </select>
         <svg (click)="this.formGroup.controls.diseaseHistory.removeAt(i)" xmlns="http://www.w3.org/2000/svg" height="48"
           width="48" viewBox="0,0,48,48">
           <path
@@ -52,8 +55,13 @@
         </svg>
       </div>
       <div *ngFor="let control of this.formGroup.controls[arrayField.key].controls; let i = index" class="input-array">
-        <input type="text" [name]="arrayField.key" aria-labelledby="medicine-allergies-label" maxlength="255" required
-          [formControl]="control" autocomplete="off">
+        <input *ngIf="arrayField.key !== 'medicineAllergies'; else medicineInfer" type="text" [name]="arrayField.key"
+          [attr.aria-labelledby]="arrayField.key + '-label'" maxlength="255" required [formControl]="control"
+          autocomplete="off">
+        <ng-template #medicineInfer>
+          <input appMedicineInput type="text" [name]="arrayField.key" [attr.aria-labelledby]="arrayField.key + '-label'"
+            maxlength="255" required [formControl]="control" autocomplete="off">
+        </ng-template>
         <svg (click)="this.formGroup.controls[arrayField.key].removeAt(i)" xmlns="http://www.w3.org/2000/svg"
           height="48" width="48" viewBox="0,0,48,48">
           <path

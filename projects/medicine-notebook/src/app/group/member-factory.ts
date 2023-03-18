@@ -36,12 +36,45 @@ export enum DiseaseHistory {
   Asthma,
   Stroke,
   Pollinosis,
-  Other
+  Other,
 }
 
 export type MemberWithId = Member & { id: string };
 
 export class MemberFactory {
+  getDefaultValue(key: keyof Member): Member[typeof key] {
+    switch (key) {
+      case 'diseaseHistory':
+        return DiseaseHistory.HighBloodPressure;
+      case 'dob':
+        return new Date('1990/1/1').getTime();
+      case 'email':
+        return undefined;
+      case 'foodAllergies':
+        return '';
+      case 'medicalInstitutions':
+        return '';
+      case 'medicineAllergies':
+        return '';
+      case 'name':
+        return '';
+      case 'otherAllergies':
+        return '';
+      case 'pharmacies':
+        return '';
+      case 'sex':
+        return Sex.Q;
+      case 'sideEffectHistory':
+        return '';
+      case 'uid':
+        return undefined;
+      case 'weight':
+        return 60;
+      default:
+        throw ReferenceError('InvalidKey');
+    }
+  }
+
   create(data: Partial<Member>) {
     return Object.assign<Member, typeof data>(
       {

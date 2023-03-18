@@ -1,11 +1,8 @@
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, Subject } from 'rxjs';
-import { Member, MemberArrayFields, Sex } from '../../group/member-factory';
+import { BehaviorSubject } from 'rxjs';
+import { DiseaseHistory, MemberArrayFields, MemberFactory, Sex } from '../../group/member-factory';
 import { MemberService } from '../../group/member.service';
-import { MedicineDbService } from '../../medicine-db/medicine-db.service';
-
-type OnlyArrayControls<T extends Object> = { [K in keyof T]: T[K] extends FormArray<any> ? T[K] : never };
 
 enum EditTabMode {
   BasicInfo = 1,
@@ -17,20 +14,21 @@ enum EditTabMode {
   templateUrl: './edit-member-form.component.html',
   styleUrls: ['./edit-member-form.component.css', '../../../styles/basic-form.css'],
 })
-export class EditMemberFormComponent implements OnInit, OnDestroy {
+export class EditMemberFormComponent implements OnInit {
   private member = inject(MemberService);
-  private medicineDb = inject(MedicineDbService);
+  private memberFactory = new MemberFactory();
   @Input() memberId!: string;
   @Output() submitted = new EventEmitter<void>();
 
-  private teardown$ = new Subject<void>();
   readonly Sex = Sex;
+  readonly diseaseHistoryValues = Object.values(DiseaseHistory).filter(
+    (value): value is DiseaseHistory => !isNaN(Number(value)),
+  );
   readonly loading$ = new BehaviorSubject(false);
   readonly mode$ = new BehaviorSubject(EditTabMode.BasicInfo);
   readonly EditTabMode = EditTabMode;
   readonly currentDate = new Date().toISOString().split('T')[0];
   readonly arrayFieldKeys: { key: keyof MemberArrayFields; name: string; selections?: {}[] }[] = [
-    //{ key: 'diseaseHistory', name: $localize`病歴` },
     { key: 'sideEffectHistory', name: $localize`副作用歴` },
     { key: 'foodAllergies', name: $localize`食物アレルギー` },
     { key: 'medicineAllergies', name: $localize`薬物アレルギー` },
@@ -48,14 +46,17 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
       nonNullable: true,
     }),
     weight: new FormControl(60, { nonNullable: true }),
-    sex: new FormControl(Sex.Q, { nonNullable: true, validators: [Validators.required] }),
-    medicineAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
-    foodAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
-    otherAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
-    sideEffectHistory: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
-    diseaseHistory: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
-    pharmacies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
-    medicalInstitutions: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
+    sex: new FormControl(Sex.Q, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    medicineAllergies: new FormArray<FormControl>([], [Validators.maxLength(255)]),
+    foodAllergies: new FormArray<FormControl>([], [Validators.maxLength(255)]),
+    otherAllergies: new FormArray<FormControl>([], [Validators.maxLength(255)]),
+    sideEffectHistory: new FormArray<FormControl>([], [Validators.maxLength(255)]),
+    diseaseHistory: new FormArray<FormControl>([], [Validators.maxLength(255)]),
+    pharmacies: new FormArray<FormControl>([], [Validators.maxLength(255)]),
+    medicalInstitutions: new FormArray<FormControl>([], [Validators.maxLength(255)]),
   });
 
   ngOnInit(): void {
@@ -64,6 +65,10 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
       this.formGroup.controls.dob.setValue(new Date(member.dob).toISOString().split('T')[0]);
       this.formGroup.controls.sex.setValue(member.sex);
       this.formGroup.controls.weight.setValue(member.weight);
+      member.diseaseHistory.forEach((value) => {
+        const control = this.addFormControl('diseaseHistory');
+        control.setValue(value);
+      });
       this.arrayFieldKeys.forEach(({ key }) =>
         member[key].forEach((value) => {
           const control = this.addFormControl(key);
@@ -73,12 +78,9 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
-    this.teardown$.next();
-  }
-
   addFormControl(controlName: keyof MemberArrayFields) {
-    const formControl = new FormControl('', { nonNullable: true, validators: [Validators.required] });
+    const defaultValue = this.memberFactory.getDefaultValue(controlName);
+    const formControl = new FormControl(defaultValue, { nonNullable: true, validators: [Validators.required] });
     this.formGroup.controls[controlName].push(formControl);
     return formControl;
   }
@@ -110,17 +112,22 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
         dob: dobNumber,
         weight,
         sex,
-        medicineAllergies,
-        medicalInstitutions,
-        foodAllergies,
-        otherAllergies,
-        sideEffectHistory,
-        diseaseHistory,
-        pharmacies,
+        medicineAllergies: this.getUniqueArray(medicineAllergies!),
+        medicalInstitutions: this.getUniqueArray(medicalInstitutions!),
+        foodAllergies: this.getUniqueArray(foodAllergies!),
+        otherAllergies: this.getUniqueArray(otherAllergies!),
+        sideEffectHistory: this.getUniqueArray(sideEffectHistory!),
+        diseaseHistory: this.getUniqueArray(diseaseHistory!),
+        pharmacies: this.getUniqueArray(pharmacies!),
       })
       .subscribe({
         next: () => this.submitted.emit(),
         error: () => this.loading$.next(false),
       });
+  }
+
+  private getUniqueArray<T>(array: T[]): T[] {
+    const unique = new Set(array);
+    return Array.from<T>(unique.values());
   }
 }

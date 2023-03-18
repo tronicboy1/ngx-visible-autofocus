@@ -4,6 +4,9 @@ import { filter, fromEvent, map, merge, of, sampleTime, Subject, switchMap, take
 import { MedicineDbService } from '../medicine-db/medicine-db.service';
 import { MedicineCandidatesComponent } from './medicine-candidates/medicine-candidates.component';
 
+/**
+ * Adds a dropdown to an input for possible medicines based on input
+ */
 @Directive({
   selector: '[appMedicineInput]',
 })

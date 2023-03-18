@@ -27,7 +27,7 @@
   top: 5px
 }
 
-.input-array input {
+.input-array select,.input-array input {
   margin: 0;
 }
 
