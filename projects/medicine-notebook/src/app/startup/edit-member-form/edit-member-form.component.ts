@@ -7,6 +7,11 @@ import { MedicineDbService } from '../../medicine-db/medicine-db.service';
 
 type OnlyArrayControls<T extends Object> = { [K in keyof T]: T[K] extends FormArray<any> ? T[K] : never };
 
+enum EditTabMode {
+  BasicInfo = 1,
+  DetailedInfo,
+}
+
 @Component({
   selector: 'startup-edit-member-form',
   templateUrl: './edit-member-form.component.html',
@@ -21,9 +26,11 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
   private teardown$ = new Subject<void>();
   readonly Sex = Sex;
   readonly loading$ = new BehaviorSubject(false);
+  readonly mode$ = new BehaviorSubject(EditTabMode.BasicInfo);
+  readonly EditTabMode = EditTabMode;
   readonly currentDate = new Date().toISOString().split('T')[0];
-  readonly arrayFieldKeys: { key: keyof MemberArrayFields; name: string }[] = [
-    { key: 'diseaseHistory', name: $localize`病歴` },
+  readonly arrayFieldKeys: { key: keyof MemberArrayFields; name: string; selections?: {}[] }[] = [
+    //{ key: 'diseaseHistory', name: $localize`病歴` },
     { key: 'sideEffectHistory', name: $localize`副作用歴` },
     { key: 'foodAllergies', name: $localize`食物アレルギー` },
     { key: 'medicineAllergies', name: $localize`薬物アレルギー` },
@@ -42,7 +49,6 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
     }),
     weight: new FormControl(60, { nonNullable: true }),
     sex: new FormControl(Sex.Q, { nonNullable: true, validators: [Validators.required] }),
-    pollinosis: new FormControl(false, { nonNullable: true }),
     medicineAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
     foodAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
     otherAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
@@ -58,7 +64,6 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
       this.formGroup.controls.dob.setValue(new Date(member.dob).toISOString().split('T')[0]);
       this.formGroup.controls.sex.setValue(member.sex);
       this.formGroup.controls.weight.setValue(member.weight);
-      this.formGroup.controls.pollinosis.setValue(member.pollinosis);
       this.arrayFieldKeys.forEach(({ key }) =>
         member[key].forEach((value) => {
           const control = this.addFormControl(key);
@@ -78,6 +83,10 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
     return formControl;
   }
 
+  changeMode(mode: EditTabMode) {
+    this.mode$.next(mode);
+  }
+
   handleSubmit() {
     if (this.loading$.value) return;
     const {
@@ -89,7 +98,6 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
       medicalInstitutions,
       foodAllergies,
       otherAllergies,
-      pollinosis,
       sideEffectHistory,
       diseaseHistory,
       pharmacies,
@@ -106,7 +114,6 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
         medicalInstitutions,
         foodAllergies,
         otherAllergies,
-        pollinosis,
         sideEffectHistory,
         diseaseHistory,
         pharmacies,

@@ -4,7 +4,6 @@ export type Member = {
   groupId: string;
   weight: number;
   sex: Sex;
-  pollinosis: boolean;
   uid?: string; // Users that can login have an id
   email?: string;
 } & MemberArrayFields;
@@ -25,6 +24,21 @@ export enum Sex {
   Q,
 }
 
+export enum DiseaseHistory {
+  HighBloodPressure = 1,
+  Diabetes,
+  LipidMetabolismAbnormality,
+  HeartDisease,
+  Arrhythmia,
+  Gout,
+  Cancer,
+  Eczema,
+  Asthma,
+  Stroke,
+  Pollinosis,
+  Other
+}
+
 export type MemberWithId = Member & { id: string };
 
 export class MemberFactory {
@@ -40,7 +54,6 @@ export class MemberFactory {
         medicineAllergies: [],
         foodAllergies: [],
         otherAllergies: [],
-        pollinosis: false,
         sideEffectHistory: [],
         diseaseHistory: [],
         pharmacies: [],

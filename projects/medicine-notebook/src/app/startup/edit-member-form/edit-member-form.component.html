@@ -1,35 +1,67 @@
+<nav class="button-group" *ngIf="this.mode$ | async as mode">
+  <button [class.active]="mode === this.EditTabMode.BasicInfo" class="button-left" id="login-button" type="button"
+    (click)="this.changeMode(this.EditTabMode.BasicInfo)" i18n>
+    基本情報
+  </button>
+  <button [class.active]="this.mode === this.EditTabMode.DetailedInfo" class="button-right" id="register-button"
+    type="button" (click)="this.changeMode(this.EditTabMode.DetailedInfo)" i18n>
+    詳細
+  </button>
+</nav>
 <form [formGroup]="this.formGroup" (ngSubmit)="this.handleSubmit()" appSubmitOnModifierEnter>
-  <label for="name" i18n>名前</label>
-  <input type="text" name="name" id="name" formControlName="name" required minlength="1" maxlength="255"
-    autocomplete="off" ngxAutofocus>
-  <label for="dob">生年月日</label>
-  <input name="dob" id="dob" type="date" required formControlName="dob" min="1940-01-01" [max]="currentDate">
-  <label for="weight">体重</label>
-  <input type="number" name="weight" id="weight" min="1" max="150" formControlName="weight">
-  <label for="sex">性別</label>
-  <select name="sex" id="sex" formControlName="sex" required>
-    <option [ngValue]="Sex.Q">その他</option>
-    <option [ngValue]="Sex.Male">男性</option>
-    <option [ngValue]="Sex.Female">女性</option>
-  </select>
-  <div class="array-group" *ngFor="let arrayField of this.arrayFieldKeys;">
-    <div class="input-label">
-      <label id="{{ arrayField.key }}-label" [for]="arrayField.key">{{ arrayField.name }}</label>
-      <svg (click)="this.addFormControl(arrayField.key)" i18n-title title="追加する"
-        xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0,0,48,48">
-        <path d="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z" />
-      </svg>
+  <ng-container *ngIf="(this.mode$ | async) === this.EditTabMode.BasicInfo; else detailed;">
+    <label for="name" i18n>名前</label>
+    <input type="text" name="name" id="name" formControlName="name" required minlength="1" maxlength="255"
+      autocomplete="off" ngxAutofocus>
+    <label for="dob">生年月日</label>
+    <input name="dob" id="dob" type="date" required formControlName="dob" min="1940-01-01" [max]="currentDate">
+    <label for="weight">体重</label>
+    <input type="number" name="weight" id="weight" min="1" max="150" formControlName="weight">
+    <label for="sex">性別</label>
+    <select name="sex" id="sex" formControlName="sex" required>
+      <option [ngValue]="Sex.Q">その他</option>
+      <option [ngValue]="Sex.Male">男性</option>
+      <option [ngValue]="Sex.Female">女性</option>
+    </select>
+  </ng-container>
+  <ng-template #detailed>
+    <div class="array-group">
+      <div class="input-label">
+        <label id="disease-history-label" for="disease-history" i18m>病歴</label>
+        <svg (click)="this.addFormControl('diseaseHistory')" aria-labelledby="disease-history-label" i18n-title
+          title="追加する" xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0,0,48,48">
+          <path d="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z" />
+        </svg>
+      </div>
+      <div *ngFor="let control of this.formGroup.controls.diseaseHistory.controls; let i = index" class="input-array">
+        <input appMedicineInput type="text" name="disease-history" aria-labelledby="disease-history-label" maxlength="255" required
+          [formControl]="control" autocomplete="off">
+        <svg (click)="this.formGroup.controls.diseaseHistory.removeAt(i)" xmlns="http://www.w3.org/2000/svg" height="48"
+          width="48" viewBox="0,0,48,48">
+          <path
+            d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z" />
+        </svg>
+      </div>
     </div>
-    <div *ngFor="let control of this.formGroup.controls[arrayField.key].controls; let i = index" class="input-array">
-      <input type="text" [name]="arrayField.key" aria-labelledby="medicine-allergies-label" maxlength="255" required
-        [formControl]="control" autocomplete="off">
-      <svg (click)="this.formGroup.controls[arrayField.key].removeAt(i)" xmlns="http://www.w3.org/2000/svg"
-        height="48" width="48" viewBox="0,0,48,48">
-        <path
-          d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z" />
-      </svg>
+    <div class="array-group" *ngFor="let arrayField of this.arrayFieldKeys;">
+      <div class="input-label">
+        <label id="{{ arrayField.key }}-label" [for]="arrayField.key">{{ arrayField.name }}</label>
+        <svg (click)="this.addFormControl(arrayField.key)" i18n-title title="追加する" xmlns="http://www.w3.org/2000/svg"
+          height="48" width="48" viewBox="0,0,48,48">
+          <path d="M22.5 38V25.5H10v-3h12.5V10h3v12.5H38v3H25.5V38Z" />
+        </svg>
+      </div>
+      <div *ngFor="let control of this.formGroup.controls[arrayField.key].controls; let i = index" class="input-array">
+        <input type="text" [name]="arrayField.key" aria-labelledby="medicine-allergies-label" maxlength="255" required
+          [formControl]="control" autocomplete="off">
+        <svg (click)="this.formGroup.controls[arrayField.key].removeAt(i)" xmlns="http://www.w3.org/2000/svg"
+          height="48" width="48" viewBox="0,0,48,48">
+          <path
+            d="m12.45 37.65-2.1-2.1L21.9 24 10.35 12.45l2.1-2.1L24 21.9l11.55-11.55 2.1 2.1L26.1 24l11.55 11.55-2.1 2.1L24 26.1Z" />
+        </svg>
+      </div>
     </div>
-  </div>
+  </ng-template>
   <button [disabled]="this.formGroup.invalid" type="submit" i18n>
     <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
     <ng-template #submitText>追加</ng-template>

@@ -1,4 +1,5 @@
-.input-array,.input-label {
+.input-array,
+.input-label {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -10,14 +11,20 @@
   margin-bottom: 0.25rem;
 }
 
-.input-label svg,.input-array svg {
+.input-label svg,
+.input-array svg {
   position: absolute;
   right: 24px;
-  top: 0;
-  bottom: 0;
   height: 30px;
   margin: auto;
   cursor: pointer;
+}
+.input-label svg {
+  top: 0;
+  bottom: 0;
+}
+.input-array svg {
+  top: 5px
 }
 
 .input-array input {
@@ -28,4 +35,20 @@
   margin-bottom: 1.5rem;
 }
 
-
+.button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.button-group button {
+  margin: 0;
+}
+.button-left {
+  border-radius: 4px 0 0 4px;
+  flex: 1 0;
+}
+.button-right {
+  border-radius: 0 4px 4px 0;
+  flex: 1 0;
+}

@@ -17,6 +17,7 @@ import { EditMemberFormComponent } from './edit-member-form/edit-member-form.com
 import { GroupModule } from '../group/group.module';
 import { DeleteMemberCheckComponent } from './delete-member-check/delete-member-check.component';
 import { EditMemberModalComponent } from './edit-member-modal/edit-member-modal.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { EditMemberModalComponent } from './edit-member-modal/edit-member-modal.
     NgxBaseComponentsModule,
     NgxVisibleAutofocusModule,
     GroupModule,
+    SharedModule,
   ],
 })
 export class StartupModule {}
