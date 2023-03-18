@@ -30,7 +30,7 @@
       </svg>
     </div>
   </div>
-  <button type="submit" i18n>
+  <button [disabled]="this.formGroup.invalid" type="submit" i18n>
     <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
     <ng-template #submitText>追加</ng-template>
   </button>

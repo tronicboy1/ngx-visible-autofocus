@@ -3,13 +3,16 @@
   flex-direction: column;
   position: relative;
 }
+.input-array {
+  margin-bottom: 0.25rem;
+}
 .input-label {
   margin-bottom: 0.25rem;
 }
 
 .input-label svg,.input-array svg {
   position: absolute;
-  right: 4px;
+  right: 24px;
   top: 0;
   bottom: 0;
   height: 30px;

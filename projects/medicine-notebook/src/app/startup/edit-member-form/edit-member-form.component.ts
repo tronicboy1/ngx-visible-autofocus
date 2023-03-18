@@ -73,7 +73,7 @@ export class EditMemberFormComponent implements OnInit, OnDestroy {
   }
 
   addFormControl(controlName: keyof MemberArrayFields) {
-    const formControl = new FormControl('', { nonNullable: true });
+    const formControl = new FormControl('', { nonNullable: true, validators: [Validators.required] });
     this.formGroup.controls[controlName].push(formControl);
     return formControl;
   }
