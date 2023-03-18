@@ -4,16 +4,19 @@ export type Member = {
   groupId: string;
   weight: number;
   sex: Sex;
+  pollinosis: boolean;
+  uid?: string; // Users that can login have an id
+  email?: string;
+} & MemberArrayFields;
+
+export type MemberArrayFields = {
   medicineAllergies: string[];
   foodAllergies: string[];
   otherAllergies: string[];
-  pollinosis: boolean;
   sideEffectHistory: string[];
   diseaseHistory: string[];
   pharmacies: string[];
   medicalInstitutions: string[];
-  uid?: string; // Users that can login have an id
-  email?: string;
 };
 
 export enum Sex {

@@ -1,5 +1,0 @@
-<base-modal i18n-modal-title [modal-title]="(this.modalTitle$ | async)!" [show]="true" (modal-closed)="this.close()">
-  <p><small i18n>全ては任意情報なので必要な箇所だけ追加しても大丈夫です</small></p>
-  <br>
-  <startup-add-member-details-form (submitted)="this.close()"></startup-add-member-details-form>
-</base-modal>

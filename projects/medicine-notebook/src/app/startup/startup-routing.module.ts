@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddMemberDetailsModalComponent } from './add-member-details-modal/add-member-details-modal.component';
 import { AddMemberModalComponent } from './add-member-modal/add-member-modal.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { ChooseModeComponent } from './choose-mode/choose-mode.component';
@@ -28,7 +27,6 @@ const routes: Routes = [
         canActivate: [createMemberGuard],
         children: [
           { path: 'add', component: AddMemberModalComponent, canDeactivate: [canCloseAddMemberModalGuard] },
-          { path: ':memberId/add-details', component: AddMemberDetailsModalComponent },
           { path: ':memberId/delete', component: DeleteMemberCheckComponent },
           { path: ':memberId/edit', component: EditMemberModalComponent },
         ],

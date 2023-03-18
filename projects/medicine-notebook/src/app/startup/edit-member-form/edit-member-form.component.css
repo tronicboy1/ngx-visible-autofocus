@@ -1,0 +1,28 @@
+.input-array,.input-label {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.input-label {
+  margin-bottom: 0.25rem;
+}
+
+.input-label svg,.input-array svg {
+  position: absolute;
+  right: 4px;
+  top: 0;
+  bottom: 0;
+  height: 30px;
+  margin: auto;
+  cursor: pointer;
+}
+
+.input-array input {
+  margin: 0;
+}
+
+.array-group {
+  margin-bottom: 1.5rem;
+}
+
+

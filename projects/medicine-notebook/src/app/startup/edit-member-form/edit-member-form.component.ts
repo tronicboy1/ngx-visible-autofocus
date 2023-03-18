@@ -1,22 +1,36 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { Sex } from '../../group/member-factory';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { BehaviorSubject, Subject } from 'rxjs';
+import { Member, MemberArrayFields, Sex } from '../../group/member-factory';
 import { MemberService } from '../../group/member.service';
+import { MedicineDbService } from '../../medicine-db/medicine-db.service';
+
+type OnlyArrayControls<T extends Object> = { [K in keyof T]: T[K] extends FormArray<any> ? T[K] : never };
 
 @Component({
   selector: 'startup-edit-member-form',
   templateUrl: './edit-member-form.component.html',
   styleUrls: ['./edit-member-form.component.css', '../../../styles/basic-form.css'],
 })
-export class EditMemberFormComponent implements OnInit {
+export class EditMemberFormComponent implements OnInit, OnDestroy {
   private member = inject(MemberService);
+  private medicineDb = inject(MedicineDbService);
   @Input() memberId!: string;
   @Output() submitted = new EventEmitter<void>();
 
+  private teardown$ = new Subject<void>();
   readonly Sex = Sex;
   readonly loading$ = new BehaviorSubject(false);
   readonly currentDate = new Date().toISOString().split('T')[0];
+  readonly arrayFieldKeys: { key: keyof MemberArrayFields; name: string }[] = [
+    { key: 'diseaseHistory', name: $localize`病歴` },
+    { key: 'sideEffectHistory', name: $localize`副作用歴` },
+    { key: 'foodAllergies', name: $localize`食物アレルギー` },
+    { key: 'medicineAllergies', name: $localize`薬物アレルギー` },
+    { key: 'otherAllergies', name: $localize`その他のアレルギー` },
+    { key: 'medicalInstitutions', name: $localize`通院中の医療機関` },
+    { key: 'pharmacies', name: $localize`通院中の薬局` },
+  ];
   formGroup = new FormGroup({
     name: new FormControl('', {
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(255)],
@@ -28,8 +42,14 @@ export class EditMemberFormComponent implements OnInit {
     }),
     weight: new FormControl(60, { nonNullable: true }),
     sex: new FormControl(Sex.Q, { nonNullable: true, validators: [Validators.required] }),
-    sendInvite: new FormControl(false, { nonNullable: true }),
-    email: new FormControl(null, { nonNullable: false, validators: [Validators.email] }),
+    pollinosis: new FormControl(false, { nonNullable: true }),
+    medicineAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
+    foodAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
+    otherAllergies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
+    sideEffectHistory: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
+    diseaseHistory: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
+    pharmacies: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
+    medicalInstitutions: new FormArray<FormControl<string>>([], [Validators.maxLength(255)]),
   });
 
   ngOnInit(): void {
@@ -38,22 +58,58 @@ export class EditMemberFormComponent implements OnInit {
       this.formGroup.controls.dob.setValue(new Date(member.dob).toISOString().split('T')[0]);
       this.formGroup.controls.sex.setValue(member.sex);
       this.formGroup.controls.weight.setValue(member.weight);
+      this.formGroup.controls.pollinosis.setValue(member.pollinosis);
+      this.arrayFieldKeys.forEach(({ key }) =>
+        member[key].forEach((value) => {
+          const control = this.addFormControl(key);
+          control.setValue(value);
+        }),
+      );
     });
+  }
+
+  ngOnDestroy(): void {
+    this.teardown$.next();
+  }
+
+  addFormControl(controlName: keyof MemberArrayFields) {
+    const formControl = new FormControl('', { nonNullable: true });
+    this.formGroup.controls[controlName].push(formControl);
+    return formControl;
   }
 
   handleSubmit() {
     if (this.loading$.value) return;
-    const { name, dob, weight, sex, sendInvite, email } = this.formGroup.value;
-    if (!(name && dob && weight && sex)) return;
-    if (sendInvite && !email) throw ReferenceError('must have email if inviting');
+    const {
+      name,
+      dob,
+      weight,
+      sex,
+      medicineAllergies,
+      medicalInstitutions,
+      foodAllergies,
+      otherAllergies,
+      pollinosis,
+      sideEffectHistory,
+      diseaseHistory,
+      pharmacies,
+    } = this.formGroup.value!;
     this.loading$.next(true);
-    const dobNumber = new Date(dob).getTime();
+    const dobNumber = new Date(dob!).getTime();
     this.member
       .update$(this.memberId, {
-        name: name.trim(),
+        name: name!.trim(),
         dob: dobNumber,
         weight,
         sex,
+        medicineAllergies,
+        medicalInstitutions,
+        foodAllergies,
+        otherAllergies,
+        pollinosis,
+        sideEffectHistory,
+        diseaseHistory,
+        pharmacies,
       })
       .subscribe({
         next: () => this.submitted.emit(),
