@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable } from 'rxjs';
-import { Medicine } from './medicine-db.model';
+import { AbstractSearchService } from '../shared/search-service.abstract';
+import { Medicine } from './medicine-factory';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MedicineDbService {
+export class MedicineDbService implements AbstractSearchService<Medicine> {
   worker?: Worker;
   message$: Observable<MessageEvent<string[]>> = new Observable();
 
