@@ -117,18 +117,13 @@ export class NewRxFormComponent implements OnInit, OnDestroy {
     if (this.loading$.value) return;
     const { dispensedAt, medicines, pharmacyName } = this.formGroup.getRawValue();
     this.loading$.next(true);
-    const parsedMedicines: Prescription['medicines'] = medicines.map((medicine) => {
-      const dosageMap = new Map(medicine.dosage.map((dose) => [dose.takenAt, dose]));
-      const dosageUnique = Array.from(dosageMap.values());
-      return { ...medicine, dosage: dosageUnique };
-    });
     this.memberId$
       .pipe(
         first(),
         mergeMap((memberId) =>
           this.rxService.create$({
             dispensedAt: new Date(dispensedAt).getTime(),
-            medicines: parsedMedicines,
+            medicines,
             pharmacyName,
             memberId,
           }),
