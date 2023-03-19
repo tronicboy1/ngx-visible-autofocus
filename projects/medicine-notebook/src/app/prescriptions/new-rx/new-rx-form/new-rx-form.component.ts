@@ -6,11 +6,11 @@ import { Prescription, TakenAt } from '../../prescription-factory';
 import { PrescriptionService } from '../../prescription.service';
 
 type DoseForm = { takenAt: FormControl<TakenAt>; amount: FormControl<number> };
-type MedicineForm = {
+export type MedicineFormGroup = FormGroup<{
   amountDispensed: FormControl<number>;
   medicineName: FormControl<string>;
   dosage: FormArray<FormGroup<DoseForm>>;
-};
+}>;
 
 @Component({
   selector: 'rx-new-rx-form',
@@ -25,20 +25,13 @@ export class NewRxFormComponent implements OnInit {
   private readonly memberId$ = this.route.parent!.parent!.parent!.params.pipe(
     map((params) => params['memberId'] as string),
   );
+  readonly medicineToEdit$ = new BehaviorSubject<{ group: MedicineFormGroup; index: number } | undefined>(undefined);
   readonly loading$ = new BehaviorSubject(false);
-  readonly TakenAt = TakenAt;
-  readonly TakenAtValues: TakenAt[] = Object.values(TakenAt).filter((val): val is TakenAt => !isNaN(Number(val)));
   readonly oneMonthAgo: string;
   readonly currentDate = new Date().toISOString().split('T')[0];
   readonly formGroup = new FormGroup({
     dispensedAt: new FormControl(this.currentDate, { validators: [Validators.required], nonNullable: true }),
-    medicines: new FormArray<
-      FormGroup<{
-        amountDispensed: FormControl<number>;
-        medicineName: FormControl<string>;
-        dosage: FormArray<FormGroup<DoseForm>>;
-      }>
-    >([]),
+    medicines: new FormArray<MedicineFormGroup>([], { validators: [Validators.required, Validators.min(1)] }),
     pharmacyName: new FormControl('', { nonNullable: true }),
   });
   private readonly rxId$ = this.route.queryParams.pipe(map((params) => params['rxId'] as string | undefined));
@@ -58,38 +51,42 @@ export class NewRxFormComponent implements OnInit {
       )
       .subscribe((rx) => {
         if (!rx) {
-          this.addMedicine();
-          this.addDose(0);
+          const group = this.addMedicine();
+          this.openMedicineEditModal(group, 0);
           return;
         }
         rx.medicines.forEach((medicine, i) => {
           const group = this.addMedicine();
           group.controls.amountDispensed.setValue(medicine.amountDispensed);
-          medicine.dosage.forEach((dose) => this.addDose(i, dose));
+          //medicine.dosage.forEach((dose) => this.addDose(i, dose));
+          group.controls.dosage.setValue(medicine.dosage);
           group.controls.medicineName.setValue(medicine.medicineName, { emitEvent: false });
         });
         this.formGroup.controls.pharmacyName.setValue(rx.pharmacyName);
       });
   }
 
-  addMedicine(params?: Partial<Prescription['medicines'][0]>) {
+  addMedicine(openModal = false) {
     const medicineGroup = this.createMedicineFormGroup();
     this.formGroup.controls.medicines.push(medicineGroup);
+    if (openModal) {
+      this.medicineToEdit$.next({ group: medicineGroup, index: -1 });
+    }
     return medicineGroup;
   }
-  addDose(i: number, params?: Prescription['medicines'][0]['dosage'][0]) {
-    const doseGroup = new FormGroup<DoseForm>({
-      takenAt: new FormControl(params?.takenAt ?? TakenAt.Morning, {
-        validators: [Validators.required],
-        nonNullable: true,
-      }),
-      amount: new FormControl(params?.amount ?? 1, {
-        validators: [Validators.required, Validators.min(1), Validators.max(99)],
-        nonNullable: true,
-      }),
-    });
-    this.formGroup.controls.medicines.at(i).controls.dosage.push(doseGroup);
-    return doseGroup;
+
+  openMedicineEditModal(group: MedicineFormGroup, index: number) {
+    this.medicineToEdit$.next({ group, index });
+  }
+  closeMedicineEditModal(group: MedicineFormGroup, index: number) {
+    if (group.invalid) {
+      this.formGroup.controls.medicines.removeAt(index);
+    }
+    this.medicineToEdit$.next(undefined);
+  }
+  removeMedicine(index: number) {
+    this.medicineToEdit$.next(undefined);
+    this.formGroup.controls.medicines.removeAt(index);
   }
 
   handleSubmit() {

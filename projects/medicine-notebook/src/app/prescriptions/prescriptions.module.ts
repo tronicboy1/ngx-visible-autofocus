@@ -12,6 +12,7 @@ import { ChooseRxAddModeComponent } from './new-rx/choose-rx-add-mode/choose-rx-
 import { NewRxFormComponent } from './new-rx/new-rx-form/new-rx-form.component';
 import { SelectRxComponent } from './new-rx/select-rx/select-rx.component';
 import { SharedModule } from '../shared/shared.module';
+import { EditMedicineFormComponent } from './new-rx/new-rx-form/edit-medicine-form/edit-medicine-form.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SharedModule } from '../shared/shared.module';
     ChooseRxAddModeComponent,
     NewRxFormComponent,
     SelectRxComponent,
+    EditMedicineFormComponent,
   ],
   imports: [CommonModule, PrescriptionsRoutingModule, SharedModule],
 })

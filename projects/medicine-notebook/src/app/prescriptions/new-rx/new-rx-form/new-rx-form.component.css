@@ -1,3 +1,30 @@
+.readonly-medicine-group {
+  display: flex;
+  position: relative;
+  width: 90%;
+  margin: auto;
+  justify-content: flex-start;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+.readonly-medicine-group p {
+  margin: 0 0.5rem 0 0;
+}
+.readonly-medicine-group input {
+  padding: 0;
+}
+
+.delete {
+  background-color: var(--danger-color);
+  color: white;
+  border-color: var(--danger-color);
+}
+.delete:hover {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
 .input-array,
 .input-label {
   display: flex;
@@ -16,7 +43,7 @@
   margin-bottom: 0.5rem;
   border-bottom: 1px solid var(--secondary-color);
 }
-
+.readonly-medicine-group svg,
 .input-label svg,
 .input-array svg {
   position: absolute;
@@ -25,15 +52,20 @@
   margin: auto;
   cursor: pointer;
 }
-.input-label svg,.input-array svg {
+.input-label svg,
+.input-array svg {
   top: 0;
   bottom: 0;
 }
-
-.input-array select,.input-array input {
+.readonly-medicine-group input,
+.input-array select,
+.input-array input {
   margin: 0;
+  width: calc(100% - (30px + 14px));
+}
+.input-array select,
+.input-array input {
   flex: 0 0 40%;
-  width: calc(100% - (30px + 10px));
 }
 .input-array select {
   margin-right: 0.5rem;
