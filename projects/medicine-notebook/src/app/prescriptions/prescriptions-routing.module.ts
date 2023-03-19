@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChooseRxAddModeComponent } from './new-rx/choose-rx-add-mode/choose-rx-add-mode.component';
 import { canChooseModeGuard } from './new-rx/guards/can-choose-mode.guard';
+import { canLeaveNewRxFormGuard } from './new-rx/guards/can-leave-new-rx-form.guard';
 import { NewRxFormComponent } from './new-rx/new-rx-form/new-rx-form.component';
 import { NewRxComponent } from './new-rx/new-rx.component';
 import { SelectRxComponent } from './new-rx/select-rx/select-rx.component';
@@ -15,7 +16,7 @@ const routes: Routes = [
     children: [
       { path: 'mode', component: ChooseRxAddModeComponent, canActivate: [canChooseModeGuard] },
       { path: 'select', component: SelectRxComponent, canActivate: [canChooseModeGuard] },
-      { path: 'new', component: NewRxFormComponent },
+      { path: 'new', component: NewRxFormComponent, canDeactivate: [canLeaveNewRxFormGuard] },
       { path: '', pathMatch: 'full', redirectTo: 'mode' },
     ],
   },

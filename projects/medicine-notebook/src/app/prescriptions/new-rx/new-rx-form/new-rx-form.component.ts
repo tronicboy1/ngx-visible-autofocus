@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, first, map, mergeMap, of } from 'rxjs';
+import { BehaviorSubject, first, map, mergeMap, of, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
 import { Prescription, TakenAt } from '../../prescription-factory';
 import { PrescriptionService } from '../../prescription.service';
+import { NewRxEditStateService } from '../new-rx-edit-state.service';
 
 type DoseForm = { takenAt: FormControl<TakenAt>; amount: FormControl<number> };
 export type MedicineFormGroup = FormGroup<{
@@ -17,11 +18,13 @@ export type MedicineFormGroup = FormGroup<{
   templateUrl: './new-rx-form.component.html',
   styleUrls: ['./new-rx-form.component.css', '../../../../styles/basic-form.css'],
 })
-export class NewRxFormComponent implements OnInit {
+export class NewRxFormComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private rxService = inject(PrescriptionService);
+  private newRxEditStateService = inject(NewRxEditStateService);
 
+  private teardown$ = new Subject<void>();
   private readonly memberId$ = this.route.parent!.parent!.parent!.params.pipe(
     map((params) => params['memberId'] as string),
   );
@@ -44,6 +47,9 @@ export class NewRxFormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.formGroup.valueChanges.pipe(sampleTime(300), skip(1), take(1), takeUntil(this.teardown$)).subscribe(() => {
+      this.newRxEditStateService.set(this, true);
+    });
     this.rxId$
       .pipe(
         first(),
@@ -64,6 +70,10 @@ export class NewRxFormComponent implements OnInit {
         });
         this.formGroup.controls.pharmacyName.setValue(rx.pharmacyName);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.teardown$.next();
   }
 
   addMedicine(openModal = false) {
@@ -112,12 +122,6 @@ export class NewRxFormComponent implements OnInit {
       const dosageUnique = Array.from(dosageMap.values());
       return { ...medicine, dosage: dosageUnique };
     });
-
-    console.log({
-      dispensedAt: new Date(dispensedAt).getTime(),
-      medicines,
-      pharmacyName,
-    });
     this.memberId$
       .pipe(
         first(),
@@ -131,7 +135,10 @@ export class NewRxFormComponent implements OnInit {
         ),
       )
       .subscribe({
-        next: () => this.router.navigate([''], { relativeTo: this.route.parent }),
+        next: () => {
+          this.newRxEditStateService.set(this, false);
+          this.router.navigate([''], { relativeTo: this.route.parent });
+        },
       });
   }
 

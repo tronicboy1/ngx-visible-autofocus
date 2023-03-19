@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { CanMatchFn, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { first, map, mergeMap, tap } from 'rxjs';
+import { first, map, mergeMap } from 'rxjs';
 import { MemberService } from '../../group/member.service';
 
 export const redirectCurrentUserMemberGuard: CanMatchFn = (_route, _segments) => {
@@ -15,6 +15,5 @@ export const redirectCurrentUserMemberGuard: CanMatchFn = (_route, _segments) =>
       (member) =>
         (member && router.createUrlTree(['/home', 'members', member.id])) || false,
     ),
-    tap(console.log),
   );
 };
