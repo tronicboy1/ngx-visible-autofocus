@@ -7,6 +7,7 @@ export type Prescription = {
   memberId: string;
   createdAt: number;
   dispensedAt: number;
+  pharmacyName: string;
   amountDispensed: Days;
   finishedAt: number;
   medicineName: string;
@@ -42,6 +43,7 @@ export class PrescriptionFactory {
         memberId: '',
         createdAt: today.getTime(),
         dispensedAt: today.getTime(),
+        pharmacyName: '',
         amountDispensed: 1,
         finishedAt: tomorrow.getTime(),
         medicineName: '',

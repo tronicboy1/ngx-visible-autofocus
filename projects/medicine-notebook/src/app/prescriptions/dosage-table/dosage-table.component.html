@@ -1,0 +1,12 @@
+<table>
+  <thead>
+    <tr>
+      <th *ngFor="let dosage of this.dosage">{{ dosage[0] | takenAt }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td *ngFor="let dosage of this.dosage">{{ dosage[1] }}錠</td>
+    </tr>
+  </tbody>
+</table>

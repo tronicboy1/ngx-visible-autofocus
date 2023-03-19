@@ -1,0 +1,15 @@
+.member-nav {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 50px;
+  grid-auto-rows: auto;
+  padding: 1rem;
+  max-width: 500px;
+  margin: auto;
+}
+
+.member-nav select {
+  grid-column: 1 / 4;
+  grid-row: 1;
+}
+

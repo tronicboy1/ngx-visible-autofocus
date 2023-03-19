@@ -1,9 +1,7 @@
 <app-nav-bar></app-nav-bar>
-<p>home works!</p>
-<nav>
-  <label for="member-id" i18n>メンバー</label>
-  <select name="member-id" id="member-id" [formControl]="this.memberSelectControl">
-    <option *ngFor="let member of this.members$ | async;" [ngValue]="member.id">{{ member.name }}</option>
+<nav *ngIf="this.members$ | async as members" class="member-nav">
+  <select *ngIf="members.length > 1" name="member-id" id="member-id" [formControl]="this.memberSelectControl">
+    <option *ngFor="let member of members;" [ngValue]="member.id">{{ member.name }}</option>
   </select>
 </nav>
 <router-outlet></router-outlet>
