@@ -1,0 +1,3 @@
+<ul>
+  <li *ngFor="let rx of this.rxs$ | async" routerLink="../new" [queryParams]="{ rxId: rx.id }">{{ rx.medicineName }}</li>
+</ul>

@@ -1,0 +1,43 @@
+.input-array,
+.input-label {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.input-array {
+  margin-bottom: 0.25rem;
+  width: 95%;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.input-label {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.input-label svg,
+.input-array svg {
+  position: absolute;
+  right: 0;
+  height: 30px;
+  margin: auto;
+  cursor: pointer;
+}
+.input-label svg,.input-array svg {
+  top: 0;
+  bottom: 0;
+}
+
+.input-array select,.input-array input {
+  margin: 0;
+  flex: 0 0 40%;
+  width: calc(100% - (30px + 10px));
+}
+.input-array select {
+  margin-right: 0.5rem;
+}
+.array-group {
+  margin-bottom: 1rem;
+}

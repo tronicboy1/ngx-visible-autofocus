@@ -11,22 +11,29 @@
       </svg>
     </a>
   </nav>
+
   <table>
     <thead>
       <tr>
-        <th i18n>薬</th>
         <th i18n>調査日</th>
+      </tr>
+      <tr>
+        <th i18n>薬</th>
         <th i18n>飲み方</th>
         <th i18n>あと何日</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let rx of this.rxs$ | async;">
-        <td>{{ rx.medicineName }}</td>
-        <td>{{ rx.dispensedAt | date: 'short' }}</td>
-        <td><rx-dosage-table [dosage]="rx.dosage"></rx-dosage-table></td>
-        <td>{{ rx | daysRemaining }}</td>
-      </tr>
+      <ng-container *ngFor="let rx of this.rxs$ | async">
+        <tr>
+          <th>{{ rx.dispensedAt | date: 'shortDate' }}</th>
+        </tr>
+        <tr *ngFor="let medicine of rx.medicines">
+          <td>{{ medicine.medicineName }}</td>
+          <td style="width: 30%;"><rx-dosage-table [dosage]="medicine.dosage"></rx-dosage-table></td>
+          <td>{{ medicine.amountDispensed  | daysRemaining: rx.dispensedAt }}</td>
+        </tr>
+      </ng-container>
     </tbody>
   </table>
 </div>

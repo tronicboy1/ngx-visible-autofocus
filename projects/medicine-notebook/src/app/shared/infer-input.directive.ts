@@ -1,6 +1,6 @@
 import { Directive, ElementRef, inject, Input, OnDestroy, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { filter, fromEvent, map, merge, of, sampleTime, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { delay, filter, fromEvent, map, merge, of, sampleTime, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { MedicineDbService } from '../medicine-db/medicine-db.service';
 import { CandidatesComponent } from './candidates/candidates.component';
 import { AbstractSearchService } from './search-service.abstract';
@@ -17,7 +17,13 @@ export abstract class InferInputDirective<T extends { name: string }> implements
   private teardown$ = new Subject<void>();
 
   ngOnInit(): void {
-    merge(this.formControl.valueChanges.pipe(sampleTime(300)), this.blur$.pipe(map(() => undefined)))
+    merge(
+      this.formControl.valueChanges.pipe(sampleTime(300)),
+      this.blur$.pipe(
+        delay(200),
+        map(() => undefined),
+      ),
+    )
       .pipe(
         takeUntil(this.teardown$),
         tap(() => this.viewContainerRef.clear()),

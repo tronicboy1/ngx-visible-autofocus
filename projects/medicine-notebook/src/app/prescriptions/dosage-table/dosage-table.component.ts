@@ -7,5 +7,5 @@ import { Prescription } from '../prescription-factory';
   styleUrls: ['./dosage-table.component.css'],
 })
 export class DosageTableComponent {
-  @Input() dosage!: Prescription['dosage'];
+  @Input() dosage!: Prescription['medicines'][0]['dosage'];
 }

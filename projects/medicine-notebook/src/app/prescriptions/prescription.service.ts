@@ -33,16 +33,8 @@ export class PrescriptionService {
     );
   }
 
-  create$(rx: Omit<Prescription, 'createdAt'>): Observable<string> {
-    return this.medicine.search$(rx.medicineName).pipe(
-      mergeMap((medicines) => {
-        const producedRx = this.factory.create({
-          ...rx,
-          medicine: medicines.length === 1 ? medicines.at(1) : undefined,
-        });
-        return this.firestore.create$(this.rootKey, producedRx);
-      }),
-      map((result) => result.id),
-    );
+  create$(rx: Omit<Prescription, 'createdAt' | 'memberId'> & { memberId: string }): Observable<string> {
+    const producedRx = this.factory.create(rx);
+    return this.firestore.create$(this.rootKey, producedRx).pipe(map((result) => result.id));
   }
 }

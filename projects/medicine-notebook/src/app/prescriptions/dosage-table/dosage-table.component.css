@@ -1,0 +1,14 @@
+:host {
+  overflow-x: auto;
+}
+
+table {
+  margin: auto;
+  border: 1px solid var(--secondary-color);
+  border-collapse: collapse;
+}
+
+table td {
+  border: 1px solid var(--secondary-color);
+  padding: 0.25rem 0.5rem;
+}

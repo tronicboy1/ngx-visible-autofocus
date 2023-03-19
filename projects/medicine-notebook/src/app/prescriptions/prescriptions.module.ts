@@ -8,9 +8,23 @@ import { AmountPipe } from './pipes/amount.pipe';
 import { DosageTableComponent } from './dosage-table/dosage-table.component';
 import { DaysRemainingPipe } from './pipes/days-remaining.pipe';
 import { NewRxComponent } from './new-rx/new-rx.component';
+import { ChooseRxAddModeComponent } from './new-rx/choose-rx-add-mode/choose-rx-add-mode.component';
+import { NewRxFormComponent } from './new-rx/new-rx-form/new-rx-form.component';
+import { SelectRxComponent } from './new-rx/select-rx/select-rx.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
-  declarations: [PrescriptionsComponent, TakenAtPipe, AmountPipe, DosageTableComponent, DaysRemainingPipe, NewRxComponent],
-  imports: [CommonModule, PrescriptionsRoutingModule],
+  declarations: [
+    PrescriptionsComponent,
+    TakenAtPipe,
+    AmountPipe,
+    DosageTableComponent,
+    DaysRemainingPipe,
+    NewRxComponent,
+    ChooseRxAddModeComponent,
+    NewRxFormComponent,
+    SelectRxComponent,
+  ],
+  imports: [CommonModule, PrescriptionsRoutingModule, SharedModule],
 })
 export class PrescriptionsModule {}
