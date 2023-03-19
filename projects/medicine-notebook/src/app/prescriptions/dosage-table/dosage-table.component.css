@@ -4,8 +4,11 @@
 
 table {
   margin: auto;
-  border: 1px solid var(--secondary-color);
   border-collapse: collapse;
+}
+
+th {
+  font-weight: normal;
 }
 
 table td {

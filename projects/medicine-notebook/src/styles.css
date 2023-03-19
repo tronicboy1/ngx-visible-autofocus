@@ -145,7 +145,7 @@ nav li a {
   cursor: pointer;
 }
 
-button {
+.button,button {
   border: 1px solid var(--highlight-color);
   padding: 0.25rem 0.5rem;
   font-size: 1.1rem;

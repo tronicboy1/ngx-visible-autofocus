@@ -1,0 +1,15 @@
+nav {
+  display: flex;
+  flex-direction: row;
+}
+
+a {
+  outline: none;
+  text-decoration: none;
+  margin: 0 0.5rem;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  height: 80px;
+}
