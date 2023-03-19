@@ -1,3 +1,7 @@
-<ul>
-  <li *ngFor="let rx of this.rxs$ | async" routerLink="../new" [queryParams]="{ rxId: rx.id }">{{ rx.medicineName }}</li>
-</ul>
+<nav>
+  <ul>
+    <li *ngFor="let rx of this.rxs$ | async">
+      <a routerLink="../new" [queryParams]="{ rxId: rx.id }">{{ rx.createdAt | date: 'shortDate' }}, {{ rx.pharmacyName }}</a>
+    </li>
+  </ul>
+</nav>

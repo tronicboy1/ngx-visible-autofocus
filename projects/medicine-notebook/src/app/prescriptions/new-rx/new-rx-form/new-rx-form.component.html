@@ -3,7 +3,6 @@
   <input type="date" name="dispensed-at" id="dispensed-at" formControlName="dispensedAt" required aria-required="true"
     [min]="this.oneMonthAgo" [max]="this.currentDate" autocomplete="off" ngxAutofocus>
 
-
   <div class="array-group">
     <div class="input-label">
       <label id="dosage-label" i18n>薬</label>
@@ -34,7 +33,7 @@
 </form>
 
 <base-modal *ngIf="this.medicineToEdit$ | async as selectedGroup" [show]="true" i18n-modal-title modal-title="薬の登録"
-  (modal-closed)="closeMedicineEditModal(selectedGroup.group, selectedGroup.index)">
-  <rx-edit-medicine-form [group]="selectedGroup.group"
-    (close)="closeMedicineEditModal(selectedGroup.group, selectedGroup.index)"></rx-edit-medicine-form>
+  (modal-closed)="closeMedicineEditModal(selectedGroup.group)">
+  <rx-edit-medicine-form [group]="selectedGroup.group" (close)="closeMedicineEditModal(selectedGroup.group)"
+    (addDose)="this.addDose(selectedGroup.index)"></rx-edit-medicine-form>
 </base-modal>

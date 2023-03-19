@@ -58,7 +58,7 @@ export class NewRxFormComponent implements OnInit {
         rx.medicines.forEach((medicine, i) => {
           const group = this.addMedicine();
           group.controls.amountDispensed.setValue(medicine.amountDispensed);
-          //medicine.dosage.forEach((dose) => this.addDose(i, dose));
+          medicine.dosage.forEach((dose) => this.addDose(i, dose));
           group.controls.dosage.setValue(medicine.dosage);
           group.controls.medicineName.setValue(medicine.medicineName, { emitEvent: false });
         });
@@ -74,18 +74,32 @@ export class NewRxFormComponent implements OnInit {
     }
     return medicineGroup;
   }
+  addDose(index: number, params?: Prescription['medicines'][0]['dosage'][0]) {
+    const doseGroup = new FormGroup<DoseForm>({
+      takenAt: new FormControl(params?.takenAt ?? TakenAt.Morning, {
+        validators: [Validators.required],
+        nonNullable: true,
+      }),
+      amount: new FormControl(params?.amount ?? 1, {
+        validators: [Validators.required, Validators.min(1), Validators.max(99)],
+        nonNullable: true,
+      }),
+    });
+    this.formGroup.controls.medicines.at(index).controls.dosage.push(doseGroup);
+    return doseGroup;
+  }
 
   openMedicineEditModal(group: MedicineFormGroup, index: number) {
     this.medicineToEdit$.next({ group, index });
   }
-  closeMedicineEditModal(group: MedicineFormGroup, index: number) {
+  closeMedicineEditModal(group: MedicineFormGroup) {
+    if (!this.medicineToEdit$.value) throw Error();
     if (group.invalid) {
-      this.formGroup.controls.medicines.removeAt(index);
+      this.removeMedicine(this.medicineToEdit$.value.index);
     }
     this.medicineToEdit$.next(undefined);
   }
   removeMedicine(index: number) {
-    this.medicineToEdit$.next(undefined);
     this.formGroup.controls.medicines.removeAt(index);
   }
 
