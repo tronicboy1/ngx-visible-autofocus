@@ -13,6 +13,8 @@ import { SelectRxComponent } from './new-rx/select-rx/select-rx.component';
 import { SharedModule } from '../shared/shared.module';
 import { EditMedicineFormComponent } from './rx-form/edit-medicine-form/edit-medicine-form.component';
 import { RxFormComponent } from './rx-form/rx-form.component';
+import { NewRxContainerComponent } from './new-rx/new-rx-container/new-rx-container.component';
+import { EditRxComponent } from './edit-rx/edit-rx.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { RxFormComponent } from './rx-form/rx-form.component';
     RxFormComponent,
     SelectRxComponent,
     EditMedicineFormComponent,
+    NewRxContainerComponent,
+    EditRxComponent,
   ],
   imports: [CommonModule, PrescriptionsRoutingModule, SharedModule],
 })

@@ -1,0 +1,3 @@
+<rx-form *ngIf="this.memberId$ | async as memberId" [formMode]="RxFormMode.New" [memberId]="memberId" [rxId]="this.rxId"
+  (submitted)="this.close()">
+</rx-form>

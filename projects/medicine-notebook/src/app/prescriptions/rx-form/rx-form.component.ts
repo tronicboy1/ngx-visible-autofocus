@@ -1,10 +1,15 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, first, map, mergeMap, of, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
 import { Prescription, TakenAt } from '../prescription-factory';
 import { PrescriptionService } from '../prescription.service';
 import { NewRxEditStateService } from './new-rx-edit-state.service';
+
+export enum RxFormMode {
+  New = 1,
+  Edit,
+  Readonly,
+}
 
 type DoseForm = { takenAt: FormControl<TakenAt>; amount: FormControl<number> };
 export type MedicineFormGroup = FormGroup<{
@@ -19,15 +24,15 @@ export type MedicineFormGroup = FormGroup<{
   styleUrls: ['./rx-form.component.css', '../../../styles/basic-form.css'],
 })
 export class RxFormComponent implements OnInit, OnDestroy {
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
   private rxService = inject(PrescriptionService);
   private newRxEditStateService = inject(NewRxEditStateService);
+  @Input() memberId!: string;
+  @Input() rxId?: string;
+  @Input() formMode = RxFormMode.New;
+  @Output() submitted = new EventEmitter<void>();
 
   private teardown$ = new Subject<void>();
-  private readonly memberId$ = this.route.parent!.parent!.parent!.params.pipe(
-    map((params) => params['memberId'] as string),
-  );
+
   readonly medicineToEdit$ = new BehaviorSubject<{ group: MedicineFormGroup; index: number } | undefined>(undefined);
   readonly loading$ = new BehaviorSubject(false);
   readonly oneMonthAgo: string;
@@ -37,7 +42,6 @@ export class RxFormComponent implements OnInit, OnDestroy {
     medicines: new FormArray<MedicineFormGroup>([], { validators: [Validators.required, Validators.min(1)] }),
     pharmacyName: new FormControl('', { nonNullable: true }),
   });
-  private readonly rxId$ = this.route.queryParams.pipe(map((params) => params['rxId'] as string | undefined));
 
   constructor() {
     const today = new Date();
@@ -50,17 +54,8 @@ export class RxFormComponent implements OnInit, OnDestroy {
     this.formGroup.valueChanges.pipe(sampleTime(300), skip(1), take(1), takeUntil(this.teardown$)).subscribe(() => {
       this.newRxEditStateService.set(this, true);
     });
-    this.rxId$
-      .pipe(
-        first(),
-        mergeMap((rxId) => (rxId ? this.rxService.get$(rxId) : of(undefined))),
-      )
-      .subscribe((rx) => {
-        if (!rx) {
-          const group = this.addMedicine();
-          this.openMedicineEditModal(group, 0);
-          return;
-        }
+    if (this.rxId) {
+      this.rxService.get$(this.rxId).subscribe((rx) => {
         rx.medicines.forEach((medicine, i) => {
           const group = this.addMedicine();
           group.controls.amountDispensed.setValue(medicine.amountDispensed);
@@ -70,6 +65,11 @@ export class RxFormComponent implements OnInit, OnDestroy {
         });
         this.formGroup.controls.pharmacyName.setValue(rx.pharmacyName);
       });
+    } else {
+      const group = this.addMedicine();
+      this.openMedicineEditModal(group, 0);
+      return;
+    }
   }
 
   ngOnDestroy(): void {
@@ -117,22 +117,17 @@ export class RxFormComponent implements OnInit, OnDestroy {
     if (this.loading$.value) return;
     const { dispensedAt, medicines, pharmacyName } = this.formGroup.getRawValue();
     this.loading$.next(true);
-    this.memberId$
-      .pipe(
-        first(),
-        mergeMap((memberId) =>
-          this.rxService.create$({
-            dispensedAt: new Date(dispensedAt).getTime(),
-            medicines,
-            pharmacyName,
-            memberId,
-          }),
-        ),
-      )
+    this.rxService
+      .create$({
+        dispensedAt: new Date(dispensedAt).getTime(),
+        medicines,
+        pharmacyName,
+        memberId: this.memberId,
+      })
       .subscribe({
         next: () => {
           this.newRxEditStateService.set(this, false);
-          this.router.navigate([''], { relativeTo: this.route.parent });
+          this.submitted.emit();
         },
       });
   }
