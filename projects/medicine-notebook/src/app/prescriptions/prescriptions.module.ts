@@ -9,10 +9,10 @@ import { DosageTableComponent } from './dosage-table/dosage-table.component';
 import { DaysRemainingPipe } from './pipes/days-remaining.pipe';
 import { NewRxComponent } from './new-rx/new-rx.component';
 import { ChooseRxAddModeComponent } from './new-rx/choose-rx-add-mode/choose-rx-add-mode.component';
-import { NewRxFormComponent } from './new-rx/new-rx-form/new-rx-form.component';
 import { SelectRxComponent } from './new-rx/select-rx/select-rx.component';
 import { SharedModule } from '../shared/shared.module';
-import { EditMedicineFormComponent } from './new-rx/new-rx-form/edit-medicine-form/edit-medicine-form.component';
+import { EditMedicineFormComponent } from './rx-form/edit-medicine-form/edit-medicine-form.component';
+import { RxFormComponent } from './rx-form/rx-form.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { EditMedicineFormComponent } from './new-rx/new-rx-form/edit-medicine-fo
     DaysRemainingPipe,
     NewRxComponent,
     ChooseRxAddModeComponent,
-    NewRxFormComponent,
+    RxFormComponent,
     SelectRxComponent,
     EditMedicineFormComponent,
   ],

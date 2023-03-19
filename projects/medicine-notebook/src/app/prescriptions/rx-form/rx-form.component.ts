@@ -2,9 +2,9 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, first, map, mergeMap, of, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
-import { Prescription, TakenAt } from '../../prescription-factory';
-import { PrescriptionService } from '../../prescription.service';
-import { NewRxEditStateService } from '../new-rx-edit-state.service';
+import { Prescription, TakenAt } from '../prescription-factory';
+import { PrescriptionService } from '../prescription.service';
+import { NewRxEditStateService } from './new-rx-edit-state.service';
 
 type DoseForm = { takenAt: FormControl<TakenAt>; amount: FormControl<number> };
 export type MedicineFormGroup = FormGroup<{
@@ -14,11 +14,11 @@ export type MedicineFormGroup = FormGroup<{
 }>;
 
 @Component({
-  selector: 'rx-new-rx-form',
-  templateUrl: './new-rx-form.component.html',
-  styleUrls: ['./new-rx-form.component.css', '../../../../styles/basic-form.css'],
+  selector: 'rx-form',
+  templateUrl: './rx-form.component.html',
+  styleUrls: ['./rx-form.component.css', '../../../styles/basic-form.css'],
 })
-export class NewRxFormComponent implements OnInit, OnDestroy {
+export class RxFormComponent implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private rxService = inject(PrescriptionService);

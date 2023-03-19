@@ -1,15 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { TakenAt } from '../../../prescription-factory';
-import { MedicineFormGroup } from '../new-rx-form.component';
+import { TakenAt } from '../../prescription-factory';
+import { MedicineFormGroup } from '../rx-form.component';
 
 @Component({
   selector: 'rx-edit-medicine-form',
   templateUrl: './edit-medicine-form.component.html',
-  styleUrls: [
-    './edit-medicine-form.component.css',
-    '../new-rx-form.component.css',
-    '../../../../../styles/basic-form.css',
-  ],
+  styleUrls: ['./edit-medicine-form.component.css', '../rx-form.component.css', '../../../../styles/basic-form.css'],
 })
 export class EditMedicineFormComponent implements OnInit {
   @Input() group!: MedicineFormGroup;

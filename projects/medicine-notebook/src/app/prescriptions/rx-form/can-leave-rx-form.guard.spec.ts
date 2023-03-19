@@ -1,11 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { CanDeactivateFn } from '@angular/router';
-
-import { canLeaveNewRxFormGuard } from './can-leave-new-rx-form.guard';
+import { canLeaveRxFormGuard } from './can-leave-rx-form.guard';
 
 describe('canLeaveNewRxFormGuard', () => {
-  const executeGuard: CanDeactivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => canLeaveNewRxFormGuard(...guardParameters));
+  const executeGuard: CanDeactivateFn = (...guardParameters) =>
+    TestBed.runInInjectionContext(() => canLeaveRxFormGuard(...guardParameters));
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
