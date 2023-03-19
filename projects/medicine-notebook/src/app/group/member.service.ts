@@ -83,4 +83,15 @@ export class MemberService extends AbstractMemberService {
       }),
     );
   }
+
+  getMemberByUid$(uid: string): Observable<MemberWithId | undefined> {
+    const uidConstraint = where('uid', '==', uid);
+    return this.firestore.query$<Member>(this.rootKey, uidConstraint).pipe(
+      map((results) => {
+        if (results.empty) return undefined;
+        const first = results.docs.at(0)!;
+        return { ...first.data(), id: first.id };
+      }),
+    );
+  }
 }

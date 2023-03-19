@@ -16,7 +16,7 @@ export const setupFinishedGuard: CanActivateFn = (route, state) => {
   const group = inject(GroupService);
   return auth.getUid().pipe(
     first(),
-    switchMap((uid) => group.getMembersGroup$(uid)),
+    switchMap((uid) => group.getGroupByUid$(uid)),
     map((group) => !(setupFinished ||= Boolean(group?.setupCompleted)) || router.createUrlTree(['/home'])),
   );
 };

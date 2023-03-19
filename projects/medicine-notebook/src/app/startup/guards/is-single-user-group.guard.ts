@@ -12,7 +12,7 @@ export const isSingleUserGroupGuard: CanActivateFn = (route, state) => {
 
   return auth.getUid().pipe(
     first(),
-    mergeMap((uid) => group.getMembersGroup$(uid)),
+    mergeMap((uid) => group.getGroupByUid$(uid)),
     map((family) => (family && family.useMode === UseMode.SingleUser) || router.createUrlTree(['/startup'])),
   );
 };

@@ -16,7 +16,7 @@ export class AddMemberModalComponent {
   private group = inject(GroupService);
 
   readonly isFirstMember$ = this.auth.getUid().pipe(
-    switchMap((uid) => this.group.getMembersGroup$(uid)),
+    switchMap((uid) => this.group.getGroupByUid$(uid)),
     map((group) => group && group.memberIds.length === 0),
   );
   readonly modalTitle$ = this.isFirstMember$.pipe(

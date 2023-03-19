@@ -19,7 +19,7 @@ export class SingleUserRegisterComponent {
       .getUid()
       .pipe(
         first(),
-        mergeMap((uid) => this.group.getMembersGroup$(uid)),
+        mergeMap((uid) => this.group.getGroupByUid$(uid)),
         mergeMap((group) => {
           if (!group) throw ReferenceError('NoGroupError');
           return this.group.update$(group.id, { setupCompleted: true });

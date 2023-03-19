@@ -30,8 +30,8 @@ export class FirestoreService extends AbstractFirestoreService {
   private firebaseService = inject(FirebaseService);
   readonly db = this.firebaseService.firestore;
 
-  get$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions) {
-    const ref = this.getRef<T>(key, id);
+  get$<T extends { id: string }>(rootKey: string, id: string, options?: SnapshotOptions) {
+    const ref = this.getRef<T>(rootKey, id);
     return from(getDoc(ref)).pipe(
       map((result) => {
         if (!result.exists) return undefined;
@@ -40,15 +40,15 @@ export class FirestoreService extends AbstractFirestoreService {
     );
   }
 
-  getAll$<T>(key: string) {
-    const ref = this.getRef<T>(key);
+  getAll$<T>(rootKey: string) {
+    const ref = this.getRef<T>(rootKey);
     return from(getDocs(ref));
   }
 
-  watch$<T extends { id: string }>(key: string, id: string, options?: SnapshotOptions): Observable<T> {
+  watch$<T extends { id: string }>(rootKey: string, id: string, options?: SnapshotOptions): Observable<T> {
     return new Observable<DocumentSnapshot<T>>((observer) => {
       return onSnapshot(
-        this.getRef<T>(key, id),
+        this.getRef<T>(rootKey, id),
         (result) => observer.next(result),
         observer.error.bind(this),
         observer.complete.bind(this),
@@ -62,40 +62,40 @@ export class FirestoreService extends AbstractFirestoreService {
     );
   }
 
-  query$<T>(key: string, ...args: QueryConstraint[]): Observable<QuerySnapshot<T>> {
-    const ref = this.getRef<T>(key);
+  query$<T>(rootKey: string, ...args: QueryConstraint[]): Observable<QuerySnapshot<T>> {
+    const ref = this.getRef<T>(rootKey);
     const q = query(ref, ...args);
     return from(getDocs(q));
   }
 
-  create$(key: string, data: any) {
-    const ref = this.getRef(key);
+  create$(rootKey: string, data: any) {
+    const ref = this.getRef(rootKey);
     return from(addDoc(ref, data));
   }
 
-  update$(key: string, id: string, data: any): Observable<void> {
-    const ref = this.getRef(key, id);
+  update$(rootKey: string, id: string, data: any): Observable<void> {
+    const ref = this.getRef(rootKey, id);
     return from(updateDoc(ref, data));
   }
 
-  addToArrayField$(key: string, id: string, field: string, item: any): Observable<void> {
-    const ref = this.getRef(key, id);
+  addToArrayField$(rootKey: string, id: string, field: string, item: any): Observable<void> {
+    const ref = this.getRef(rootKey, id);
     return from(updateDoc(ref, { [field]: arrayUnion(item) }));
   }
 
-  removeFromArrayField$(key: string, id: string, field: string, item: any): Observable<void> {
-    const ref = this.getRef(key, id);
+  removeFromArrayField$(rootKey: string, id: string, field: string, item: any): Observable<void> {
+    const ref = this.getRef(rootKey, id);
     return from(updateDoc(ref, { [field]: arrayRemove(item) }));
   }
 
-  delete$(key: string, id: string): Observable<void> {
-    const ref = this.getRef(key, id);
+  delete$(rootKey: string, id: string): Observable<void> {
+    const ref = this.getRef(rootKey, id);
     return from(deleteDoc(ref));
   }
 
-  private getRef<T = DocumentData>(key: string): CollectionReference<T>;
-  private getRef<T = DocumentData>(key: string, id: string): DocumentReference<T>;
-  private getRef(key: string, id?: string) {
-    return id ? doc(this.firebaseService.firestore, key, id) : collection(this.firebaseService.firestore, key);
+  private getRef<T = DocumentData>(rootKey: string): CollectionReference<T>;
+  private getRef<T = DocumentData>(rootKey: string, id: string): DocumentReference<T>;
+  private getRef(rootKey: string, id?: string) {
+    return id ? doc(this.firebaseService.firestore, rootKey, id) : collection(this.firebaseService.firestore, rootKey);
   }
 }

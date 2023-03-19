@@ -12,7 +12,7 @@ export abstract class AbstractGroupService {
   /**
    * Gets the user's group based off owner or memberids
    */
-  abstract getMembersGroup$(memberId: string): Observable<GroupWithId | undefined>;
+  abstract getGroupByUid$(uid: string): Observable<GroupWithId | undefined>;
 
   abstract update$(id: string, data: Partial<Group>): Observable<any>;
 

@@ -14,6 +14,10 @@ export type Prescription = {
   dosage: [TakenAt, Amount][];
 };
 
+export type RxWithId = {
+  id: string;
+} & Prescription;
+
 export enum TakenAt {
   WhenWoken = 1,
   Morning,

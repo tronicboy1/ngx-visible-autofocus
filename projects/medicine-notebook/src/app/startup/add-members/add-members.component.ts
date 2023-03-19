@@ -22,7 +22,7 @@ export class AddMembersComponent implements OnInit {
   );
 
   private group$ = this.auth.getUid().pipe(
-    switchMap((uid) => this.group.getMembersGroup$(uid)),
+    switchMap((uid) => this.group.getGroupByUid$(uid)),
     map((group) => {
       if (!group) throw ReferenceError('NoGroup');
       return group;

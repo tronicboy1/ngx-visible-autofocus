@@ -29,10 +29,10 @@ export class GroupService extends AbstractGroupService {
     );
   }
 
-  getMembersGroup$(memberId: string) {
+  getGroupByUid$(uid: string) {
     return forkJoin([
-      this.firestoreService.query$(this.rootKey, where('memberIds', 'array-contains', memberId)),
-      this.firestoreService.query$(this.rootKey, where('owner', '==', memberId)),
+      this.firestoreService.query$(this.rootKey, where('memberIds', 'array-contains', uid)),
+      this.firestoreService.query$(this.rootKey, where('owner', '==', uid)),
     ]).pipe(
       map(([memberIdsQuery, ownerQuery]) => {
         const hit = !memberIdsQuery.empty ? memberIdsQuery : !ownerQuery.empty ? ownerQuery : undefined;

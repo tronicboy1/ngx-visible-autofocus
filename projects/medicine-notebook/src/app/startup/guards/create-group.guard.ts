@@ -13,7 +13,7 @@ export const createGroupGuard: CanActivateFn = (route, state) => {
   if (!hasUseMode) return router.createUrlTree(['/startup', 'choose-mode']);
   return auth.getUid().pipe(
     first(),
-    switchMap((uid) => group.getMembersGroup$(uid)),
+    switchMap((uid) => group.getGroupByUid$(uid)),
     map(Boolean),
     map((hasGroup) => !hasGroup || router.createUrlTree(['/startup', 'members'])),
   );

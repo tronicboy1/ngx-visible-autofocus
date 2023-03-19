@@ -17,7 +17,7 @@ export const setupNotFinishedGuard: CanActivateFn = (_route, _state) => {
   if (setupFinished) return true;
   return auth.getUid().pipe(
     first(),
-    switchMap((uid) => group.getMembersGroup$(uid)),
+    switchMap((uid) => group.getGroupByUid$(uid)),
     map((group) => (setupFinished = Boolean(group?.setupCompleted)) || router.createUrlTree(['/startup'])),
   );
 };

@@ -18,7 +18,7 @@ export class CreateMemberFormComponent {
   @Output() submitted = new EventEmitter<void>();
 
   readonly isFirstMember$ = this.auth.getUid().pipe(
-    switchMap((uid) => this.group.getMembersGroup$(uid)),
+    switchMap((uid) => this.group.getGroupByUid$(uid)),
     map((group) => group && !group.memberIds.length),
   );
   readonly Sex = Sex;
@@ -52,7 +52,7 @@ export class CreateMemberFormComponent {
         first(),
         switchMap((uid) =>
           forkJoin([
-            this.group.getMembersGroup$(uid),
+            this.group.getGroupByUid$(uid),
             this.isFirstMember$.pipe(first()),
             this.auth.getAuthState().pipe(first()),
           ]),

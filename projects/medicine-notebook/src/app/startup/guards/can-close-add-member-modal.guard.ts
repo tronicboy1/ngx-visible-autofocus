@@ -24,7 +24,7 @@ export const canCloseAddMemberModalGuard: CanDeactivateFn<unknown> = (
 
   return auth.getUid().pipe(
     first(),
-    switchMap((uid) => group.getMembersGroup$(uid)),
+    switchMap((uid) => group.getGroupByUid$(uid)),
     map((group) => {
       if (!group) throw ReferenceError('NoGroup');
       return group;

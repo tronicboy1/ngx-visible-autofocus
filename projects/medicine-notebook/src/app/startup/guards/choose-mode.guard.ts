@@ -10,7 +10,7 @@ export const chooseModeGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   return auth.getUid().pipe(
     first(),
-    switchMap((uid) => group.getMembersGroup$(uid)),
+    switchMap((uid) => group.getGroupByUid$(uid)),
     map((group) => {
       if (group && group.useMode) return router.createUrlTree(['/startup', 'members']);
       if (route.queryParams['useMode'])
