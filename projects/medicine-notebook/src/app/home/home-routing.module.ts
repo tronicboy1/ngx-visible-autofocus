@@ -10,9 +10,10 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'members/:memberId/prescriptions',
+        path: 'prescriptions',
         loadChildren: () => import('../prescriptions/prescriptions.module').then((m) => m.PrescriptionsModule),
       },
+      { path: '', redirectTo: 'prescriptions', pathMatch: 'full' }
     ],
   },
 ];
