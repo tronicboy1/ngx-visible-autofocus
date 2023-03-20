@@ -106,7 +106,6 @@ export class PrescriptionService extends PaginatedService<RxWithId[]> {
   private cachedRxs$?: Observable<RxWithId[]>;
   getByMember$(memberId: string): Observable<RxWithId[]> {
     if (memberId === this.memberIdCache && this.cachedTime && Date.now() - this.cachedTime < 1000) {
-      console.log('cache hit', this.memberIdCache, memberId, Date.now() - this.cachedTime)
       return this.cachedRxs$!;
     } else {
       this.memberIdCache = memberId;

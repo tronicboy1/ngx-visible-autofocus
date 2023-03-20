@@ -5,6 +5,9 @@
   justify-content: space-between;
   max-width: 500px;
 }
+.dose {
+  user-select: none;
+}
 .administered-button {
   position: fixed;
   display: block;

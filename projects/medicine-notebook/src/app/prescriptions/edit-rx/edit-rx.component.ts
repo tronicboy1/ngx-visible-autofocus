@@ -21,7 +21,7 @@ export class EditRxComponent {
   readonly showDelete$ = new BehaviorSubject(false);
 
   close() {
-    this.router.navigate([''], { relativeTo: this.route.parent });
+    this.router.navigate(['..', 'prescriptions'], { relativeTo: this.route.parent });
   }
 
   delete() {
