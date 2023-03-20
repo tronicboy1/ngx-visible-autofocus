@@ -7,11 +7,11 @@ import { PrescriptionService } from '../../prescriptions/prescription.service';
 type ActiveDose = Prescription['medicines'][0]['dosage'][0] & { medicineName: string };
 
 @Component({
-  selector: 'doses-current-doses',
-  templateUrl: './current-doses.component.html',
-  styleUrls: ['./current-doses.component.css'],
+  selector: 'doses-pending-doses',
+  templateUrl: './pending-doses.component.html',
+  styleUrls: ['./pending-doses.component.css'],
 })
-export class CurrentDosesComponent {
+export class PendingDosesComponent {
   private route = inject(ActivatedRoute);
   private rxService = inject(PrescriptionService);
 
