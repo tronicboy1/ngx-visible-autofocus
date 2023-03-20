@@ -52,7 +52,7 @@ export class RxFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sumbitText = this.formMode === RxFormMode.Edit ? $localize`編集` : $localize`追加`;
-    this.formGroup.valueChanges.pipe(sampleTime(300), skip(1), take(2), takeUntil(this.teardown$)).subscribe(() => {
+    this.formGroup.valueChanges.pipe(sampleTime(300), skip(2), take(2), takeUntil(this.teardown$)).subscribe(() => {
       this.changed.emit();
     });
     if (this.rxId) {

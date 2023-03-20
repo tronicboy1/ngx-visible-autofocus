@@ -10,9 +10,10 @@ import { PasswordResetFormComponent } from './password-reset-form/password-reset
 import { PasswordResetModalComponent } from './password-reset-modal/password-reset-modal.component';
 import { FinishSignupComponent } from './finish-signup/finish-signup.component';
 import { EmailLoginComponent } from './email-login/email-login.component';
+import { EmailSentModalComponent } from './email-sent-modal/email-sent-modal.component';
 
 @NgModule({
-  declarations: [AuthComponent, PasswordResetFormComponent, PasswordResetModalComponent, FinishSignupComponent, EmailLoginComponent],
+  declarations: [AuthComponent, PasswordResetFormComponent, PasswordResetModalComponent, FinishSignupComponent, EmailLoginComponent, EmailSentModalComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,

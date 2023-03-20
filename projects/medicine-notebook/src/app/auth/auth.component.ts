@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { BehaviorSubject, finalize, first, ReplaySubject, switchMap, tap } from 'rxjs';
@@ -25,6 +25,7 @@ export class AuthComponent {
   ]);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   readonly AuthMode = AuthMode;
   readonly mode$ = new BehaviorSubject(AuthMode.Login);
@@ -57,7 +58,9 @@ export class AuthComponent {
             case AuthMode.EmailLogin:
               const url = new URL('auth/email-login', environment.url);
               url.searchParams.set('email', email);
-              return this.authService.sendSignInEmail(email, url.toString());
+              return this.authService
+                .sendSignInEmail(email, url.toString())
+                .then(() => this.router.navigate(['email-sent'], { relativeTo: this.route }));
             default:
               throw Error();
           }
