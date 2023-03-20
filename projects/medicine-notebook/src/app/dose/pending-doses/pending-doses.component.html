@@ -1,3 +1,10 @@
-<div class="card" *ngFor="let dose of this.currentDoses$ | async">
-  <strong>{{ dose.medicineName }}</strong> x {{dose.amount}}
-</div>
+<ng-container *ngIf="this.unfinishedDoses$ | async as doses">
+  <button *ngIf="doses.length; else allDone" type="button" i18n class="administered-button"
+    (click)="this.addAdministrationForRxMedicines()">飲みました</button>
+  <div class="card" *ngFor="let dose of doses">
+    <strong>{{ dose.medicineName }}</strong> x {{dose.amount}}
+  </div>
+</ng-container>
+<ng-template #allDone>
+  <p class="all-done" i18n>全ての薬を飲んでいます！</p>
+</ng-template>
