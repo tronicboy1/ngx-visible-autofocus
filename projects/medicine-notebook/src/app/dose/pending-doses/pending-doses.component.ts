@@ -5,18 +5,17 @@ import {
   first,
   forkJoin,
   map,
-  mergeMap,
   of,
   shareReplay,
   startWith,
   Subject,
   switchMap,
-  tap,
   withLatestFrom,
 } from 'rxjs';
-import { Prescription, TakenAt, takenAtIntervals } from '../../prescriptions/prescription-factory';
+import { Prescription, takenAtIntervals } from '../../prescriptions/prescription-factory';
 import { PrescriptionService } from '../../prescriptions/prescription.service';
 import { DoseAdministrationService } from '../dose-administration.service';
+import { stopWhileHidden } from '@tronicboy/rxjs-operators';
 
 type ActiveDose = Prescription['medicines'][0]['dosage'][0] & { medicineName: string; rxId: string };
 
@@ -58,7 +57,6 @@ export class PendingDosesComponent {
         return [...doses, activeDoses];
       }, [] as ActiveDose[]),
     ),
-    shareReplay(1),
   );
   readonly unfinishedDoses$ = this.refresh$.pipe(
     switchMap(() => this.currentDoses$),
@@ -77,6 +75,7 @@ export class PendingDosesComponent {
         [] as ActiveDose[],
       ),
     ),
+    stopWhileHidden(),
     shareReplay(1),
   );
 

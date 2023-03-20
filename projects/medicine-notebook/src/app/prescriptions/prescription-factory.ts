@@ -30,7 +30,7 @@ export enum TakenAt {
 
 export const takenAtIntervals = new Map<TakenAt, [number, number]>([
   [TakenAt.WhenWoken, [4, 8]],
-  [TakenAt.Morning, [8, 11]],
+  [TakenAt.Morning, [7, 11]],
   [TakenAt.Lunch, [11, 16]],
   [TakenAt.Dinner, [16, 20]],
   [TakenAt.BeforeBed, [20, 24]],
