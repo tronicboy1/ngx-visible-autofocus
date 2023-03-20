@@ -7,5 +7,6 @@
   "private": false,
   "scripts": {
     "emulate": "firebase emulators:start"
-  }
+  },
+  "dependencies": {}
 }
