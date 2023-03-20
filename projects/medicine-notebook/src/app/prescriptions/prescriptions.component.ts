@@ -56,20 +56,19 @@ export class PrescriptionsComponent {
           let filteredRxs: RxWithId[] = rxs;
           if (mode !== RxDisplayMode.All) {
             filteredRxs = filteredRxs.filter((rx) => {
-              const today = new Date();
-              const dispensedAtDate = new Date(rx.dispensedAt);
-              const daysSinceDispensal = Math.floor(
-                (today.getTime() - dispensedAtDate.getTime()) / (1000 * 60 * 60 * 24),
-              );
               const longestMedicineAmount = rx.medicines.reduce(
                 (acc, cur) => (cur.amountDispensed > acc ? cur.amountDispensed : acc),
                 1,
               );
+              const daysRemaining = PrescriptionService.getDaysRemainingForMedicine(
+                rx.dispensedAt,
+                longestMedicineAmount,
+              );
               switch (mode) {
                 case RxDisplayMode.Active:
-                  return longestMedicineAmount - daysSinceDispensal > 0;
+                  return daysRemaining > 0;
                 case RxDisplayMode.NotActive:
-                  return longestMedicineAmount - daysSinceDispensal <= 0;
+                  return daysRemaining <= 0;
                 default:
                   return true;
               }

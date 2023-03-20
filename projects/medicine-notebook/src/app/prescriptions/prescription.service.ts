@@ -129,4 +129,14 @@ export class PrescriptionService extends PaginatedService<RxWithId[]> {
   delete$(id: string) {
     return this.firestore.delete$(this.rootKey, id);
   }
+
+  static getDaysRemainingForMedicine(
+    dispensedAt: Prescription['dispensedAt'],
+    amountDispensed: Prescription['medicines'][0]['amountDispensed'],
+  ): number {
+    const today = new Date();
+    const dispensedAtDate = new Date(dispensedAt);
+    const daysSinceDispensal = Math.floor((today.getTime() - dispensedAtDate.getTime()) / (1000 * 60 * 60 * 24));
+    return amountDispensed - daysSinceDispensal;
+  }
 }
