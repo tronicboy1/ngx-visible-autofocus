@@ -3,7 +3,6 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BehaviorSubject, map, Observable, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
 import { Prescription, TakenAt } from '../prescription-factory';
 import { PrescriptionService } from '../prescription.service';
-import { NewRxEditStateService } from './new-rx-edit-state.service';
 
 export enum RxFormMode {
   New = 1,
@@ -25,11 +24,11 @@ export type MedicineFormGroup = FormGroup<{
 })
 export class RxFormComponent implements OnInit, OnDestroy {
   private rxService = inject(PrescriptionService);
-  private newRxEditStateService = inject(NewRxEditStateService);
   @Input() memberId!: string;
   @Input() rxId?: string;
   @Input() formMode = RxFormMode.New;
   @Output() submitted = new EventEmitter<void>();
+  @Output() changed = new EventEmitter<void>();
 
   private teardown$ = new Subject<void>();
 
@@ -53,8 +52,8 @@ export class RxFormComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sumbitText = this.formMode === RxFormMode.Edit ? $localize`編集` : $localize`追加`;
-    this.formGroup.valueChanges.pipe(sampleTime(300), skip(1), take(1), takeUntil(this.teardown$)).subscribe(() => {
-      this.newRxEditStateService.set(this, true);
+    this.formGroup.valueChanges.pipe(sampleTime(300), skip(1), take(2), takeUntil(this.teardown$)).subscribe(() => {
+      this.changed.emit();
     });
     if (this.rxId) {
       this.rxService.get$(this.rxId).subscribe((rx) => {
@@ -131,7 +130,6 @@ export class RxFormComponent implements OnInit, OnDestroy {
         : this.rxService.create$(data);
     send$.subscribe({
       next: () => {
-        this.newRxEditStateService.set(this, false);
         this.submitted.emit();
       },
     });

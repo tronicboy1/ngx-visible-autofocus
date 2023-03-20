@@ -1,6 +1,6 @@
 <form [formGroup]="group" (ngSubmit)="close.emit()">
   <label for="medicine-name" i18n>薬の名前<small>*</small></label>
-  <input appMedicineInput type="text" name="medicine-name" id="medicine-name" maxlength="255" required
+  <input ngxAutofocus appMedicineInput type="text" name="medicine-name" id="medicine-name" maxlength="255" required
     [formControl]="group.controls.medicineName" autocomplete="off">
   <div class="array-group">
     <div class="input-label">

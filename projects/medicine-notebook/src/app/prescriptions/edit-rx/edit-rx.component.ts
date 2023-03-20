@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { PrescriptionService } from '../prescription.service';
+import { NewRxEditStateService } from '../rx-form/new-rx-edit-state.service';
 import { RxFormMode } from '../rx-form/rx-form.component';
 
 @Component({
@@ -13,6 +14,7 @@ export class EditRxComponent {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private rxService = inject(PrescriptionService);
+  private rxEditStateService = inject(NewRxEditStateService);
 
   readonly formMode = RxFormMode.Edit;
   readonly memberId = this.route.snapshot.parent!.parent!.params['memberId'] as string;
@@ -26,5 +28,9 @@ export class EditRxComponent {
 
   delete() {
     this.rxService.delete$(this.rxId).subscribe(() => this.close());
+  }
+
+  handleChange() {
+    this.rxEditStateService.set(this, true);
   }
 }

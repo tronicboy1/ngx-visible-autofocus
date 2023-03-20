@@ -7,6 +7,7 @@
 }
 .dose {
   user-select: none;
+  align-items: center;
 }
 .administered-button {
   position: fixed;
@@ -31,4 +32,8 @@
   display: block;
   margin: 1rem auto;
   text-align: center;
+}
+
+small {
+  width: 24px;
 }
