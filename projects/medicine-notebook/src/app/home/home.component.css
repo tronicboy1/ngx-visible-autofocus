@@ -1,16 +1,31 @@
 .member-nav {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   grid-template-rows: 50px;
   grid-auto-rows: auto;
-  gap: 8px 4px;
-  padding: 1rem;
+  gap: 1rem 4px;
+  padding: 1rem 1rem 0.5rem 1rem;
   max-width: 500px;
   margin: auto;
 }
 
 .member-nav select {
-  grid-column: 1 / 5;
+  grid-column: 1 / 9;
   grid-row: 1;
 }
 
+.member-nav a {
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--secondary-color);
+  border: 1px soldi var(--secondary-color);
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.member-nav a.active {
+  background-color: var(--highlight-color);
+}
