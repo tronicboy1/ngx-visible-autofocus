@@ -15,7 +15,7 @@
       class="readonly-medicine-group">
       <p>{{i + 1}}</p>
       <input (click)="this.openMedicineEditModal(medicineGroup, i)" type="text" readonly
-        [value]="medicineGroup.controls.medicineName">
+        [value]="medicineGroup.controls.medicineName.value">
       <svg (click)="this.formGroup.controls.medicines.removeAt(i)" xmlns="http://www.w3.org/2000/svg" height="48"
         width="48" viewBox="0,0,48,48">
         <path
