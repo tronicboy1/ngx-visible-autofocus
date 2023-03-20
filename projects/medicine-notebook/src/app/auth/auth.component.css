@@ -104,3 +104,8 @@ form:valid button {
   border-radius: 4px;
   display: block;
 }
+
+.middle {
+  border-radius: 0;
+  font-size: smaller;
+}

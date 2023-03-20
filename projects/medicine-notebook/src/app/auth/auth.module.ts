@@ -9,9 +9,10 @@ import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/
 import { PasswordResetFormComponent } from './password-reset-form/password-reset-form.component';
 import { PasswordResetModalComponent } from './password-reset-modal/password-reset-modal.component';
 import { FinishSignupComponent } from './finish-signup/finish-signup.component';
+import { EmailLoginComponent } from './email-login/email-login.component';
 
 @NgModule({
-  declarations: [AuthComponent, PasswordResetFormComponent, PasswordResetModalComponent, FinishSignupComponent],
+  declarations: [AuthComponent, PasswordResetFormComponent, PasswordResetModalComponent, FinishSignupComponent, EmailLoginComponent],
   imports: [
     CommonModule,
     AuthRoutingModule,
