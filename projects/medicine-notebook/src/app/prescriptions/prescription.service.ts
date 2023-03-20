@@ -17,6 +17,7 @@ import {
   Observable,
   OperatorFunction,
   scan,
+  shareReplay,
   startWith,
   Subject,
   switchMap,
@@ -100,21 +101,32 @@ export class PrescriptionService extends PaginatedService<RxWithId[]> {
     searchId$.next(searchText);
   }
 
+  private memberIdCache?: string;
+  private cachedTime?: number;
+  private cachedRxs$?: Observable<RxWithId[]>;
   getByMember$(memberId: string): Observable<RxWithId[]> {
+    if (memberId === this.memberIdCache && this.cachedTime && Date.now() - this.cachedTime > 1000) {
+      return this.cachedRxs$!;
+    } else {
+      this.memberIdCache = memberId;
+      this.cachedRxs$ = undefined;
+      this.cachedTime = Date.now();
+    }
     const ownedByMember = where('memberId', '==', memberId);
     const orderByDispenseDate = orderBy('dispensedAt', 'desc');
     const qLimit = limit(50);
     const fiveMonthsAgo = new Date();
     fiveMonthsAgo.setMonth(new Date().getMonth() - 5);
     const untilFiveMonthsAgo = where('dispensedAt', '>', fiveMonthsAgo.getTime());
-    return this.firestore
+    return (this.cachedRxs$ ||= this.firestore
       .query$<Prescription>(this.rootKey, ownedByMember, untilFiveMonthsAgo, qLimit, orderByDispenseDate)
       .pipe(
         map((result) => {
           if (result.empty) return [];
           return result.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
         }),
-      );
+        shareReplay(1),
+      ));
   }
 
   create$(rx: Omit<Prescription, 'createdAt' | 'memberId'> & { memberId: string }): Observable<string> {
@@ -138,5 +150,13 @@ export class PrescriptionService extends PaginatedService<RxWithId[]> {
     const dispensedAtDate = new Date(dispensedAt);
     const daysSinceDispensal = Math.floor((today.getTime() - dispensedAtDate.getTime()) / (1000 * 60 * 60 * 24));
     return amountDispensed - daysSinceDispensal;
+  }
+
+  static getDaysRemainingForRx(rx: Prescription) {
+    const longestMedicineAmount = rx.medicines.reduce(
+      (acc, cur) => (cur.amountDispensed > acc ? cur.amountDispensed : acc),
+      1,
+    );
+    return this.getDaysRemainingForMedicine(rx.dispensedAt, longestMedicineAmount);
   }
 }

@@ -56,14 +56,7 @@ export class PrescriptionsComponent {
           let filteredRxs: RxWithId[] = rxs;
           if (mode !== RxDisplayMode.All) {
             filteredRxs = filteredRxs.filter((rx) => {
-              const longestMedicineAmount = rx.medicines.reduce(
-                (acc, cur) => (cur.amountDispensed > acc ? cur.amountDispensed : acc),
-                1,
-              );
-              const daysRemaining = PrescriptionService.getDaysRemainingForMedicine(
-                rx.dispensedAt,
-                longestMedicineAmount,
-              );
+              const daysRemaining = PrescriptionService.getDaysRemainingForRx(rx);
               switch (mode) {
                 case RxDisplayMode.Active:
                   return daysRemaining > 0;

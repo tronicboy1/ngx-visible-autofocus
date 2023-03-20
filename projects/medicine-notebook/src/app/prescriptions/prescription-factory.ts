@@ -28,6 +28,14 @@ export enum TakenAt {
   Other,
 }
 
+export const takenAtIntervals = new Map<TakenAt, [number, number]>([
+  [TakenAt.WhenWoken, [4, 8]],
+  [TakenAt.Morning, [8, 11]],
+  [TakenAt.Lunch, [11, 16]],
+  [TakenAt.Lunch, [16, 20]],
+  [TakenAt.BeforeBed, [20, 24]],
+]);
+
 export class PrescriptionFactory {
   create(params: Partial<Prescription>): Prescription {
     const parsedMedicines = params.medicines ? this.getUniqueDosages(params.medicines) : undefined;
