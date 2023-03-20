@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { PrescriptionService } from '../../prescriptions/prescription.service';
 
 export const hasActiveRxGuard: CanActivateFn = (route, state) => {

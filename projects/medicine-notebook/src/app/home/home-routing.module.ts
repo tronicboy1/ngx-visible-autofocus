@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CurrentDosesComponent } from './current-doses/current-doses.component';
 import { hasActiveRxGuard } from './guards/has-active-rx.guard';
 import { redirectCurrentUserMemberGuard } from './guards/redirect-current-user-member.guard';
 import { HomeComponent } from './home.component';
@@ -13,15 +12,15 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'current-doses',
+        path: 'doses',
         canActivate: [hasActiveRxGuard],
-        component: CurrentDosesComponent,
+        loadChildren: () => import('../dose/dose.module').then((m) => m.DoseModule),
       },
       {
         path: 'prescriptions',
         loadChildren: () => import('../prescriptions/prescriptions.module').then((m) => m.PrescriptionsModule),
       },
-      { path: '', redirectTo: 'current-doses', pathMatch: 'full' },
+      { path: '', redirectTo: 'doses', pathMatch: 'full' },
     ],
   },
 ];

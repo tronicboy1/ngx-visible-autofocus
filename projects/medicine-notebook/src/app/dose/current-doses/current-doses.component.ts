@@ -1,13 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, switchMap } from 'rxjs';
-import { Prescription, RxWithId, takenAtIntervals } from '../../prescriptions/prescription-factory';
+import { Prescription, takenAtIntervals } from '../../prescriptions/prescription-factory';
 import { PrescriptionService } from '../../prescriptions/prescription.service';
 
 type ActiveDose = Prescription['medicines'][0]['dosage'][0] & { medicineName: string };
 
 @Component({
-  selector: 'home-current-doses',
+  selector: 'doses-current-doses',
   templateUrl: './current-doses.component.html',
   styleUrls: ['./current-doses.component.css'],
 })
@@ -15,7 +15,7 @@ export class CurrentDosesComponent {
   private route = inject(ActivatedRoute);
   private rxService = inject(PrescriptionService);
 
-  private readonly memberId$ = this.route.parent!.params.pipe(map((params) => params['memberId'] as string));
+  private readonly memberId$ = this.route.params.pipe(map((params) => params['memberId'] as string));
   private readonly rxs$ = this.memberId$.pipe(switchMap((memberId) => this.rxService.getByMember$(memberId)));
   private readonly activeMedicines$ = this.rxs$.pipe(
     map((rxs) =>
@@ -25,7 +25,7 @@ export class CurrentDosesComponent {
         );
         return [...acc, ...activeMedicines];
       }, [] as Prescription['medicines']),
-    ),
+    )
   );
   readonly currentDoses$ = this.activeMedicines$.pipe(
     map((medicines) =>
