@@ -28,7 +28,7 @@
     aria-required="false" maxlength="255" autocomplete="organization">
   <button [disabled]="this.formGroup.invalid" type="submit" i18n>
     <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
-    <ng-template #submitText>追加</ng-template>
+    <ng-template #submitText>{{ this.sumbitText }}</ng-template>
   </button>
 </form>
 

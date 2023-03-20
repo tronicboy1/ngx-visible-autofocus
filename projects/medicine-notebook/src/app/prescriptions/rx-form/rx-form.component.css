@@ -15,16 +15,6 @@
   padding: 0;
 }
 
-.delete {
-  background-color: var(--danger-color);
-  color: white;
-  border-color: var(--danger-color);
-}
-.delete:hover {
-  background-color: var(--danger-color);
-  border-color: var(--danger-color);
-}
-
 .input-array,
 .input-label {
   display: flex;

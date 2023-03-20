@@ -145,7 +145,8 @@ nav li a {
   cursor: pointer;
 }
 
-.button,button {
+.button,
+button {
   border: 1px solid var(--highlight-color);
   padding: 0.25rem 0.5rem;
   font-size: 1.1rem;
@@ -156,4 +157,35 @@ nav li a {
   flex: 1;
   cursor: pointer;
   margin: 0;
+}
+
+.delete {
+  background-color: var(--danger-color);
+  color: white;
+  border-color: var(--danger-color);
+}
+.delete:hover {
+  background-color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+.delete svg {
+  fill: white;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.button-group button {
+  margin: 0;
+}
+.button-left {
+  border-radius: 4px 0 0 4px;
+  flex: 1 0;
+}
+.button-right {
+  border-radius: 0 4px 4px 0;
+  flex: 1 0;
 }

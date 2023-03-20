@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
+import { BehaviorSubject, map, Observable, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
 import { Prescription, TakenAt } from '../prescription-factory';
 import { PrescriptionService } from '../prescription.service';
 import { NewRxEditStateService } from './new-rx-edit-state.service';
@@ -42,6 +42,7 @@ export class RxFormComponent implements OnInit, OnDestroy {
     medicines: new FormArray<MedicineFormGroup>([], { validators: [Validators.required, Validators.min(1)] }),
     pharmacyName: new FormControl('', { nonNullable: true }),
   });
+  sumbitText = $localize`追加`;
 
   constructor() {
     const today = new Date();
@@ -51,6 +52,7 @@ export class RxFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.sumbitText = this.formMode === RxFormMode.Edit ? $localize`編集` : $localize`追加`;
     this.formGroup.valueChanges.pipe(sampleTime(300), skip(1), take(1), takeUntil(this.teardown$)).subscribe(() => {
       this.newRxEditStateService.set(this, true);
     });
@@ -117,19 +119,22 @@ export class RxFormComponent implements OnInit, OnDestroy {
     if (this.loading$.value) return;
     const { dispensedAt, medicines, pharmacyName } = this.formGroup.getRawValue();
     this.loading$.next(true);
-    this.rxService
-      .create$({
-        dispensedAt: new Date(dispensedAt).getTime(),
-        medicines,
-        pharmacyName,
-        memberId: this.memberId,
-      })
-      .subscribe({
-        next: () => {
-          this.newRxEditStateService.set(this, false);
-          this.submitted.emit();
-        },
-      });
+    const data = {
+      dispensedAt: new Date(dispensedAt).getTime(),
+      medicines,
+      pharmacyName,
+      memberId: this.memberId,
+    };
+    const send$: Observable<any> =
+      this.formMode === RxFormMode.Edit && this.rxId
+        ? this.rxService.update$(this.rxId, data)
+        : this.rxService.create$(data);
+    send$.subscribe({
+      next: () => {
+        this.newRxEditStateService.set(this, false);
+        this.submitted.emit();
+      },
+    });
   }
 
   private createMedicineFormGroup() {

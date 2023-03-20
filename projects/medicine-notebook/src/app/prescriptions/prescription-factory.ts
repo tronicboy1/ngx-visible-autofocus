@@ -39,7 +39,10 @@ export class PrescriptionFactory {
         pharmacyName: '',
         medicines: [],
       },
-      { ...params, medicines: parsedMedicines },
+      {
+        ...params,
+        medicines: parsedMedicines,
+      },
     );
   }
 

@@ -1,1 +1,17 @@
-<p>edit-rx works!</p>
+<h1 *ngIf="this.rx$ | async as rx">{{ rx.dispensedAt | date: 'shortDate' }}, {{ rx.pharmacyName }}<span
+    i18n>の処方箋編集</span></h1>
+<div class="card">
+  <rx-form [formMode]="this.formMode" [memberId]="this.memberId" [rxId]="this.rxId"
+    (submitted)="this.close()"></rx-form>
+
+</div>
+
+<div class="card"><button (click)="this.showDelete$.next(true)" type="button" class="delete" i18n>削除</button></div>
+
+<base-modal [show]="this.showDelete$ | async" i18n-modal-title modal-title="本当に削除しますか？"
+  (modal-closed)="this.showDelete$.next(false)">
+  <div class="button-group">
+    <button (click)="this.showDelete$.next(false)" type="button" class="button-left" i18n>キャンセル</button>
+    <button (click)="this.delete()" type="button" class="delete button-right" i18n>削除</button>
+  </div>
+</base-modal>

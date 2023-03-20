@@ -22,7 +22,7 @@ const routes: Routes = [
     ],
   },
   {
-    path: 'edit/:rxId',
+    path: ':rxId',
     component: EditRxComponent,
     canDeactivate: [canLeaveRxFormGuard],
   },
