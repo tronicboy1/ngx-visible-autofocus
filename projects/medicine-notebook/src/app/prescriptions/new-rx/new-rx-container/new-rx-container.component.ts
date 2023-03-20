@@ -19,6 +19,7 @@ export class NewRxContainerComponent {
   readonly rxId = this.route.snapshot.queryParams['rxId'] as string | undefined;
 
   close() {
+    this.setEditting(false);
     this.router.navigate(['..'], { relativeTo: this.route.parent });
   }
 

@@ -2,7 +2,7 @@
     i18n>の処方箋編集</span></h3>
 <div class="card">
   <rx-form [formMode]="this.formMode" [memberId]="this.memberId" [rxId]="this.rxId"
-    (submitted)="this.close()" (changed)="this.handleChange()"></rx-form>
+    (submitted)="this.close(true)" (changed)="this.handleChange()"></rx-form>
 </div>
 
 <div class="card"><button (click)="this.showDelete$.next(true)" type="button" class="delete" i18n>削除</button></div>

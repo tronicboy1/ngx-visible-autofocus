@@ -85,11 +85,11 @@ export class PendingDosesComponent {
       .pipe(
         first(),
         map(([memberId, doses]) => {
-          const uniqueRxIds = new Set<string>(doses.map((dose) => dose.rxId));
-          return [memberId, Array.from(uniqueRxIds), doses.at(0)!.takenAt] as const;
+          const uniqueRxIds = new Map<string, ActiveDose>(doses.map((dose) => [dose.rxId + dose.takenAt, dose]));
+          return [memberId, Array.from(uniqueRxIds.values())] as const;
         }),
-        switchMap(([memberId, rxIds, takenAt]) =>
-          forkJoin([rxIds.map((rxId) => this.doseAdministrationService.create$(memberId, rxId, takenAt))]),
+        switchMap(([memberId, doses]) =>
+          forkJoin([doses.map((dose) => this.doseAdministrationService.create$(memberId, dose.rxId, dose.takenAt))]),
         ),
       )
       .subscribe(() => this.refreshSubject.next());

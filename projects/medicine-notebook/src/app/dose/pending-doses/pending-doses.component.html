@@ -3,7 +3,9 @@
     (click)="this.addAdministrationForRxMedicines()">飲みました</button>
   <div class="card dose" *ngFor="let dose of doses" i18n-title title="この薬の処方箋を編集する"
     routerLink="../../prescriptions/{{ dose.rxId }}">
-    <strong>{{ dose.medicineName }}</strong><small>x{{ dose.amount }}</small>
+    <strong style="grid-column: 1/ 9;">{{ dose.medicineName }}</strong>
+    <span>{{ dose.takenAt | takenAt }}</span>
+    <small>x{{ dose.amount }}</small>
   </div>
 </ng-container>
 <ng-template #allDone>

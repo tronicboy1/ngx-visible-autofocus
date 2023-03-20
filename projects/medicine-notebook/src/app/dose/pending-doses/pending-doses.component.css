@@ -1,12 +1,19 @@
 .card {
   position: relative;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   max-width: 500px;
 }
 .dose {
   user-select: none;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: 1fr;
+  gap: 0 0.25rem;
+}
+
+.dose small, .dose span {
+  display: inline-flex;
+  justify-content: flex-end;
   align-items: center;
 }
 .administered-button {
@@ -32,8 +39,4 @@
   display: block;
   margin: 1rem auto;
   text-align: center;
-}
-
-small {
-  width: 24px;
 }

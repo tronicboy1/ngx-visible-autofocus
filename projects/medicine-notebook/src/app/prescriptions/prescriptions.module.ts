@@ -32,5 +32,6 @@ import { EditRxComponent } from './edit-rx/edit-rx.component';
     EditRxComponent,
   ],
   imports: [CommonModule, PrescriptionsRoutingModule, SharedModule],
+  exports: [TakenAtPipe],
 })
 export class PrescriptionsModule {}

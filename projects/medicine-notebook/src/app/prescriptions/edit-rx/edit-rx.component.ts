@@ -22,7 +22,8 @@ export class EditRxComponent {
   readonly rx$ = this.rxService.get$(this.rxId);
   readonly showDelete$ = new BehaviorSubject(false);
 
-  close() {
+  close(isSumbit = false) {
+    if (isSumbit) this.rxEditStateService.set(this, false);
     this.router.navigate(['..', 'prescriptions'], { relativeTo: this.route.parent });
   }
 
