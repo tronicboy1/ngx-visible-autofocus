@@ -210,10 +210,16 @@
             "main": "projects/medicine-notebook/src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "projects/medicine-notebook/tsconfig.app.json",
-            "assets": ["projects/medicine-notebook/src/favicon.ico", "projects/medicine-notebook/src/assets"],
+            "assets": [
+              "projects/medicine-notebook/src/favicon.ico",
+              "projects/medicine-notebook/src/assets",
+              "projects/medicine-notebook/src/manifest.webmanifest"
+            ],
             "styles": ["projects/medicine-notebook/src/styles.css"],
             "scripts": [],
-            "webWorkerTsConfig": "projects/medicine-notebook/tsconfig.worker.json"
+            "webWorkerTsConfig": "projects/medicine-notebook/tsconfig.worker.json",
+            "serviceWorker": true,
+            "ngswConfigPath": "projects/medicine-notebook/ngsw-config.json"
           },
           "configurations": {
             "production": {
@@ -271,7 +277,11 @@
           "options": {
             "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "projects/medicine-notebook/tsconfig.spec.json",
-            "assets": ["projects/medicine-notebook/src/favicon.ico", "projects/medicine-notebook/src/assets"],
+            "assets": [
+              "projects/medicine-notebook/src/favicon.ico",
+              "projects/medicine-notebook/src/assets",
+              "projects/medicine-notebook/src/manifest.webmanifest"
+            ],
             "styles": ["projects/medicine-notebook/src/styles.css"],
             "scripts": [],
             "webWorkerTsConfig": "projects/medicine-notebook/tsconfig.worker.json"
