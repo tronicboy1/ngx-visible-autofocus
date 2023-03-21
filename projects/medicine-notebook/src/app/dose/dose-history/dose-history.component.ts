@@ -39,6 +39,8 @@ export class DoseHistoryComponent {
           return acc.set(key, { date: completedAtDate, takenAt: [...hasOther, curr.takenAt] });
         }, new Map<string, { date: Date; takenAt: TakenAt[] }>());
         const requiredAdministrations = rx.medicines.reduce((acc, med) => {
+          const empty = PrescriptionService.getDaysRemainingForMedicine(rx.dispensedAt, med.amountDispensed) < 1;
+          if (empty) return acc;
           const allDoseTimesForMedicine = med.dosage.reduce((acc, dose) => [...acc, dose.takenAt], [] as TakenAt[]);
           return [...acc, ...allDoseTimesForMedicine];
         }, [] as TakenAt[]);
@@ -55,6 +57,7 @@ export class DoseHistoryComponent {
             const isToday = Date.now() - admin.date.getTime() < 1000 * 60 * 60 * 24;
             const [_, to] = takenAtIntervals.get(key) ?? [0, 0];
             const stillNotTimeToTake = isToday && hoursNow < to;
+
             switch (true) {
               case wasRequired && wasAdministered:
                 return DoseHistory.Taken;
