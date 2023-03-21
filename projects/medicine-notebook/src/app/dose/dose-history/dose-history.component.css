@@ -1,5 +1,16 @@
-
-
 table {
-  text-align: left;
+  text-align: center;
+}
+
+svg {
+  height: 25px;
+  margin: auto;
+}
+
+.taken {
+  fill: green;
+}
+
+.forgotten {
+  fill: var(--danger-color);
 }

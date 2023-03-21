@@ -1,16 +1,34 @@
 <div class="card" *ngFor="let rx of this.activeRxsWithAdministrations$ | async">
-  <h4>{{ rx.dispensedAt | date: 'shortDate' }}, {{ rx.pharmacyName }}</h4>
+  <app-rx-header [rx]="rx"></app-rx-header>
   <table>
     <thead>
       <tr>
-        <th>日付</th>
-        <th>時間帯</th>
+        <th i18n>日付</th>
+        <th i18n>起</th>
+        <th i18n>朝</th>
+        <th i18n>昼</th>
+        <th i18n>夕</th>
+        <th i18n>寝</th>
+        <th i18n>他</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let admin of rx.administrations">
+      <tr *ngFor="let admin of rx.doseHistory">
         <td>{{ admin.date | date:'MM/dd' }}</td>
-        <td *ngFor="let takenAt of admin.takenAt">{{ takenAt | takenAt }}</td>
+        <td *ngFor="let history of admin.results">
+          <ng-container *ngIf="history === DoseHistory.Taken;">
+            <svg class="taken" xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0,0,48,48">
+              <path
+                d="M20.95 31.95 35.4 17.5l-2.15-2.15-12.3 12.3L15 21.7l-2.15 2.15ZM9 42q-1.2 0-2.1-.9Q6 40.2 6 39V9q0-1.2.9-2.1Q7.8 6 9 6h30q1.2 0 2.1.9.9.9.9 2.1v30q0 1.2-.9 2.1-.9.9-2.1.9Zm0-3h30V9H9v30ZM9 9v30V9Z" />
+            </svg>
+          </ng-container>
+          <ng-container *ngIf="history === DoseHistory.Forgotten;">
+            <svg class="forgotten" xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 96 960 960" width="48">
+              <path
+                d="M479.982 776q14.018 0 23.518-9.482 9.5-9.483 9.5-23.5 0-14.018-9.482-23.518-9.483-9.5-23.5-9.5-14.018 0-23.518 9.482-9.5 9.483-9.5 23.5 0 14.018 9.482 23.518 9.483 9.5 23.5 9.5ZM453 623h60V370h-60v253Zm27.266 353q-82.734 0-155.5-31.5t-127.266-86q-54.5-54.5-86-127.341Q80 658.319 80 575.5q0-82.819 31.5-155.659Q143 347 197.5 293t127.341-85.5Q397.681 176 480.5 176q82.819 0 155.659 31.5Q709 239 763 293t85.5 127Q880 493 880 575.734q0 82.734-31.5 155.5T763 858.316q-54 54.316-127 86Q563 976 480.266 976Zm.234-60Q622 916 721 816.5t99-241Q820 434 721.188 335 622.375 236 480 236q-141 0-240.5 98.812Q140 433.625 140 576q0 141 99.5 240.5t241 99.5Zm-.5-340Z" />
+            </svg>
+          </ng-container>
+        </td>
       </tr>
     </tbody>
   </table>
