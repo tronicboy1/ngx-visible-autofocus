@@ -2,7 +2,7 @@
   <select *ngIf="members.length > 1" name="member-id" id="member-id" [formControl]="this.memberSelectControl">
     <option *ngFor="let member of members;" [ngValue]="member.id">{{ member.name }}</option>
   </select>
-  <a style="grid-column: 1 / 4;" routerLink="./doses" routerLinkActive="active">今飲む薬</a>
-  <a style="grid-column: 6 / 9;" routerLink="./prescriptions" routerLinkActive="active">処方箋</a>
+  <a class="nav-button" style="grid-column: 1 / 4;" routerLink="./doses" routerLinkActive="active">今飲む薬</a>
+  <a class="nav-button" style="grid-column: 6 / 9;" routerLink="./prescriptions" routerLinkActive="active">処方箋</a>
 </nav>
 <router-outlet></router-outlet>
