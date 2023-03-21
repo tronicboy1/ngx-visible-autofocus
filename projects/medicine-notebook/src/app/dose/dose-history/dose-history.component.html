@@ -1,5 +1,5 @@
 <div class="card" *ngFor="let rx of this.activeRxsWithAdministrations$ | async">
-  <app-rx-header [rx]="rx"></app-rx-header>
+  <a routerLink="../../prescriptions/{{ rx.id }}"><app-rx-header [rx]="rx"></app-rx-header></a>
   <table>
     <thead>
       <tr>
