@@ -5,16 +5,17 @@ export type Prescription = {
   createdAt: number;
   dispensedAt: number;
   pharmacyName: string;
-  medicines: {
-    amountDispensed: Days;
-    medicineName: string;
-    dosage: {
-      takenAt: TakenAt;
-      amount: number;
-    }[];
-  }[];
+  medicines: RxMedicine[];
 };
 
+export type RxMedicine = {
+  amountDispensed: Days;
+  medicineName: string;
+  dosage: {
+    takenAt: TakenAt;
+    amount: number;
+  }[];
+};
 export type RxWithId = {
   id: string;
 } & Prescription;
@@ -27,6 +28,7 @@ export enum TakenAt {
   BeforeBed,
   Other,
 }
+export const takenAtValues = Object.values(TakenAt).filter((value): value is TakenAt => !isNaN(Number(value)));
 
 export const takenAtIntervals = new Map<TakenAt, [number, number]>([
   [TakenAt.WhenWoken, [4, 8]],

@@ -65,6 +65,7 @@ export class RxFormComponent implements OnInit, OnDestroy {
           group.controls.medicineName.setValue(medicine.medicineName, { emitEvent: false });
         });
         this.formGroup.controls.pharmacyName.setValue(rx.pharmacyName);
+        this.formGroup.controls.dispensedAt.setValue(new Date(rx.dispensedAt).toISOString().split('T')[0]);
       });
     } else {
       const group = this.addMedicine();
