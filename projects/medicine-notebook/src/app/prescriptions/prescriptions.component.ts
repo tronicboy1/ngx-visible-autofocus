@@ -14,13 +14,7 @@ import {
   tap,
 } from 'rxjs';
 import { RxWithId } from './prescription-factory';
-import { PrescriptionService } from './prescription.service';
-
-enum RxDisplayMode {
-  All = 1,
-  Active,
-  NotActive,
-}
+import { PrescriptionService, RxFilterMode } from './prescription.service';
 
 @Component({
   selector: 'app-prescriptions',
@@ -32,7 +26,7 @@ export class PrescriptionsComponent {
   private route = inject(ActivatedRoute);
   private rxService = inject(PrescriptionService);
 
-  readonly RxDisplayMode = RxDisplayMode;
+  readonly RxFilterMode = RxFilterMode;
   readonly rxs$ = this.route.parent!.parent!.params.pipe(
     map((params) => params['memberId'] as string),
     switchMap((memberId) => this.rxService.getByMember$(memberId)),
@@ -47,25 +41,15 @@ export class PrescriptionsComponent {
     shareReplay(1),
   );
   readonly searchControl = new FormControl<string>('', { nonNullable: true });
-  readonly modeControl = new FormControl<RxDisplayMode>(RxDisplayMode.Active, { nonNullable: true });
+  readonly modeControl = new FormControl<RxFilterMode>(RxFilterMode.Active, { nonNullable: true });
 
-  private filterRxs(): OperatorFunction<[RxWithId[], RxDisplayMode, string], RxWithId[]> {
+  private filterRxs(): OperatorFunction<[RxWithId[], RxFilterMode, string], RxWithId[]> {
     return (source) =>
       source.pipe(
         map(([rxs, mode, searchText]) => {
           let filteredRxs: RxWithId[] = rxs;
-          if (mode !== RxDisplayMode.All) {
-            filteredRxs = filteredRxs.filter((rx) => {
-              const daysRemaining = PrescriptionService.getDaysRemainingForRx(rx);
-              switch (mode) {
-                case RxDisplayMode.Active:
-                  return daysRemaining > 0;
-                case RxDisplayMode.NotActive:
-                  return daysRemaining <= 0;
-                default:
-                  return true;
-              }
-            });
+          if (mode !== RxFilterMode.All) {
+            filteredRxs = PrescriptionService.filterByActivity(filteredRxs);
           }
           if (searchText) {
             filteredRxs = filteredRxs.filter((rx) => rx.medicines.some((med) => med.medicineName.includes(searchText)));

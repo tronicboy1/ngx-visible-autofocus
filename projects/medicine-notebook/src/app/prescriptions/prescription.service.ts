@@ -14,6 +14,7 @@ import {
   combineLatest,
   debounceTime,
   map,
+  MonoTypeOperatorFunction,
   Observable,
   OperatorFunction,
   scan,
@@ -26,6 +27,12 @@ import {
 } from 'rxjs';
 import { Prescription, PrescriptionFactory, RxWithId } from './prescription-factory';
 import { PaginatedService } from '../shared/paginated.service.abstract';
+
+export enum RxFilterMode {
+  All = 1,
+  Active,
+  NotActive,
+}
 
 @Injectable({
   providedIn: 'root',
@@ -158,5 +165,25 @@ export class PrescriptionService extends PaginatedService<RxWithId[]> {
       1,
     );
     return this.getDaysRemainingForMedicine(rx.dispensedAt, longestMedicineAmount);
+  }
+
+  static filterByActivity(rxs: RxWithId[], mode = RxFilterMode.Active) {
+    return rxs.filter((rx) => {
+      const daysRemaining = this.getDaysRemainingForRx(rx);
+      switch (mode) {
+        case RxFilterMode.Active:
+          return daysRemaining > 0;
+        case RxFilterMode.NotActive:
+          return daysRemaining <= 0;
+        case RxFilterMode.All:
+          return true;
+        default:
+          return true;
+      }
+    });
+  }
+
+  static filterByActivityOperator(mode = RxFilterMode.Active): MonoTypeOperatorFunction<RxWithId[]> {
+    return (source) => source.pipe(map((rxs) => this.filterByActivity(rxs, mode)));
   }
 }

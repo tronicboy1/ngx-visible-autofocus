@@ -1,1 +1,17 @@
-<p>dose-history works!</p>
+<div class="card" *ngFor="let rx of this.activeRxsWithAdministrations$ | async">
+  <h4>{{ rx.dispensedAt | date: 'shortDate' }}, {{ rx.pharmacyName }}</h4>
+  <table>
+    <thead>
+      <tr>
+        <th>日付</th>
+        <th>時間帯</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let admin of rx.administrations">
+        <td>{{ admin.date | date:'MM/dd' }}</td>
+        <td *ngFor="let takenAt of admin.takenAt">{{ takenAt | takenAt }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

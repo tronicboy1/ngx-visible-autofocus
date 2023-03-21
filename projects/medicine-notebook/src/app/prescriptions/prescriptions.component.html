@@ -1,9 +1,9 @@
 <div class="card">
   <nav>
     <select name="view-mode" id="view-mode" [formControl]="this.modeControl">
-      <option [ngValue]="this.RxDisplayMode.Active" i18n>残量あり</option>
-      <option [ngValue]="this.RxDisplayMode.NotActive" i18n>残量なし</option>
-      <option [ngValue]="this.RxDisplayMode.All" i18n>全て</option>
+      <option [ngValue]="this.RxFilterMode.Active" i18n>残量あり</option>
+      <option [ngValue]="this.RxFilterMode.NotActive" i18n>残量なし</option>
+      <option [ngValue]="this.RxFilterMode.All" i18n>全て</option>
     </select>
     <input type="search" name="rx-search" id="rx-search" i18n-placeholder placeholder="処方箋検索"
       [formControl]="searchControl">
