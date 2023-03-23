@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { BehaviorSubject, finalize, first, ReplaySubject, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, finalize, first, ReplaySubject, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 enum AuthMode {
@@ -58,9 +58,7 @@ export class AuthComponent {
             case AuthMode.EmailLogin:
               const url = new URL('auth/email-login', environment.url);
               url.searchParams.set('email', email);
-              return this.authService
-                .sendSignInEmail(email, url.toString())
-                .then(() => this.router.navigate(['email-sent'], { relativeTo: this.route }));
+              return this.authService.sendSignInEmail(email, url.toString()).then(() => 'auth/email-sent');
             default:
               throw Error();
           }
@@ -68,11 +66,7 @@ export class AuthComponent {
         finalize(() => this.loading$.next(false)),
       )
       .subscribe({
-        next: () => {
-          {
-            this.router.navigate(['/']);
-          }
-        },
+        next: (url) => this.router.navigate([url ?? '/']),
         error: (error: FirebaseError) => {
           this.loginFormGroup.controls.password.reset('');
           this.error$.next(AuthComponent.errorMessages.get(error.code) ?? error.message);
