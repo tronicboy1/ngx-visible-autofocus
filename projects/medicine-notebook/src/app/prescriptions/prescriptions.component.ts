@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -11,7 +11,6 @@ import {
   shareReplay,
   startWith,
   switchMap,
-  tap,
 } from 'rxjs';
 import { RxWithId } from './prescription-factory';
 import { PrescriptionService, RxFilterMode } from './prescription.service';
@@ -47,10 +46,7 @@ export class PrescriptionsComponent {
     return (source) =>
       source.pipe(
         map(([rxs, mode, searchText]) => {
-          let filteredRxs: RxWithId[] = rxs;
-          if (mode !== RxFilterMode.All) {
-            filteredRxs = PrescriptionService.filterByActivity(filteredRxs);
-          }
+          let filteredRxs: RxWithId[] = PrescriptionService.filterByActivity(rxs, mode);
           if (searchText) {
             filteredRxs = filteredRxs.filter((rx) => rx.medicines.some((med) => med.medicineName.includes(searchText)));
           }
