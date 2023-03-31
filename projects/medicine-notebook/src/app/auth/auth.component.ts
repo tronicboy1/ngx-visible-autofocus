@@ -66,7 +66,7 @@ export class AuthComponent {
         finalize(() => this.loading$.next(false)),
       )
       .subscribe({
-        next: (url) => this.router.navigate([url ?? '/']),
+        next: (url) => this.router.navigate([url ?? '/home']),
         error: (error: FirebaseError) => {
           this.loginFormGroup.controls.password.reset('');
           this.error$.next(AuthComponent.errorMessages.get(error.code) ?? error.message);
