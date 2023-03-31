@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 
 @Component({
@@ -10,6 +10,7 @@ import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api'
 export class HomeBaseComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
+  readonly route = inject(ActivatedRoute);
 
   handleLogoutClick() {
     this.authService.signOutUser().then(() => this.router.navigate(['/auth']));

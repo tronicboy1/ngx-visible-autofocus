@@ -28,6 +28,11 @@ const routes: Routes = [
           { path: '', redirectTo: 'doses', pathMatch: 'full' },
         ],
       },
+      {
+        path: 'menus',
+        outlet: 'menus',
+        loadChildren: () => import('../menus/menus.module').then((m) => m.MenusModule),
+      },
     ],
   },
 ];
