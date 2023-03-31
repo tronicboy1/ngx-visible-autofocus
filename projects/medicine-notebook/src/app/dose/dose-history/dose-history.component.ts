@@ -36,20 +36,38 @@ export class DoseHistoryComponent {
       rxsWithAdmin.map(([administrations, rx]) => {
         const adminsUniqueByDay = administrations.reduce((acc, curr) => {
           const completedAtDate = new Date(curr.completedAt);
-          const key = `${completedAtDate.getDay()}-${completedAtDate.getMonth()}`;
+          const key = completedAtDate.toISOString().split('T')[0];
           const hasOther = acc.get(key)?.takenAt ?? [];
           return acc.set(key, { date: completedAtDate, takenAt: [...hasOther, curr.takenAt] });
         }, new Map<string, { date: Date; takenAt: TakenAt[] }>());
+        const requiredAdministrations = rx.medicines.reduce((acc, med) => {
+          const empty = PrescriptionService.getDaysRemainingForMedicine(rx.dispensedAt, med.amountDispensed) < 1;
+          if (empty) return acc;
+          const allDoseTimesForMedicine = med.dosage.reduce((acc, dose) => [...acc, dose.takenAt], [] as TakenAt[]);
+          return [...acc, ...allDoseTimesForMedicine];
+        }, [] as TakenAt[]);
         const takenAtKeys = Object.values(TakenAt).filter((value): value is TakenAt => !isNaN(Number(value)));
         const historyResults: {
           date: Date;
           results: DoseHistory[];
         }[] = [];
+        const hoursNow = new Date().getHours();
         adminsUniqueByDay.forEach((admin) => {
           const history = takenAtKeys.map((key) => {
+            const wasRequired = requiredAdministrations.includes(key);
             const wasAdministered = admin.takenAt.includes(key);
-            if (wasAdministered) return DoseHistory.Taken;
-            return DoseHistory.NotNecessary;
+            const isToday = Date.now() - admin.date.getTime() < 1000 * 60 * 60 * 24;
+            const [_, to] = takenAtIntervals.get(key) ?? [0, 0];
+            const stillNotTimeToTake = isToday && hoursNow < to;
+
+            switch (true) {
+              case wasRequired && wasAdministered:
+                return DoseHistory.Taken;
+              case !stillNotTimeToTake && wasRequired && !wasAdministered:
+                return DoseHistory.Forgotten;
+              default:
+                return DoseHistory.NotNecessary;
+            }
           });
           historyResults.push({ date: admin.date, results: history });
         });
