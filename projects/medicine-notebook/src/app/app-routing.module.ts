@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { setupFinishedGuard } from './startup/guards/setup-finished.guard';
 import { setupNotFinishedGuard } from './startup/guards/setup-not-finished.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'auth', loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule) },
@@ -17,6 +18,7 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
   },
   { path: '', pathMatch: 'full', redirectTo: 'auth' },
+  { path: '**', component: NotFoundComponent },
 ];
 
 @NgModule({

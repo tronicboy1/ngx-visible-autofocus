@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DoseHistoryComponent } from './dose-history/dose-history.component';
 import { DoseComponent } from './dose.component';
 import { PendingDosesComponent } from './pending-doses/pending-doses.component';
+import { AddForgottenDoseComponent } from './add-forgotten-dose/add-forgotten-dose.component';
 
 const routes: Routes = [
   {
@@ -10,7 +11,11 @@ const routes: Routes = [
     component: DoseComponent,
     children: [
       { path: 'pending', component: PendingDosesComponent },
-      { path: 'history', component: DoseHistoryComponent },
+      {
+        path: 'history',
+        component: DoseHistoryComponent,
+        children: [{ path: 'add-forgotten-dose', component: AddForgottenDoseComponent }],
+      },
       { path: '', pathMatch: 'full', redirectTo: 'pending' },
     ],
   },

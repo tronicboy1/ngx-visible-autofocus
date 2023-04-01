@@ -1,0 +1,7 @@
+<base-modal i18n-modal-title modal-title="服用記録を追加する" [show]="true" (modal-closed)="return()">
+  <p i18n>忘れた服用を「飲んだ」状態に修正しますか？</p>
+  <div class="button-group">
+    <button class="button-left" type="button" i18n (click)="this.addDose()">はい</button>
+    <button class="button-right delete" type="button" i18n (click)="this.return()">いいえ</button>
+  </div>
+</base-modal>

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { limit, where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
-import { map } from 'rxjs';
+import { map, startWith, Subject } from 'rxjs';
 import { TakenAt } from '../prescriptions/prescription-factory';
 import { DoseAdministration, DoseAdministrationFactory } from './dose-administration-factory';
 
@@ -13,8 +13,15 @@ export class DoseAdministrationService {
   private factory = new DoseAdministrationFactory();
   private rootKey = 'dose-administrations';
 
-  create$(memberId: string, rxId: string, takenAt: TakenAt) {
-    return this.firestore.create$(this.rootKey, this.factory.create$({ memberId, rxId, takenAt }));
+  private refreshSubject = new Subject<void>();
+  readonly refresh$ = this.refreshSubject.pipe(startWith(undefined));
+
+  refresh() {
+    this.refreshSubject.next(undefined);
+  }
+
+  create$(memberId: string, rxId: string, takenAt: TakenAt, completedAt?: number) {
+    return this.firestore.create$(this.rootKey, this.factory.create$({ memberId, rxId, takenAt, completedAt }));
   }
 
   getByRxId$(rxId: string) {

@@ -4,6 +4,7 @@ import { forkJoin, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { TakenAt, takenAtIntervals } from '../../prescriptions/prescription-factory';
 import { PrescriptionService, RxFilterMode } from '../../prescriptions/prescription.service';
 import { DoseAdministrationService } from '../dose-administration.service';
+import { DoseAdministration } from '../dose-administration-factory';
 
 enum DoseHistory {
   Taken = 1,
@@ -28,7 +29,8 @@ export class DoseHistoryComponent {
   );
 
   readonly DoseHistory = DoseHistory;
-  readonly activeRxsWithAdministrations$ = this.activeRxs$.pipe(
+  readonly activeRxsWithAdministrations$ = this.administrationService.refresh$.pipe(
+    switchMap(() => this.activeRxs$),
     switchMap((rxs) =>
       forkJoin(rxs.map((rx) => this.administrationService.getByRxId$(rx.id).pipe(withLatestFrom(of(rx))))),
     ),
