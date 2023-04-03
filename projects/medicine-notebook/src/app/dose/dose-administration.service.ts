@@ -20,7 +20,7 @@ export class DoseAdministrationService {
     this.refreshSubject.next(undefined);
   }
 
-  create$(memberId: string, rxId: string, takenAt: TakenAt, completedAt?: number) {
+  create$(memberId: string, rxId: string, takenAt: TakenAt, completedAt = Date.now()) {
     return this.firestore.create$(this.rootKey, this.factory.create$({ memberId, rxId, takenAt, completedAt }));
   }
 
