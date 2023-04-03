@@ -18,6 +18,7 @@ import { GroupModule } from '../group/group.module';
 import { DeleteMemberCheckComponent } from './delete-member-check/delete-member-check.component';
 import { EditMemberModalComponent } from './edit-member-modal/edit-member-modal.component';
 import { SharedModule } from '../shared/shared.module';
+import { MemberListComponent } from './member-list/member-list.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { SharedModule } from '../shared/shared.module';
     EditMemberFormComponent,
     DeleteMemberCheckComponent,
     EditMemberModalComponent,
+    MemberListComponent,
   ],
   imports: [
     CommonModule,
@@ -42,5 +44,6 @@ import { SharedModule } from '../shared/shared.module';
     GroupModule,
     SharedModule,
   ],
+  exports: []
 })
 export class StartupModule {}

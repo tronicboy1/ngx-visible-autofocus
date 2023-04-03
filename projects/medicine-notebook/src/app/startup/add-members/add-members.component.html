@@ -1,26 +1,7 @@
 <h1 i18n>グループ構成</h1>
 <p i18n>グループのメンバーを追加します。ログインできるメンバーを追加する場合、「アプリに招待メールを送る」にチェックを入れてください。</p>
 
-<ul>
-  <li *ngFor="let member of this.members$ | async " class="member-tile">
-    <h5 style="grid-row: 1; grid-column: 1 / 6;">{{ member.name}}</h5>
-    <a routerLink="./{{ member.id }}/edit" style="grid-row: 1; grid-column: 7;">
-      <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0,0,48,48">
-        <path
-          d="M9 39h2.2l22.15-22.15-2.2-2.2L9 36.8Zm30.7-24.3-6.4-6.4 2.1-2.1q.85-.85 2.1-.85t2.1.85l2.2 2.2q.85.85.85 2.1t-.85 2.1Zm-2.1 2.1L12.4 42H6v-6.4l25.2-25.2Zm-5.35-1.05-1.1-1.1 2.2 2.2Z" />
-      </svg>
-    </a>
-    <a *ngIf="!member.uid" routerLink="./{{ member.id }}/delete" style="grid-row: 1; grid-column: 8;">
-      <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0,0,48,48">
-        <path
-          d="M13.05 42q-1.25 0-2.125-.875T10.05 39V10.5H8v-3h9.4V6h13.2v1.5H40v3h-2.05V39q0 1.2-.9 2.1-.9.9-2.1.9Zm21.9-31.5h-21.9V39h21.9Zm-16.6 24.2h3V14.75h-3Zm8.3 0h3V14.75h-3Zm-13.6-24.2V39Z" />
-      </svg>
-    </a>
-    <small style="grid-row: 2; grid-column: 1;">{{ member.sex | sex }}</small>
-    <small style="grid-row: 2; grid-column: 2;">{{ member.dob | date: 'shortDate' }}</small>
-    <small style="grid-row: 2; grid-column: 3;">{{ member.weight }}kg</small>
-  </li>
-</ul>
+<app-member-list></app-member-list>
 
 <div i18n-title title="メンバーを追加する" class="card round" routerLink="./add">
   <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48" viewBox="0,0,48,48">

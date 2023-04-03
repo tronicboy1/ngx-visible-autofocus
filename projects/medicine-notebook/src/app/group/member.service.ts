@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { arrayUnion, collection, doc, runTransaction, where } from 'firebase/firestore';
 import { FirestoreService } from 'projects/ngx-firebase-user-platform/src/lib/firestore.service';
-import { from, map, mergeMap, Observable } from 'rxjs';
+import { from, map, mergeMap, Observable, startWith, Subject } from 'rxjs';
 import { AbstractGroupService } from './group.service.abstract';
 import { Member, MemberFactory, MemberWithId } from './member-factory';
 import { AbstractMemberService } from './member.service.abstract';
@@ -93,5 +93,11 @@ export class MemberService extends AbstractMemberService {
         return { ...first.data(), id: first.id };
       }),
     );
+  }
+
+  private refreshSubject = new Subject<void>();
+  readonly refresh$ = this.refreshSubject.pipe(startWith(undefined));
+  refresh() {
+    this.refreshSubject.next();
   }
 }

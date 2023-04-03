@@ -75,7 +75,10 @@ export class CreateMemberFormComponent {
         }),
       )
       .subscribe({
-        next: () => this.submitted.emit(),
+        next: () => {
+          this.member.refresh();
+          this.submitted.emit();
+        },
         error: () => this.loading$.next(false),
       });
   }
