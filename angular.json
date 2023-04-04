@@ -199,7 +199,12 @@
       "sourceRoot": "projects/medicine-notebook/src",
       "prefix": "app",
       "i18n": {
-        "sourceLocale": "ja"
+        "sourceLocale": "ja",
+        "locales": {
+          "en": {
+            "translation": "projects/medicine-notebook/src/locale/messages.en.json"
+          }
+        }
       },
       "architect": {
         "build": {
@@ -223,6 +228,7 @@
           },
           "configurations": {
             "production": {
+              "localize": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -238,6 +244,7 @@
               "outputHashing": "all"
             },
             "development": {
+              "localize": ["en"],
               "buildOptimizer": false,
               "optimization": false,
               "vendorChunk": true,

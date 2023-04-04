@@ -6,7 +6,8 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "emulate": "firebase emulators:start"
+    "emulate": "firebase emulators:start",
+    "i18n": "ng extract-i18n --output-path projects/medicine-notebook/src/locale --format=json"
   },
   "dependencies": {}
 }
