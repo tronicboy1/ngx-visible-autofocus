@@ -5,7 +5,7 @@ export abstract class RelativeRoutingInheritable {
   protected router = inject(Router);
   protected route = inject(ActivatedRoute);
 
-  close() {
-    this.router.navigate(['../../'], { relativeTo: this.route });
+  close(route = '../../') {
+    this.router.navigate([route], { relativeTo: this.route });
   }
 }

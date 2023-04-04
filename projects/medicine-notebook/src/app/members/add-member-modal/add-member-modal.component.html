@@ -1,3 +1,4 @@
-<base-modal i18n-modal-title [modal-title]="(this.modalTitle$ | async)!" [show]="true" (modal-closed)="this.close()">
-  <startup-create-member-form (submitted)="this.close()"></startup-create-member-form>
+<base-modal i18n-modal-title [modal-title]="(this.modalTitle$ | async)!" [show]="true"
+  (modal-closed)="this.close('../')">
+  <startup-create-member-form (submitted)="this.close('../')"></startup-create-member-form>
 </base-modal>
