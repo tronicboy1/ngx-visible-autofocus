@@ -2,8 +2,8 @@ import { inject } from '@angular/core';
 import { CanDeactivateFn } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { first, map, switchMap } from 'rxjs';
-import { GroupService } from '../../group/group.service';
-import { MemberService } from '../../group/member.service';
+import { GroupService } from '../group/group.service';
+import { MemberService } from '../group/member.service';
 
 /**
  * Improve performance

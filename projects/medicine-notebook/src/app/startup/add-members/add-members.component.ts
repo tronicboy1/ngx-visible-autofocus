@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first, map, switchMap } from 'rxjs';
-import { MembersInheritable } from '../members.inheritable';
+import { MembersInheritable } from '../../members/members.inheritable';
 
 @Component({
   selector: 'startup-add-members',

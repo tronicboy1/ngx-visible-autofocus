@@ -35,7 +35,8 @@ ul {
   flex-direction: row;
   justify-content: space-between;
 }
-.actions svg {
+.member-tile svg {
+  max-height: 48px;
 }
 
 li {

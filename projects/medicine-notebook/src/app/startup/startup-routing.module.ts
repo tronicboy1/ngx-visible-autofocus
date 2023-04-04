@@ -1,12 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddMemberModalComponent } from './add-member-modal/add-member-modal.component';
 import { AddMembersComponent } from './add-members/add-members.component';
 import { ChooseModeComponent } from './choose-mode/choose-mode.component';
 import { CreateGroupComponent } from './create-group/create-group.component';
-import { DeleteMemberCheckComponent } from './delete-member-check/delete-member-check.component';
-import { EditMemberModalComponent } from './edit-member-modal/edit-member-modal.component';
-import { canCloseAddMemberModalGuard } from './guards/can-close-add-member-modal.guard';
 import { chooseModeGuard } from './guards/choose-mode.guard';
 import { createGroupGuard } from './guards/create-group.guard';
 import { createMemberGuard } from './guards/create-member.guard';
@@ -25,11 +21,7 @@ const routes: Routes = [
         path: 'members',
         component: AddMembersComponent,
         canActivate: [createMemberGuard],
-        children: [
-          { path: 'add', component: AddMemberModalComponent, canDeactivate: [canCloseAddMemberModalGuard] },
-          { path: ':memberId/delete', component: DeleteMemberCheckComponent },
-          { path: ':memberId/edit', component: EditMemberModalComponent },
-        ],
+        loadChildren: () => import('../members/members.module').then((m) => m.MembersModule),
       },
       {
         path: 'single-user',

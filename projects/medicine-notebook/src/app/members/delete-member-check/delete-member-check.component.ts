@@ -25,7 +25,10 @@ export class DeleteMemberCheckComponent {
         mergeMap((memberId) => this.member.delete$(memberId)),
       )
       .subscribe({
-        next: () => this.returnToAddMembers(),
+        next: () => {
+          this.member.refresh();
+          this.returnToAddMembers();
+        },
         error: () => this.returnToAddMembers(),
       });
   }

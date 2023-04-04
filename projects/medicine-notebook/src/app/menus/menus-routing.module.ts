@@ -19,6 +19,7 @@ const routes: Routes = [
       {
         path: 'members',
         component: MembersModalComponent,
+        loadChildren: () => import('../members/members.module').then((m) => m.MembersModule),
       },
     ],
   },

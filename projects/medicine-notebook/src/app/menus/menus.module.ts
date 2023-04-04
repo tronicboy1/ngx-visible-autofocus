@@ -12,10 +12,17 @@ import { AccountInfoModalComponent } from './account-info-modal/account-info-mod
 import { ChangePasswordFormComponent } from './change-password-form/change-password-form.component';
 import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
 import { MembersModalComponent } from './members-modal/members-modal.component';
-import { EditMemberModalComponent } from './edit-member-modal/edit-member-modal.component';
 
 @NgModule({
-  declarations: [MenusComponent, MenuListComponent, ChangeEmailModalComponent, AccountInfoModalComponent, ChangePasswordFormComponent, ChangePasswordModalComponent, MembersModalComponent, EditMemberModalComponent],
+  declarations: [
+    MenusComponent,
+    MenuListComponent,
+    ChangeEmailModalComponent,
+    AccountInfoModalComponent,
+    ChangePasswordFormComponent,
+    ChangePasswordModalComponent,
+    MembersModalComponent,
+  ],
   imports: [CommonModule, MenusRoutingModule, StartupModule, NgxFirebaseUserNavbarModule, SharedModule],
 })
 export class MenusModule {}
