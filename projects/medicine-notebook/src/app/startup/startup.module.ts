@@ -44,6 +44,6 @@ import { MemberListComponent } from './member-list/member-list.component';
     GroupModule,
     SharedModule,
   ],
-  exports: []
+  exports: [MemberListComponent, CreateMemberFormComponent, EditMemberFormComponent],
 })
 export class StartupModule {}

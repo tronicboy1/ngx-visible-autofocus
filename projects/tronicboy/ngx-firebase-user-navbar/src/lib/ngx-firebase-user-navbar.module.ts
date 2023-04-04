@@ -16,7 +16,13 @@ import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/
     ChangeEmailFormComponent,
     AccountDetailsFormComponent,
   ],
-  exports: [NavBarComponent],
+  exports: [
+    NavBarComponent,
+    AccountCircleComponent,
+    ChangeAvatarFormComponent,
+    ChangeEmailFormComponent,
+    AccountDetailsFormComponent,
+  ],
   imports: [CommonModule, NgxBaseComponentsModule, RouterModule],
 })
 export class NgxFirebaseUserNavbarModule {}
