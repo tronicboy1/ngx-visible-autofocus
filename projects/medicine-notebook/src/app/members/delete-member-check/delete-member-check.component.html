@@ -1,4 +1,6 @@
-<base-modal [show]="true" (modal-closed)="this.returnToAddMembers()" i18n-modal-title modal-title="本当に削除しますか？">
-  <button type="button" (click)="deleteMember()">はい</button>
-  <button type="button" (click)="returnToAddMembers()">いいえ</button>
+<base-modal [show]="true" (modal-closed)="this.close()" i18n-modal-title modal-title="本当に削除しますか？">
+  <div class="button-group">
+    <button type="button" class="button-left delete" (click)="deleteMember()">はい</button>
+    <button type="button" class="button-right" (click)="close()">いいえ</button>
+  </div>
 </base-modal>

@@ -1,21 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { first, map, mergeMap } from 'rxjs';
 import { MemberService } from '../../group/member.service';
+import { RelativeRoutingInheritable } from '../relative-routing.inheritable';
 
 @Component({
   selector: 'startup-delete-member-check',
   templateUrl: './delete-member-check.component.html',
   styleUrls: ['./delete-member-check.component.css'],
 })
-export class DeleteMemberCheckComponent {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+export class DeleteMemberCheckComponent extends RelativeRoutingInheritable {
   private member = inject(MemberService);
-
-  returnToAddMembers() {
-    this.router.navigate([''], { relativeTo: this.route.parent });
-  }
 
   deleteMember() {
     this.route.params
@@ -27,9 +21,9 @@ export class DeleteMemberCheckComponent {
       .subscribe({
         next: () => {
           this.member.refresh();
-          this.returnToAddMembers();
+          this.close();
         },
-        error: () => this.returnToAddMembers(),
+        error: () => this.close(),
       });
   }
 }

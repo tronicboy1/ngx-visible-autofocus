@@ -1,17 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
 import { map, switchMap } from 'rxjs';
 import { GroupService } from '../../group/group.service';
+import { RelativeRoutingInheritable } from '../relative-routing.inheritable';
 
 @Component({
   selector: 'startup-add-member-modal',
   templateUrl: './add-member-modal.component.html',
   styleUrls: ['./add-member-modal.component.css'],
 })
-export class AddMemberModalComponent {
-  private router = inject(Router);
-  private route = inject(ActivatedRoute);
+export class AddMemberModalComponent extends RelativeRoutingInheritable{
   private auth = inject(AuthService);
   private group = inject(GroupService);
 
@@ -22,8 +20,4 @@ export class AddMemberModalComponent {
   readonly modalTitle$ = this.isFirstMember$.pipe(
     map((isFirstMember) => (isFirstMember ? $localize`自信の情報を追加する` : $localize`家族の一員を追加する`)),
   );
-
-  close() {
-    this.router.navigate([''], { relativeTo: this.route.parent });
-  }
 }
