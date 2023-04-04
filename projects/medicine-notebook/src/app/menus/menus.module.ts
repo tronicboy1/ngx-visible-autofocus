@@ -9,9 +9,13 @@ import { NgxFirebaseUserNavbarModule } from 'projects/tronicboy/ngx-firebase-use
 import { ChangeEmailModalComponent } from './change-email-modal/change-email-modal.component';
 import { SharedModule } from '../shared/shared.module';
 import { AccountInfoModalComponent } from './account-info-modal/account-info-modal.component';
+import { ChangePasswordFormComponent } from './change-password-form/change-password-form.component';
+import { ChangePasswordModalComponent } from './change-password-modal/change-password-modal.component';
+import { MembersModalComponent } from './members-modal/members-modal.component';
+import { EditMemberModalComponent } from './edit-member-modal/edit-member-modal.component';
 
 @NgModule({
-  declarations: [MenusComponent, MenuListComponent, ChangeEmailModalComponent, AccountInfoModalComponent],
+  declarations: [MenusComponent, MenuListComponent, ChangeEmailModalComponent, AccountInfoModalComponent, ChangePasswordFormComponent, ChangePasswordModalComponent, MembersModalComponent, EditMemberModalComponent],
   imports: [CommonModule, MenusRoutingModule, StartupModule, NgxFirebaseUserNavbarModule, SharedModule],
 })
 export class MenusModule {}
