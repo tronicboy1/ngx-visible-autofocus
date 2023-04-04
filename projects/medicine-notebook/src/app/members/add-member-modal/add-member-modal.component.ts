@@ -12,6 +12,7 @@ import { RelativeRoutingInheritable } from '../relative-routing.inheritable';
 export class AddMemberModalComponent extends RelativeRoutingInheritable{
   private auth = inject(AuthService);
   private group = inject(GroupService);
+  protected override closePath = '../'
 
   readonly isFirstMember$ = this.auth.getUid().pipe(
     switchMap((uid) => this.group.getGroupByUid$(uid)),
