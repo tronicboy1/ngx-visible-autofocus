@@ -41,7 +41,7 @@ export class EditMemberFormComponent implements OnInit {
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(255)],
       nonNullable: true,
     }),
-    dob: new FormControl(new Date('1990-1-2').toISOString().split('T')[0], {
+    dob: new FormControl(new Date('1990/1/2').toISOString().split('T')[0], {
       validators: [Validators.required],
       nonNullable: true,
     }),
