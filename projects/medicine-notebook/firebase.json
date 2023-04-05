@@ -5,16 +5,13 @@
   },
   "hosting": {
     "public": "dist",
+    "i18n": {
+      "root": "/"
+    },
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
     ]
   },
   "storage": {
