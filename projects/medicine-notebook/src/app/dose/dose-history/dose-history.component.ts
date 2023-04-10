@@ -38,7 +38,7 @@ export class DoseHistoryComponent {
       rxsWithAdmin.map(([administrations, rx]) => {
         const adminsUniqueByDay = administrations.reduce((acc, curr) => {
           const completedAtDate = new Date(curr.completedAt);
-          const key = completedAtDate.toISOString().split('T')[0];
+          const key = completedAtDate.toLocaleDateString();
           const hasOther = acc.get(key)?.takenAt ?? [];
           return acc.set(key, { date: completedAtDate, takenAt: [...hasOther, curr.takenAt] });
         }, new Map<string, { date: Date; takenAt: TakenAt[] }>());
