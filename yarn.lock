@@ -2108,10 +2108,10 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
-"@tronicboy/rxjs-operators@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@tronicboy/rxjs-operators/-/rxjs-operators-0.0.2.tgz#264ee15f0c3e0ec1b26d8e6a64f85576bf48e8a4"
-  integrity sha512-tU+9HXUmb2ObOstZ85IATLf3MC/zNP6rVVxae3bEN7lEYGwtHMINg9IjGUbJ0qowlqz7q68pUZOmzVLidE6T9Q==
+"@tronicboy/rxjs-operators@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@tronicboy/rxjs-operators/-/rxjs-operators-0.0.3.tgz#bd458775a62d897c41f27af4802b6bd0d43b15ee"
+  integrity sha512-ecFEUV0U4d9Z8SpEhi+wrMtLcNUOsOD+hJVsshd60hsBZI1WduKXAN0GoJuYNVb0UJRTE7fZCJA+Ug+rKvVm3Q==
   dependencies:
     rxjs "^7.8.0"
 

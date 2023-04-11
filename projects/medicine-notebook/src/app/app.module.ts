@@ -26,7 +26,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
         measurementId: 'G-WP0LN01QWV',
       },
       production: environment.production,
-      //emulators: environment.emulatorPorts
+      emulators: environment.emulatorPorts
     }),
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
