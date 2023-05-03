@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
+import { AuthService } from './auth.service';
 import { first, map } from 'rxjs';
 
 export const authGuard: CanActivateFn = (_route, _state) => {
