@@ -1,15 +1,15 @@
-<nav class="button-group" *ngIf="this.mode$ | async as mode">
-  <button [class.active]="mode === this.EditTabMode.BasicInfo" class="button-left" id="login-button" type="button"
+<nav class="button-group">
+  <button [class.active]="mode$() === this.EditTabMode.BasicInfo" class="button-left" id="login-button" type="button"
     (click)="this.changeMode(this.EditTabMode.BasicInfo)" i18n>
     基本情報
   </button>
-  <button [class.active]="this.mode === this.EditTabMode.DetailedInfo" class="button-right" id="register-button"
+  <button [class.active]="mode$() === this.EditTabMode.DetailedInfo" class="button-right" id="register-button"
     type="button" (click)="this.changeMode(this.EditTabMode.DetailedInfo)" i18n>
     詳細
   </button>
 </nav>
 <form [formGroup]="this.formGroup" (ngSubmit)="this.handleSubmit()" appSubmitOnModifierEnter>
-  <ng-container *ngIf="(this.mode$ | async) === this.EditTabMode.BasicInfo; else detailed;">
+  <ng-container *ngIf="mode$() === this.EditTabMode.BasicInfo; else detailed;">
     <label for="name" i18n>名前</label>
     <input type="text" name="name" id="name" formControlName="name" required minlength="1" maxlength="255"
       autocomplete="off" ngxAutofocus>
@@ -71,7 +71,7 @@
     </div>
   </ng-template>
   <button [disabled]="this.formGroup.invalid" type="submit" i18n>
-    <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+    <base-spinner *ngIf="this.loading$(); else submitText" color="white"></base-spinner>
     <ng-template #submitText>追加</ng-template>
   </button>
 </form>

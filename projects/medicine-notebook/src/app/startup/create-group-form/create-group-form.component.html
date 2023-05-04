@@ -3,7 +3,7 @@
   <input type="text" name="name" id="name" formControlName="name" required minlength="1" maxlength="255"
     autocomplete="off">
   <button type="submit" i18n>
-    <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+    <base-spinner *ngIf="this.loading$(); else submitText" color="white"></base-spinner>
     <ng-template #submitText>次へ</ng-template>
   </button>
 </form>

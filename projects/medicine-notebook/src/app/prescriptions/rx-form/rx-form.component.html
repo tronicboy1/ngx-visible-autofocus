@@ -27,12 +27,12 @@
   <input type="text" name="pharmacy-name" id="pharmacy-name" formControlName="pharmacyName" minlength="1"
     aria-required="false" maxlength="255" autocomplete="organization">
   <button [disabled]="this.formGroup.invalid" type="submit" i18n>
-    <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+    <base-spinner *ngIf="this.loading$(); else submitText" color="white"></base-spinner>
     <ng-template #submitText>{{ this.sumbitText }}</ng-template>
   </button>
 </form>
 
-<base-modal *ngIf="this.medicineToEdit$ | async as selectedGroup" [show]="true" i18n-modal-title modal-title="薬の登録"
+<base-modal *ngIf="this.medicineToEdit$() as selectedGroup" [show]="true" i18n-modal-title modal-title="薬の登録"
   (modal-closed)="closeMedicineEditModal(selectedGroup.group)">
   <rx-edit-medicine-form [group]="selectedGroup.group" (close)="closeMedicineEditModal(selectedGroup.group)"
     (addDose)="this.addDose(selectedGroup.index)"></rx-edit-medicine-form>

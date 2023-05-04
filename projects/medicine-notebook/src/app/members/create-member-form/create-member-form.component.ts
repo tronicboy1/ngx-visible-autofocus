@@ -1,7 +1,7 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { BehaviorSubject, first, forkJoin, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import { first, forkJoin, map, mergeMap, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { GroupService } from '../../group/group.service';
 import { Sex } from '../../group/member-factory';
 import { MemberService } from '../../group/member.service';
@@ -23,7 +23,7 @@ export class CreateMemberFormComponent {
   );
   readonly Sex = Sex;
   readonly currentDate = new Date().toISOString().split('T')[0];
-  readonly loading$ = new BehaviorSubject(false);
+  readonly loading$ = signal(false);
   formGroup = new FormGroup({
     name: new FormControl('', {
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(255)],
@@ -40,11 +40,11 @@ export class CreateMemberFormComponent {
   });
 
   handleSubmit() {
-    if (this.loading$.value) return;
+    if (this.loading$()) return;
     const { name, dob, weight, sex, sendInvite, email } = this.formGroup.value;
     if (!(name && dob && weight && sex)) return;
     if (sendInvite && !email) throw ReferenceError('must have email if inviting');
-    this.loading$.next(true);
+    this.loading$.set(true);
     const dobNumber = new Date(dob).getTime();
     this.auth
       .getUid()
@@ -79,7 +79,7 @@ export class CreateMemberFormComponent {
           this.member.refresh();
           this.submitted.emit();
         },
-        error: () => this.loading$.next(false),
+        error: () => this.loading$.set(false),
       });
   }
 }

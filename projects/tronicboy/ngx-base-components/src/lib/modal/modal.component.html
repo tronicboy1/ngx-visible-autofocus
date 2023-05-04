@@ -1,5 +1,5 @@
-<div appCloseOnEsc (mousedown)="this.closeModal.emit()" class="backdrop" [class.show]="this.show$ | async"
-  [class.fadeout]="this.fadeOut$ | async">
+<div appCloseOnEsc (mousedown)="this.closeModal.emit()" class="backdrop" [class.show]="this.show$()"
+  [class.fadeout]="this.fadeOut$()">
   <div (mousedown)="this.stopPropagation($event)" class="modal-container">
     <header>
       <h1 class="title">{{ this.modalTitle }}</h1>

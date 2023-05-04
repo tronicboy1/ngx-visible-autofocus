@@ -4,8 +4,8 @@ import {
   EventEmitter,
   Input,
   Output,
+  signal,
 } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'base-modal',
@@ -15,21 +15,21 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ModalComponent {
   @Input('modal-title') modalTitle?: string;
-  readonly fadeOut$ = new BehaviorSubject(false);
-  readonly show$ = new BehaviorSubject<boolean | undefined | null>(false);
+  readonly fadeOut$ = signal(false);
+  readonly show$ = signal<boolean | undefined | null>(false);
   @Input() set show(value: boolean | undefined | null) {
     if (value) {
-      this.show$.next(value);
+      this.show$.set(value);
       return;
     }
-    if (!this.show$.getValue()) return;
-    this.fadeOut$.next(true);
+    if (!this.show$()) return;
+    this.fadeOut$.set(true);
     setTimeout(() =>
       Promise.all(
         document.getAnimations().map((animation) => animation.finished)
       ).finally(() => {
-        this.show$.next(false);
-        this.fadeOut$.next(false);
+        this.show$.set(false);
+        this.fadeOut$.set(false);
       })
     );
   }

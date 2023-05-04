@@ -13,16 +13,16 @@
   </ng-template>
 </div>
 
-<base-modal [show]="(this.showMap | async) ?? false" modal-title="位置情報確認" (modal-closed)="this.toggleMap(false)">
-  <base-spinner *ngIf="this.loading | async"></base-spinner>
-  <div class="map" *ngIf="this.showMap | async">
+<base-modal [show]="this.showMap()" modal-title="位置情報確認" (modal-closed)="this.toggleMap(false)">
+  <base-spinner *ngIf="this.loading()"></base-spinner>
+  <div class="map" *ngIf="this.showMap()">
     <iframe *ngIf="this.googleMapsURL; else setLocation" height="350" style="border: 0" loading="lazy" allowfullscreen
       referrerpolicy="no-referrer-when-downgrade" [src]="this.googleMapsURL">
     </iframe>
     <ng-template #setLocation>
       <p i18n>場所は設定されていません。</p>
     </ng-template>
-    <ng-container *ngIf="this.locationError | async">
+    <ng-container *ngIf="this.locationError()">
       <p class="warning" i18n>位置情報取得に失敗しました。ブラウザの設定をご確認ください。</p>
       <p i18n>もしくは、手動で位置情報を登録することもできます。</p>
       <app-location-form (submitted)="this.handleLocationFormSubmit($event)">

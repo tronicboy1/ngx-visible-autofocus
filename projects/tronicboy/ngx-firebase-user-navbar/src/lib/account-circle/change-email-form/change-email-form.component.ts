@@ -1,6 +1,5 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { BehaviorSubject } from 'rxjs';
 import { InheritableAccountDetailsComponent } from '../inheritable-account-details-component';
 
 @Component({
@@ -10,17 +9,17 @@ import { InheritableAccountDetailsComponent } from '../inheritable-account-detai
 })
 export class ChangeEmailFormComponent {
   private authService = inject(AuthService);
-  public loading$ = new BehaviorSubject(false);
+  public loading$ = signal(false);
   @Output() submitted = new EventEmitter<null>();
 
   public handleSubmit: EventListener = (event) => {
     const { formData } = InheritableAccountDetailsComponent.getFormData(event);
     const newEmail = formData.get('new-email')!.toString().trim();
-    this.loading$.next(true);
+    this.loading$.set(true);
     this.authService
       .changeEmail(newEmail)
       .then(() => this.submitted.emit(null))
       .catch(console.error)
-      .finally(() => this.loading$.next(false));
+      .finally(() => this.loading$.set(false));
   };
 }

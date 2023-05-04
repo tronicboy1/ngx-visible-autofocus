@@ -1,7 +1,6 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-password-reset-form',
@@ -11,17 +10,17 @@ import { BehaviorSubject } from 'rxjs';
 export class PasswordResetFormComponent {
   private authService = inject(AuthService);
   @Output() submitted = new EventEmitter<void>();
-  readonly loading$ = new BehaviorSubject(false);
+  readonly loading$ = signal(false);
 
   readonly formGroup = new FormGroup({
     email: new FormControl('', { validators: [Validators.required], nonNullable: true }),
   });
 
   handleResetPasswordSubmit() {
-    if (this.loading$.value) return;
+    if (this.loading$()) return;
     const { email } = this.formGroup.value;
     if (!email) return;
-    this.loading$.next(true);
+    this.loading$.set(true);
     this.authService.sendPasswordResetEmail(email.trim()).finally(() => {
       this.submitted.emit();
     });

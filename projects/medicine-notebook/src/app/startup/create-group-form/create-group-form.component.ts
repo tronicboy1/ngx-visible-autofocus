@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { BehaviorSubject, first, map, mergeMap, withLatestFrom } from 'rxjs';
+import { first, map, mergeMap, withLatestFrom } from 'rxjs';
 import { UseMode } from '../../group/group-factory';
 import { GroupService } from '../../group/group.service';
 
@@ -25,7 +25,7 @@ export class CreateGroupFormComponent {
         : $localize`苗字を教えてください`,
     ),
   );
-  readonly loading$ = new BehaviorSubject(false);
+  readonly loading$ = signal(false);
   formGroup = new FormGroup({
     name: new FormControl('', {
       validators: [Validators.required, Validators.minLength(1), Validators.maxLength(255)],
@@ -34,10 +34,10 @@ export class CreateGroupFormComponent {
   });
 
   handleSubmit() {
-    if (this.loading$.value) return;
+    if (this.loading$()) return;
     const { name } = this.formGroup.value;
     if (!name) return;
-    this.loading$.next(true);
+    this.loading$.set(true);
     this.auth
       .getUid()
       .pipe(
@@ -48,7 +48,7 @@ export class CreateGroupFormComponent {
       .subscribe({
         next: (groupId) =>
           this.router.navigate(['members'], { relativeTo: this.route.parent, queryParams: { groupId } }),
-        error: () => this.loading$.next(false),
+        error: () => this.loading$.set(false),
       });
   }
 }

@@ -1,13 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, signal } from '@angular/core';
 import { SafeResourceUrl } from '@angular/platform-browser';
-import { BehaviorSubject, catchError, finalize, of } from 'rxjs';
+import { catchError, finalize } from 'rxjs';
 import { GeolocationService, LocationArray } from '../geolocation.service';
 
 @Component({
@@ -18,9 +11,9 @@ import { GeolocationService, LocationArray } from '../geolocation.service';
 })
 export class LocationComponent implements OnInit {
   @Input() googleMapsURL?: SafeResourceUrl;
-  public locationError = new BehaviorSubject(false);
-  public showMap = new BehaviorSubject(false);
-  public loading = new BehaviorSubject(false);
+  public locationError = signal(false);
+  public showMap = signal(false);
+  public loading = signal(false);
 
   @Output() location = new EventEmitter<LocationArray>();
 
@@ -28,27 +21,26 @@ export class LocationComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  public toggleMap = (force?: boolean) =>
-    this.showMap.next(force ?? !this.showMap.value);
+  public toggleMap = (force?: boolean) => this.showMap.set(force ?? !this.showMap());
   public handleLocationClick() {
-    this.loading.next(true);
-    this.locationError.next(false);
+    this.loading.set(true);
+    this.locationError.set(false);
     this.geolocationService
       .aquireLocation()
       .pipe(
         catchError((err, caught) => {
-          this.locationError.next(true);
+          this.locationError.set(true);
           throw err;
         }),
         finalize(() => {
-          this.loading.next(false);
-        })
+          this.loading.set(false);
+        }),
       )
       .subscribe({ next: (location) => this.location.emit(location) });
   }
 
   public handleLocationFormSubmit(location: LocationArray) {
-    this.locationError.next(false);
+    this.locationError.set(false);
     this.location.emit(location);
   }
 }

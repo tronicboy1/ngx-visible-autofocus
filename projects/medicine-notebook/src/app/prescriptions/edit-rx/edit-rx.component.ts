@@ -1,6 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import { PrescriptionService } from '../prescription.service';
 import { NewRxEditStateService } from '../rx-form/new-rx-edit-state.service';
 import { RxFormMode } from '../rx-form/rx-form.component';
@@ -20,7 +19,7 @@ export class EditRxComponent {
   readonly memberId = this.route.snapshot.parent!.parent!.params['memberId'] as string;
   readonly rxId = this.route.snapshot.params['rxId'] as string;
   readonly rx$ = this.rxService.get$(this.rxId);
-  readonly showDelete$ = new BehaviorSubject(false);
+  readonly showDelete$ = signal(false);
 
   close(isSumbit = false) {
     if (isSumbit) this.rxEditStateService.set(this, false);

@@ -1,4 +1,4 @@
-<div class="card" *ngIf="this.mode$ | async as mode">
+<div class="card" *ngIf="this.mode$() as mode">
   <h1>ログイン</h1>
   <nav class="button-group">
     <button [class.active]="mode === this.AuthMode.Login" class="button-left" id="login-button" type="button"
@@ -25,7 +25,7 @@
       <a *ngIf="this.AuthMode.Login" routerLink="./reset-password" i18n>パスワードをお忘れ？</a>
     </div>
     <button type="submit">
-      <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+      <base-spinner *ngIf="this.loading$(); else submitText" color="white"></base-spinner>
       <ng-template #submitText i18n>送信</ng-template>
     </button>
   </form>

@@ -1,6 +1,5 @@
-import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
 import { DiseaseHistory, MemberArrayFields, MemberFactory, Sex } from '../../group/member-factory';
 import { MemberService } from '../../group/member.service';
 
@@ -24,8 +23,8 @@ export class EditMemberFormComponent implements OnInit {
   readonly diseaseHistoryValues = Object.values(DiseaseHistory).filter(
     (value): value is DiseaseHistory => !isNaN(Number(value)),
   );
-  readonly loading$ = new BehaviorSubject(false);
-  readonly mode$ = new BehaviorSubject(EditTabMode.BasicInfo);
+  readonly loading$ = signal(false);
+  readonly mode$ = signal(EditTabMode.BasicInfo);
   readonly EditTabMode = EditTabMode;
   readonly currentDate = new Date().toISOString().split('T')[0];
   readonly arrayFieldKeys: { key: keyof MemberArrayFields; name: string; selections?: {}[] }[] = [
@@ -86,11 +85,11 @@ export class EditMemberFormComponent implements OnInit {
   }
 
   changeMode(mode: EditTabMode) {
-    this.mode$.next(mode);
+    this.mode$.set(mode);
   }
 
   handleSubmit() {
-    if (this.loading$.value) return;
+    if (this.loading$()) return;
     const {
       name,
       dob,
@@ -104,7 +103,7 @@ export class EditMemberFormComponent implements OnInit {
       diseaseHistory,
       pharmacies,
     } = this.formGroup.value!;
-    this.loading$.next(true);
+    this.loading$.set(true);
     const dobNumber = new Date(dob!).getTime();
     this.member
       .update$(this.memberId, {
@@ -125,7 +124,7 @@ export class EditMemberFormComponent implements OnInit {
           this.member.refresh();
           this.submitted.emit();
         },
-        error: () => this.loading$.next(false),
+        error: () => this.loading$.set(false),
       });
   }
 

@@ -1,16 +1,16 @@
 <h3 *ngIf="this.rx$ | async as rx">{{ rx.dispensedAt | date: 'shortDate' }}, {{ rx.pharmacyName }}<span
     i18n>の処方箋編集</span></h3>
 <div class="card">
-  <rx-form [formMode]="this.formMode" [memberId]="this.memberId" [rxId]="this.rxId"
-    (submitted)="this.close(true)" (changed)="this.handleChange()"></rx-form>
+  <rx-form [formMode]="this.formMode" [memberId]="this.memberId" [rxId]="this.rxId" (submitted)="this.close(true)"
+    (changed)="this.handleChange()"></rx-form>
 </div>
 
-<div class="card"><button (click)="this.showDelete$.next(true)" type="button" class="delete" i18n>削除</button></div>
+<div class="card"><button (click)="this.showDelete$.set(true)" type="button" class="delete" i18n>削除</button></div>
 
-<base-modal [show]="this.showDelete$ | async" i18n-modal-title modal-title="本当に削除しますか？"
-  (modal-closed)="this.showDelete$.next(false)">
+<base-modal [show]="this.showDelete$()" i18n-modal-title modal-title="本当に削除しますか？"
+  (modal-closed)="this.showDelete$.set(false)">
   <div class="button-group">
-    <button (click)="this.showDelete$.next(false)" type="button" class="button-left" i18n>キャンセル</button>
+    <button (click)="this.showDelete$.set(false)" type="button" class="button-left" i18n>キャンセル</button>
     <button (click)="this.delete()" type="button" class="delete button-right" i18n>削除</button>
   </div>
 </base-modal>

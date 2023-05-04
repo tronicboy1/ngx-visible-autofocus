@@ -1,6 +1,6 @@
-import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnDestroy, OnInit, Output, signal } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject, map, Observable, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
+import { Observable, sampleTime, skip, Subject, take, takeUntil } from 'rxjs';
 import { Prescription, TakenAt } from '../prescription-factory';
 import { PrescriptionService } from '../prescription.service';
 
@@ -32,8 +32,8 @@ export class RxFormComponent implements OnInit, OnDestroy {
 
   private teardown$ = new Subject<void>();
 
-  readonly medicineToEdit$ = new BehaviorSubject<{ group: MedicineFormGroup; index: number } | undefined>(undefined);
-  readonly loading$ = new BehaviorSubject(false);
+  readonly medicineToEdit$ = signal<{ group: MedicineFormGroup; index: number } | undefined>(undefined);
+  readonly loading$ = signal(false);
   readonly oneMonthAgo: string;
   readonly currentDate = new Date().toISOString().split('T')[0];
   readonly formGroup = new FormGroup({
@@ -82,7 +82,7 @@ export class RxFormComponent implements OnInit, OnDestroy {
     const medicineGroup = this.createMedicineFormGroup();
     this.formGroup.controls.medicines.push(medicineGroup);
     if (openModal) {
-      this.medicineToEdit$.next({ group: medicineGroup, index: -1 });
+      this.medicineToEdit$.set({ group: medicineGroup, index: -1 });
     }
     return medicineGroup;
   }
@@ -102,23 +102,24 @@ export class RxFormComponent implements OnInit, OnDestroy {
   }
 
   openMedicineEditModal(group: MedicineFormGroup, index: number) {
-    this.medicineToEdit$.next({ group, index });
+    this.medicineToEdit$.set({ group, index });
   }
   closeMedicineEditModal(group: MedicineFormGroup) {
-    if (!this.medicineToEdit$.value) throw Error();
+    const medicineToEdit = this.medicineToEdit$();
+    if (!medicineToEdit) throw Error();
     if (group.invalid) {
-      this.removeMedicine(this.medicineToEdit$.value.index);
+      this.removeMedicine(medicineToEdit.index);
     }
-    this.medicineToEdit$.next(undefined);
+    this.medicineToEdit$.set(undefined);
   }
   removeMedicine(index: number) {
     this.formGroup.controls.medicines.removeAt(index);
   }
 
   handleSubmit() {
-    if (this.loading$.value) return;
+    if (this.loading$()) return;
     const { dispensedAt, medicines, pharmacyName } = this.formGroup.getRawValue();
-    this.loading$.next(true);
+    this.loading$.set(true);
     const data = {
       dispensedAt: new Date(dispensedAt).getTime(),
       medicines,

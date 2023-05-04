@@ -21,7 +21,7 @@
     </ng-container>
   </ng-container>
   <button type="submit" i18n>
-    <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+    <base-spinner *ngIf="this.loading$(); else submitText" color="white"></base-spinner>
     <ng-template #submitText>追加</ng-template>
   </button>
 </form>

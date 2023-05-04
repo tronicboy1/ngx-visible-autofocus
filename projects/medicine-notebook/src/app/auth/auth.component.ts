@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FirebaseError } from 'firebase/app';
 import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
-import { BehaviorSubject, finalize, first, ReplaySubject, switchMap } from 'rxjs';
+import { finalize, first, of, ReplaySubject, switchMap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 enum AuthMode {
@@ -25,11 +25,10 @@ export class AuthComponent {
   ]);
   private authService = inject(AuthService);
   private router = inject(Router);
-  private route = inject(ActivatedRoute);
 
   readonly AuthMode = AuthMode;
-  readonly mode$ = new BehaviorSubject(AuthMode.Login);
-  readonly loading$ = new BehaviorSubject(false);
+  readonly mode$ = signal(AuthMode.Login);
+  readonly loading$ = signal(false);
   readonly loginFormGroup = new FormGroup({
     email: new FormControl('', { validators: [Validators.required], nonNullable: true }),
     password: new FormControl('', { validators: [Validators.required, Validators.minLength(8)], nonNullable: true }),
@@ -37,16 +36,16 @@ export class AuthComponent {
   readonly error$ = new ReplaySubject<string>(1);
 
   changeMode(mode: AuthMode) {
-    this.mode$.next(mode);
+    this.mode$.set(mode);
   }
 
   handleSubmit() {
-    if (this.loading$.getValue()) return;
+    if (this.loading$()) return;
     const { email, password } = this.loginFormGroup.value;
     if (!email) return;
-    this.loading$.next(true);
+    this.loading$.set(true);
     this.error$.next('');
-    this.mode$
+    of(this.mode$())
       .pipe(
         first(),
         switchMap((mode) => {
@@ -63,7 +62,7 @@ export class AuthComponent {
               throw Error();
           }
         }),
-        finalize(() => this.loading$.next(false)),
+        finalize(() => this.loading$.set(false)),
       )
       .subscribe({
         next: (url) => this.router.navigate([url ?? '/home']),

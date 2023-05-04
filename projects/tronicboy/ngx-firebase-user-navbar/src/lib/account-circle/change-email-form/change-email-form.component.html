@@ -2,7 +2,7 @@
   <label for="new-email" i18n>New Mail Address</label>
   <input type="email" name="new-email" id="new-email" required autocomplete="email" />
   <button type="submit">
-    <base-spinner *ngIf="this.loading$ | async; else submitText" color="white"></base-spinner>
+    <base-spinner *ngIf="this.loading$(); else submitText" color="white"></base-spinner>
     <ng-template #submitText i18n>Change</ng-template>
   </button>
 </form>
