@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import {
   combineLatest,
@@ -78,6 +79,7 @@ export class PendingDosesComponent {
     stopWhileHidden(),
     shareReplay(1),
   );
+  readonly unfinishedDosesSig = toSignal(this.unfinishedDoses$);
 
   addAdministrationForRxMedicines() {
     combineLatest([this.memberId$, this.unfinishedDoses$])

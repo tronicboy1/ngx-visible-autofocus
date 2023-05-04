@@ -1,4 +1,4 @@
-<ng-container *ngIf="this.unfinishedDoses$ | async as doses; else noMeds">
+<ng-container *ngIf="unfinishedDosesSig() as doses; else noMeds">
   <button *ngIf="doses.length; else allDone" type="button" i18n class="administered-button"
     (click)="this.addAdministrationForRxMedicines()">飲みました</button>
   <div class="card dose" *ngFor="let dose of doses" i18n-title title="この薬の処方箋を編集する"
