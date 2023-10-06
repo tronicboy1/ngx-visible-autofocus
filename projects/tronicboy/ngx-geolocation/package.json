@@ -18,10 +18,9 @@
   "peerDependencies": {
     "@angular/common": "^15.0.0",
     "@angular/core": "^15.0.0",
-    "@tronicboy/ngx-base-components": "^0.0.1"
+    "@tronicboy/ngx-base-components": "^0.0.15"
   },
   "dependencies": {
-    "@tronicboy/ngx-base-components": "^0.0.15",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
