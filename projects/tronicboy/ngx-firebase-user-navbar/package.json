@@ -1,11 +1,12 @@
 {
   "name": "@tronicboy/ngx-firebase-user-navbar",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "peerDependencies": {
     "@angular/common": "^15.1.0",
     "@angular/core": "^15.1.0",
     "firebase": "^9.17.1",
-    "ngx-firebase-user-platform": "^0.0.6"
+    "ngx-firebase-user-platform": "^0.0.6",
+    "@tronicboy/ngx-base-components": "^0.0.15"
   },
   "scripts": {
     "build:watch": "ng build --watch -c development @tronicboy/ngx-firebase-user-navbar",
@@ -18,7 +19,7 @@
   "sideEffects": false,
   "devDependencies": {
     "copyfiles": "^2.4.1",
-    "firebase": "^9.17.1",
-    "ngx-firebase-user-platform": "^0.0.6"
+    "firebase": "^10.4.0",
+    "ngx-firebase-user-platform": "^0.0.10"
   }
 }

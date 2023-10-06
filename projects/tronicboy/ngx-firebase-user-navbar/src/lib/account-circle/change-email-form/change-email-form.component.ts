@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
-import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
+import { AuthService } from 'ngx-firebase-user-platform';
 import { InheritableAccountDetailsComponent } from '../inheritable-account-details-component';
 
 @Component({

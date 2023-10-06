@@ -4,7 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { GeolocationSettings } from './geolocation.service';
 import { LocationFormComponent } from './location/location-form/location-form.component';
 import { LocationComponent } from './location/location.component';
-import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/src/public-api';
+import { NgxBaseComponentsModule } from '@tronicboy/ngx-base-components';
 
 @NgModule({
   declarations: [LocationComponent, LocationFormComponent],

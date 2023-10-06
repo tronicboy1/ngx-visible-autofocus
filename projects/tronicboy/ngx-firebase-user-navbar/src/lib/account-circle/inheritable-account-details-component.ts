@@ -1,5 +1,5 @@
 import { Directive, EventEmitter, inject, Output } from '@angular/core';
-import { AuthService } from 'projects/ngx-firebase-user-platform/src/public-api';
+import { AuthService } from 'ngx-firebase-user-platform';
 import { filter } from 'rxjs';
 
 @Directive()

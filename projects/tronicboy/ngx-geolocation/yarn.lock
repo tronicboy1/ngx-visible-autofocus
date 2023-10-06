@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@tronicboy/ngx-base-components@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@tronicboy/ngx-base-components/-/ngx-base-components-0.0.15.tgz#46c43b43b72a179e140f694476226d63e16240a5"
+  integrity sha512-5NhK3N/1cHfLeBk2WONjxeVntW3cOq/+InlW7v7cEXLXARbE98gFm+e58yTxSbrMz8tyjd50oh+pk2I93RTmVg==
+  dependencies:
+    tslib "^2.3.0"
+
 ansi-regex@^5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-5.0.1.tgz#082cb2c89c9fe8659a311a53bd6a4dc5301db304"

@@ -1,6 +1,6 @@
 {
   "name": "ngx-observable-directive",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "schematics": "./schematics/collection.json",
   "ng-add": {
     "save": "dependencies"

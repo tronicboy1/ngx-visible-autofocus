@@ -1,6 +1,6 @@
 {
   "name": "@tronicboy/ngx-base-components",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "schematics": "./schematics/collection.json",
   "ng-add": {
     "save": "dependencies"

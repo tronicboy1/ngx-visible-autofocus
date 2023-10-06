@@ -6,7 +6,7 @@ import { ChangeAvatarFormComponent } from './account-circle/change-avatar-form/c
 import { ChangeEmailFormComponent } from './account-circle/change-email-form/change-email-form.component';
 import { AccountDetailsFormComponent } from './account-circle/account-details-form/account-details-form.component';
 import { RouterModule } from '@angular/router';
-import { NgxBaseComponentsModule } from 'projects/tronicboy/ngx-base-components/src/public-api';
+import { NgxBaseComponentsModule } from '@tronicboy/ngx-base-components';
 
 @NgModule({
   declarations: [
